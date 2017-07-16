@@ -1,4 +1,4 @@
-package hw2_3;
+package tank;
 
 public interface IAssemblyLine {
 	IProduct assembleProduct(IProduct p );

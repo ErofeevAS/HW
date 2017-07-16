@@ -1,6 +1,6 @@
-package hw2_3;
+package tank;
 
-public class ProductPart implements IProductPart{
+public class Tower implements IProductPart{
 	private String name = "";
 	
 	public String getName() {
@@ -11,8 +11,8 @@ public class ProductPart implements IProductPart{
 		this.name = name;
 	}
 
-	ProductPart(String name){
-		this.name = name;
+	Tower( ){
+		
 	}
 	
 	

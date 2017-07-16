@@ -1,4 +1,4 @@
-package hw2_3;
+package tank;
 
 public interface IProduct {
 	void installFirstPart(IProductPart pp);
