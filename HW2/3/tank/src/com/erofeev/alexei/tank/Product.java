@@ -1,11 +1,14 @@
 package com.erofeev.alexei.tank;
 
+import com.erofeev.alexei.itank.IProduct;
+import com.erofeev.alexei.itank.IProductPart;
+
 public class Product implements IProduct {
 	Body body;
 	Tower tower;
 	Engine engine;
 
-	Product() {
+	public Product() {
 
 	}
 

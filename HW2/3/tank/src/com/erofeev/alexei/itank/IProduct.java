@@ -1,4 +1,4 @@
-package com.erofeev.alexei.tank;
+package com.erofeev.alexei.itank;
 
 public interface IProduct {
 	void installFirstPart(IProductPart pp);

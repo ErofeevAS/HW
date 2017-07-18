@@ -1,4 +1,10 @@
-package com.erofeev.alexei.tank;
+package com.erofeev.alexei.pipeline;
+
+import com.erofeev.alexei.itank.IAssemblyLine;
+import com.erofeev.alexei.itank.IProduct;
+import com.erofeev.alexei.linestep.LineStepBody;
+import com.erofeev.alexei.linestep.LineStepEngine;
+import com.erofeev.alexei.linestep.LineStepTower;
 
 public class AssemblyLine implements IAssemblyLine {
 

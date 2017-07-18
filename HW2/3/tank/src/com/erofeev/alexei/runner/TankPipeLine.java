@@ -1,4 +1,7 @@
-package com.erofeev.alexei.tank;
+package com.erofeev.alexei.runner;
+
+import com.erofeev.alexei.pipeline.AssemblyLine;
+import com.erofeev.alexei.tank.Product;
 
 public class TankPipeLine {
 

@@ -1,4 +1,8 @@
-package com.erofeev.alexei.tank;
+package com.erofeev.alexei.linestep;
+
+import com.erofeev.alexei.itank.ILineStep;
+import com.erofeev.alexei.itank.IProductPart;
+import com.erofeev.alexei.tank.Engine;
 
 public class LineStepEngine implements ILineStep {
 
