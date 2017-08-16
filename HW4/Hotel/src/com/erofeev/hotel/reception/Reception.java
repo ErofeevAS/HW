@@ -5,6 +5,7 @@ import java.util.Arrays;
 import com.erofeev.hotel.database.DataBase;
 import com.erofeev.hotel.entity.*;
 import com.erofeev.hotel.sort.*;
+import com.erofeev.hotel.manager.*;
 import com.erofeev.hotel.sort.RoomsSortedByCapacity;
 
 public class Reception {
@@ -18,11 +19,11 @@ public class Reception {
 	}
 
 	public void viewRoomsNumber(DataBase database) {
-		System.out.println("Total rooms in hotel: " + database.getRoomNumber());
+		System.out.println("Total rooms in hotel: " + database.getRoomCounter());
 	}
 
 	public void viewEmptyRoomsNumber(DataBase database) {
-		System.out.println("Empty rooms number: " + database.getEmptyRoomNumber());
+		System.out.println("Empty rooms number: " + database.getEmptyRoomAmoount());
 	}
 
 	public void viewGuestsNumber(DataBase database) {
@@ -40,36 +41,49 @@ public class Reception {
 
 	public void viewAllPrice(DataBase database, Guest guest) {
 		float price;
-		Room currentRoom = database.getRoom(database.findGuest(guest));
-		currentRoom.getPrice();
-		price = currentRoom.getPrice() * (guest.getOutDate().getTime() - guest.getInDate().getTime()) / 86400000;
-
-		System.out.println("Guest price: " + price + ". Services price:" + database.getServicesPrice(guest));
+		if ((database.findGuest(guest)) == -1) {
+			System.out.println("Guest not exist");
+		} else {
+			Room currentRoom = database.getRoom(database.findGuest(guest));
+			currentRoom.getPrice();
+			price = currentRoom.getPrice() * (guest.getOutDate().getTime() - guest.getInDate().getTime()) / 86400000;
+			System.out.println("Guest price: " + price + ". Services price:" + database.getServicesPrice(guest));
+		}
 	}
 
 	public void viewAllGuest(DataBase database) {
 
-		Object[][] myDB = database.getDB();
-		for (int i = 0; i < myDB[1].length; i++) {
-			if (myDB[1][i] != null) {
-				System.out.println(myDB[1][i]);
+		RoomManager[] myDB = database.getRoomsList();
+		for (int i = 0; i < myDB.length; i++) {
+			if ((myDB[i] != (null))) {
+				if (myDB[i].getGuest() != null) {
+					System.out.println(myDB[i].getGuest());
+				}
 			}
 		}
 	}
 
 	public void viewGuestService(DataBase database, Guest guest) {
-		Service[] services = database.getGuestService(guest);
-		System.out.println(guest.getFio() + ". ServiceList: ");
-		for (int i = 0; i < services.length; i++) {
-			System.out.println(services[i]);
+		if (database.findGuest(guest) == -1) {
+			System.out.println("Guest not exist");
+		} else {
+			Service[] services = database.getGuestService(guest);
+			System.out.println(guest.getFio() + ". ServiceList: ");
+			for (int i = 0; i < services.length; i++) {
+				System.out.println(services[i]);
+			}
 		}
 	}
 
 	public void viewRoomDetails(DataBase database, Room room) {
 		Service[] services = database.getRoomService(room);
 		System.out.println("Room ¹" + room.getName() + ". ServiceList: ");
-		for (int i = 0; i < services.length; i++) {
-			System.out.println(services[i]);
+		if (services != null) {
+			for (int i = 0; i < services.length; i++) {
+				System.out.println(services[i]);
+			}
+		} else {
+			System.out.println("Services List is empty");
 		}
 	}
 
@@ -188,7 +202,7 @@ public class Reception {
 	}
 
 	public void occupyRoom(DataBase database, Guest guest, Room room) {
-		database.addGuest(guest, room);
+		database.addGuest(room, guest);
 	}
 
 	public void evicRoom(DataBase database, Room room) {
@@ -205,6 +219,7 @@ public class Reception {
 
 	public void addRoom(DataBase database, Room room) {
 		database.addRoom(room);
+		System.out.println("Room added");
 	}
 
 	public void addService(DataBase database, Guest guest, Service service) {
@@ -220,7 +235,6 @@ public class Reception {
 			Room currentRoom = database.getRoom(index);
 			currentRoom.setPrice(price);
 		}
-
 	}
 
 	public void changeServicePrice(DataBase database, Guest guest, Service service, float price) {
@@ -231,11 +245,8 @@ public class Reception {
 			}
 		}
 	}
-	
-	public String[] saveToFile(DataBase database){
+
+	public String[] saveToFile(DataBase database) {
 		return database.parseLine();
 	}
-	
-
-
 }

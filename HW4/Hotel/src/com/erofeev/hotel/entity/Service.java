@@ -15,7 +15,6 @@ public class Service {
 		this.name = name;
 		this.price = price;
 		setDateStr(dateStr);
-
 	}
 
 	public String getDateStr() {

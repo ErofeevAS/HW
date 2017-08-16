@@ -5,9 +5,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import com.danco.training.*;
-import com.erofeev.hotel.database.*;
-import com.erofeev.hotel.entity.*;
-import com.erofeev.hotel.reception.*;
+import com.erofeev.hotel.database.DataBase;
+import com.erofeev.hotel.entity.Guest;
+import com.erofeev.hotel.entity.Room;
+import com.erofeev.hotel.entity.Service;
+import com.erofeev.hotel.reception.Reception;
+import com.erofeev.hotel.manager.*;
 
 public class ReceptionRunner {
 
@@ -30,14 +33,18 @@ public class ReceptionRunner {
 		Service serv2 = new Service("bar", 10, "2017-12-05");
 		Service serv3 = new Service("additional cleaning", 2, "2017-12-03");
 
+		RoomManager rm = new RoomManager();
+		rm.setRoom(room1);
+		System.out.println(rm.getRoom());
+
 		reception.addRoom(db, room1);
 		reception.addRoom(db, room2);
 		reception.addRoom(db, room3);
 		reception.addRoom(db, room4);
 
-		reception.occupyRoom(db, guest1, room1);
+		// reception.occupyRoom(db, guest1, room1);
 		reception.occupyRoom(db, guest2, room4);
-		reception.occupyRoom(db, guest3, room2);
+		// reception.occupyRoom(db, guest3, room2);
 		reception.occupyRoom(db, guest4, room3);
 
 		reception.viewAllRoom(db);
@@ -82,7 +89,10 @@ public class ReceptionRunner {
 		reception.occupyRoom(db, guest3, room1);
 		reception.viewRoomHistory(db, room1);
 		reception.evicRoom(db, room1);
-		db.addGuest(guest4, room1);
+		reception.occupyRoom(db, guest1, room1);
+		reception.viewRoomHistory(db, room1);
+		reception.evicRoom(db, room1);
+
 		reception.viewRoomHistory(db, room1);
 
 		reception.viewAllRoom(db);
@@ -99,7 +109,7 @@ public class ReceptionRunner {
 		reception.addService(db, guest4, serv3);
 
 		reception.addService(db, guest2, serv2);
-		reception.viewGuestService(db, guest2);
+		reception.viewGuestService(db, guest1);
 
 		reception.viewAllPrice(db, guest2);
 		reception.viewAllPrice(db, guest4);
@@ -107,7 +117,6 @@ public class ReceptionRunner {
 		reception.viewGuestService(db, guest4);
 
 		reception.sortGuestServicetByDate(db, guest4);
-
 		reception.sortGuestServicetByPrice(db, guest4);
 		reception.sortGuestServicetByPrice(db, guest2);
 
@@ -122,11 +131,9 @@ public class ReceptionRunner {
 		reception.viewGuestService(db, guest4);
 		System.out.println();
 		reception.changeServicePrice(db, guest4, serv3, 666);
-		reception.viewGuestService(db, guest4);
+		reception.viewGuestService(db, guest2);
 		System.out.println();
-		reception.viewRoomDetails(db, room3);
-
-		// test data
+		reception.viewRoomDetails(db, room4);
 
 		String TEST_FILE;
 		if (args.length == 0) {
@@ -152,7 +159,7 @@ public class ReceptionRunner {
 				}
 			}
 		} finally {
-			// Files.deleteIfExists(filePath);
+
 		}
 
 	}

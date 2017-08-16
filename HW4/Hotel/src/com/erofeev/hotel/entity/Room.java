@@ -14,18 +14,15 @@ public class Room {
 		this.price = price;
 		this.capacity = capacity;
 		this.empty = true;
-	}
-	
+	}	
 
 	public int getName() {
 		return name;
 	}
 
-
 	public void setName(int name) {
 		this.name = name;
 	}
-
 
 	public int getStars() {
 		return stars;

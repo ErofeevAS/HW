@@ -14,11 +14,8 @@ public class Guest {
 	public Guest(String fio, String inDateStr, String outDateStr) {
 		super();
 		this.fio = fio;
-		//this.inDateStr = inDateStr;
-		//this.outDateStr = outDateStr;
 		setInDateStr(inDateStr);
 		setOutDateStr(outDateStr);
-
 	}
 
 	public String getFio() {

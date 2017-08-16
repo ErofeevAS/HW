@@ -23,8 +23,7 @@ public class ServiceList {
 		return serviceCounter;
 	}
 
-	public void addService(Service service) {
-		// System.out.println(getServiceCounter());
+	public void addService(Service service) {		
 		serviceList[getServiceCounter()] = service;
 		incServiceCounter();
 
@@ -74,7 +73,9 @@ public class ServiceList {
 		for (int i = 0; i < servies.length; i++) {
 			if (servies[i] != null) {
 				str.append(servies[i].getName());
+				str.append(" ");
 				str.append(dateFormat.format(servies[i].getDate()));
+				str.append(" ");
 				str.append(servies[i].getPrice());
 			}
 		}
