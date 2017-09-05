@@ -5,7 +5,9 @@ import com.erofeev.hotel.entity.*;
 
 public class GuestSotredByName implements Comparator<Guest> {
 	public int compare(Guest guest1, Guest guest2) {
+		String nameGuest1 =  guest1.getSecondName() + " " + guest1.getFirstName();
+		String nameGuest2 =  guest2.getSecondName() + " " + guest2.getFirstName();
 
-		return (guest1.getFio()).compareTo(guest2.getFio());
+		return (nameGuest1).compareTo(nameGuest2);
 	}
 }

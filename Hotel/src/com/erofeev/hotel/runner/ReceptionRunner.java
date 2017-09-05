@@ -1,139 +1,16 @@
 package com.erofeev.hotel.runner;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
-import com.danco.training.*;
-import com.erofeev.hotel.database.DataBase;
 import com.erofeev.hotel.entity.Guest;
 import com.erofeev.hotel.entity.Room;
 import com.erofeev.hotel.entity.Service;
 import com.erofeev.hotel.reception.Reception;
-import com.erofeev.hotel.manager.*;
 
 public class ReceptionRunner {
-
 	public static void main(String[] args) throws Exception {
-
-		DataBase db = new DataBase();
-		Reception reception = new Reception();
-
-		Room room1 = new Room(1, 5, 1000f, 3);
-		Room room2 = new Room(2, 1, 155f, 1);
-		Room room3 = new Room(4, 3, 666f, 5);
-		Room room4 = new Room(3, 7, 777f, 3);
-
-		Guest guest1 = new Guest("Ivanov Ivan", "2017-12-03", "2017-12-01");
-		Guest guest2 = new Guest("Petrov Petr", "2016-12-03", "2016-12-05");
-		Guest guest3 = new Guest("Beli Alex", "2017-12-03", "2014-12-03");
-		Guest guest4 = new Guest("Stark Rob", "2015-12-03", "2017-12-12");
-
-		Service serv1 = new Service("breakfast", 1, "2017-12-01");
-		Service serv2 = new Service("bar", 10, "2017-12-05");
-		Service serv3 = new Service("additional cleaning", 2, "2017-12-03");
-
-		RoomManager rm = new RoomManager();
-		rm.setRoom(room1);
-		System.out.println(rm.getRoom());
-
-		reception.addRoom(db, room1);
-		reception.addRoom(db, room2);
-		reception.addRoom(db, room3);
-		reception.addRoom(db, room4);
-
-		// reception.occupyRoom(db, guest1, room1);
-		reception.occupyRoom(db, guest2, room4);
-		// reception.occupyRoom(db, guest3, room2);
-		reception.occupyRoom(db, guest4, room3);
-
-		reception.viewAllRoom(db);
-
-		System.out.println();
-		reception.sortRoomsByCapacity(db);
-		System.out.println();
-		reception.sortRoomsByPrice(db);
-		System.out.println();
-		reception.sortRoomsByStars(db);
-		System.out.println();
-		reception.viewAllGuest(db);
-		System.out.println();
-
-		reception.sortEmptyRoomsByCapacity(db);
-		System.out.println();
-		reception.sortEmptyRoomsByPrice(db);
-		System.out.println();
-		reception.sortEmptyRoomsByStars(db);
-		System.out.println();
-
-		reception.viewGuestsNumber(db);
-		reception.viewRoomsNumber(db);
-		reception.viewEmptyRoomsNumber(db);
-		System.out.println();
-
-		reception.sortGuestByName(db);
-		System.out.println();
-		reception.sortGuestByDate(db);
-		System.out.println();
-
-		reception.viewAllEmptyRoomByDate(db, "2015-11-01");
-
-		System.out.println();
-
-		reception.viewRoomHistory(db, room1);
-		reception.evicRoom(db, room1);
-		reception.occupyRoom(db, guest2, room1);
-
-		reception.viewRoomHistory(db, room1);
-		reception.evicRoom(db, room1);
-		reception.occupyRoom(db, guest3, room1);
-		reception.viewRoomHistory(db, room1);
-		reception.evicRoom(db, room1);
-		reception.occupyRoom(db, guest1, room1);
-		reception.viewRoomHistory(db, room1);
-		reception.evicRoom(db, room1);
-
-		reception.viewRoomHistory(db, room1);
-
-		reception.viewAllRoom(db);
-		reception.viewAllGuest(db);
-		reception.evicRoom(db, room1);
-
-		reception.changeRoomStatus(db, room1, false);
-		System.out.println();
-		reception.viewAllRoom(db);
-		reception.viewAllGuest(db);
-
-		reception.addService(db, guest4, serv2);
-		reception.addService(db, guest4, serv1);
-		reception.addService(db, guest4, serv3);
-
-		reception.addService(db, guest2, serv2);
-		reception.viewGuestService(db, guest1);
-
-		reception.viewAllPrice(db, guest2);
-		reception.viewAllPrice(db, guest4);
-
-		reception.viewGuestService(db, guest4);
-
-		reception.sortGuestServicetByDate(db, guest4);
-		reception.sortGuestServicetByPrice(db, guest4);
-		reception.sortGuestServicetByPrice(db, guest2);
-
-		System.out.println();
-		reception.viewAllRoom(db);
-		System.out.println();
-		reception.changeRoomPrice(db, room1, 3232323);
-		System.out.println();
-		reception.viewAllRoom(db);
-
-		System.out.println();
-		reception.viewGuestService(db, guest4);
-		System.out.println();
-		reception.changeServicePrice(db, guest4, serv3, 666);
-		reception.viewGuestService(db, guest2);
-		System.out.println();
-		reception.viewRoomDetails(db, room4);
 
 		String TEST_FILE;
 		if (args.length == 0) {
@@ -142,25 +19,93 @@ public class ReceptionRunner {
 			TEST_FILE = args[0];
 		}
 
-		final String[] testValues = reception.saveToFile(db);
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+		Date arrivalDate1 = dateFormat.parse("2017-12-10");
+		Date leavingDate1 = dateFormat.parse("2017-12-15");
+		Date arrivalDate2 = dateFormat.parse("2017-8-9");
+		Date leavingDate2 = dateFormat.parse("2017-8-11");
+		Date arrivalDate3 = dateFormat.parse("2017-12-1");
+		Date leavingDate3 = dateFormat.parse("2017-12-17");
 
-		Path filePath = Paths.get(TEST_FILE);
-		Files.deleteIfExists(filePath);
-		Files.createFile(filePath);
+		Guest guest1 = new Guest("Vaska", "Pupkin", arrivalDate1, leavingDate1);
+		Guest guest2 = new Guest("Petr", "Hacker", arrivalDate2, leavingDate2);
+		Guest guest3 = new Guest("Tom", "Begemot", arrivalDate3, leavingDate3);
 
-		try {
-			TextFileWorker fileWorker = new TextFileWorker(TEST_FILE);
-			fileWorker.writeToFile(testValues);
-			Object[] readedValues = fileWorker.readFromFile();
+		Service service1 = new Service("service#1", 100);
+		Service service2 = new Service("service#2", 111);
+		Service service3 = new Service("service#3", 32);
+		Service service4 = new Service("service#4", 15);
+		Service service5 = new Service("service#5", 765);
 
-			for (int i = 0; i < testValues.length; i++) {
-				if (!readedValues[i].equals(testValues[i])) {
-					throw new RuntimeException("Error. Not equal values: " + readedValues[i] + " and " + testValues[i]);
-				}
-			}
-		} finally {
+		Room room1 = new Room(1, 5, 1000f, 3);
+		Room room2 = new Room(2, 3, 2000f, 1);
+		Room room3 = new Room(3, 8, 3000f, 2);
 
-		}
+		Reception reception = new Reception();		
+		
+		reception.addService(service1);
+		reception.addService(service2);
+		reception.addService(service3);
+		reception.addService(service4);
+		reception.addService(service5);		
+
+		reception.addRoom(room1);
+		reception.addRoom(room2);
+		reception.addRoom(room3);
+		reception.changeRoomPrice(room1, 666f);
+
+		reception.viewAllRooms();
+		reception.viewAllEmptyRooms();
+
+		reception.occupyGuest(guest1, room2);
+
+		reception.viewAllRooms();
+		reception.viewAllEmptyRooms();
+
+		reception.evicGuest(guest1);
+		reception.viewAllEmptyRooms();
+		reception.occupyGuest(guest2, room3);
+		reception.occupyGuest(guest3, room1);
+
+		reception.viewAllGuests();
+		reception.viewAllServices();
+		
+		reception.addServiceToGuest(guest2, service1);
+		reception.addServiceToGuest(guest2, service3);
+		reception.addServiceToGuest(guest2, service5);		
+		
+		System.out.println("Guest service:");
+		reception.viewGuestServices(guest2);
+		reception.removeServiceToGuest(guest2, service3);
+		System.out.println("Guest service:");
+		reception.viewGuestServices(guest2);
+		reception.viewRoomDetails(room3);
+		// reception.viewGuestPrice(guest2);
+		reception.occupyGuest(guest1, room2);
+
+		reception.viewAllRooms();
+		reception.viewRoomsSortedByCapacity();
+		reception.viewRoomsSortedByStars();
+		reception.viewRoomsSortedByPrice();
+		// MyList<Guest> list = guestManager.getAllGuest();
+
+		reception.viewGuestSortedByData();
+		reception.viewGuestSortedByName();
+
+		reception.viewServiceSortedByPrice();
+		reception.viewAllGuests();
+
+		reception.saveToFile(TEST_FILE);
+		reception.evicGuest(guest1);
+		reception.occupyGuest(guest2, room2);
+		reception.evicGuest(guest2);
+		reception.occupyGuest(guest3, room2);
+		reception.evicGuest(guest3);
+		reception.viewAllGuests();
+
+		// reception.viewRoomHistory(room1);
+		reception.viewRoomHistory(room2);
+		// reception.viewRoomHistory(room3);
 
 	}
 

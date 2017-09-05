@@ -6,15 +6,25 @@ public class Room {
 	private int capacity;
 	private boolean empty;
 	private int name;
+	private boolean status;
 
-	public Room(int name,int stars, float price, int capacity) {
+	public Room(int name, int stars, float price, int capacity) {
 		super();
 		this.name = name;
 		this.stars = stars;
 		this.price = price;
 		this.capacity = capacity;
 		this.empty = true;
-	}	
+		this.status = true;
+	}
+
+	public boolean isStatus() {
+		return status;
+	}
+
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
 
 	public int getName() {
 		return name;
@@ -60,8 +70,8 @@ public class Room {
 	public String toString() {
 
 		StringBuilder str = new StringBuilder();
-		str.append("room ¹: ").append(this.getName()).append(" room stars: ").append(this.getStars()).append(" price: ").append(this.getPrice())
-				.append(" capacity: ").append(this.getCapacity());
+		str.append("room ¹: ").append(this.getName()).append(" room stars: ").append(this.getStars()).append(" price: ")
+				.append(this.getPrice()).append(" capacity: ").append(this.getCapacity());
 		return str.toString();
 	}
 

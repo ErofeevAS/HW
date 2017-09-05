@@ -1,9 +1,6 @@
 package com.erofeev.hotel.entity;
 
-import java.text.SimpleDateFormat;
-import java.util.Locale;
-
-public class ServiceList {
+public class Services {
 	private int serviceCounter = 0;
 	private Service[] serviceList = new Service[10];
 
@@ -23,7 +20,7 @@ public class ServiceList {
 		return serviceCounter;
 	}
 
-	public void addService(Service service) {		
+	public void addService(Service service) {
 		serviceList[getServiceCounter()] = service;
 		incServiceCounter();
 
@@ -66,15 +63,12 @@ public class ServiceList {
 	public String toString() {
 
 		StringBuilder str = new StringBuilder();
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
 
 		Service[] servies = getServiceList();
 
 		for (int i = 0; i < servies.length; i++) {
 			if (servies[i] != null) {
 				str.append(servies[i].getName());
-				str.append(" ");
-				str.append(dateFormat.format(servies[i].getDate()));
 				str.append(" ");
 				str.append(servies[i].getPrice());
 			}
