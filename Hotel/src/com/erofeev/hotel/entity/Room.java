@@ -6,7 +6,7 @@ public class Room {
 	private int capacity;
 	private boolean empty;
 	private int name;
-	private boolean status;
+
 
 	public Room(int name, int stars, float price, int capacity) {
 		super();
@@ -15,16 +15,9 @@ public class Room {
 		this.price = price;
 		this.capacity = capacity;
 		this.empty = true;
-		this.status = true;
+		
 	}
-
-	public boolean isStatus() {
-		return status;
-	}
-
-	public void setStatus(boolean status) {
-		this.status = status;
-	}
+	
 
 	public int getName() {
 		return name;
@@ -70,9 +63,39 @@ public class Room {
 	public String toString() {
 
 		StringBuilder str = new StringBuilder();
-		str.append("room ¹: ").append(this.getName()).append(" room stars: ").append(this.getStars()).append(" price: ")
+		str.append("room ¹: ").append(this.getName()).append(" stars: ").append(this.getStars()).append(" price: ")
 				.append(this.getPrice()).append(" capacity: ").append(this.getCapacity());
+		str.append(" ");
+		str.append(this.isEmpty());
+		str.append(" ");
 		return str.toString();
 	}
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Room other = (Room) obj;
+		if (capacity != other.capacity)
+			return false;
+		//if (empty != other.empty)
+			//return false;
+		if (name != other.name)
+			return false;
+		if (Float.floatToIntBits(price) != Float.floatToIntBits(other.price))
+			return false;
+		if (stars != other.stars)
+			return false;
+		//if (status != other.status)
+			//return false;
+		return true;
+	}
+	
+	
 
 }

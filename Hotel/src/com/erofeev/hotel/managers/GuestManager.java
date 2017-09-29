@@ -1,6 +1,10 @@
 package com.erofeev.hotel.managers;
 
 import com.erofeev.hotel.entity.Service;
+
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
 import com.erofeev.hotel.api.IManager;
 import com.erofeev.hotel.entity.Guest;
 import com.erofeev.hotel.mylist.MyList;
@@ -12,12 +16,10 @@ public class GuestManager implements IManager {
 	final long MILISEC_IN_DAY = 86400000;
 
 	public void add(Guest guest) {
-		guests.add(guest);
-		System.out.println(guest + " was added");
+		guests.add(guest);		
 	}
 
-	public void remove(Guest guest) {
-		System.out.println(guest + " was removed");
+	public void remove(Guest guest) {		
 		guests.remove(guest);
 		guestsHistory.add(guest);
 	}
@@ -57,21 +59,36 @@ public class GuestManager implements IManager {
 	@Override
 	public String[] read() {
 		MyList<Guest> currentGuests = this.getAllGuest();
-		String[] strGuests = new String[currentGuests.length() + 1];
+		MyList<Service> services;
+		String[] strGuests = new String[currentGuests.length()];
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);	
 		StringBuilder str = new StringBuilder();
-		str.append("");
-		str.append("Guests:");
-		strGuests[0] = "";
-		strGuests[0] += str.toString();
 
 		for (int i = 0; i < currentGuests.length(); i++) {
 			if (currentGuests.get(i) != null) {
 				str.delete(0, str.capacity());
-				str.append(currentGuests.get(i));
-				str.append(" room #");
+				str.append(currentGuests.get(i).getFirstName());
+				str.append(" ");
+				str.append(currentGuests.get(i).getSecondName());
+				str.append(" ");
+				str.append(dateFormat.format(currentGuests.get(i).getArrivalDate()));
+				str.append(" ");
+				str.append(dateFormat.format(currentGuests.get(i).getLeavingDate()));				
+				str.append(" ");				
 				str.append(currentGuests.get(i).getRoom().getName());
-				strGuests[i + 1] = "";
-				strGuests[i + 1] += str.toString();
+			
+				StringBuilder strService = new StringBuilder();
+
+				services = currentGuests.get(i).getGuestServices();
+				for (int j = 0; j < services.length(); j++) {					
+					strService.append(" ");		
+					strService.append(services.get(j).getName());
+								
+
+				}
+				str.append(strService);
+				strGuests[i] = "";
+				strGuests[i] += str.toString();
 			}
 		}
 		return strGuests;

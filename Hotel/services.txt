@@ -1,0 +1,6 @@
+service#1 100.0
+service#2 111.0
+service#3 32.0
+service#4 15.0
+service#5 765.0
+service#6 666.0

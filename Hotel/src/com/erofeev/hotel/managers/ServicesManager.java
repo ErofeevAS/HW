@@ -9,19 +9,15 @@ public class ServicesManager implements IManager {
 	MyList<Service> services = new MyList<Service>();
 
 	public void add(Service service) {
-		services.add(service);
-		System.out.println("Service: " + service + " was added");
+		services.add(service);		
 	}
 
-	public void remove(Service service) {
-		System.out.println("Service: " + service + " was removed");
+	public void remove(Service service) {		
 		services.remove(service);
-
 	}
 
 	public MyList<Service> getServices() {
 		return services;
-
 	}
 
 	public float getPrice() {
@@ -40,18 +36,17 @@ public class ServicesManager implements IManager {
 	public String[] read() {
 
 		MyList<Service> currentServices = this.getServices();
-		String[] strServices = new String[currentServices.length() + 1];
-		StringBuilder str = new StringBuilder();
-		str.append("Services:");
-		strServices[0] = "";
-		strServices[0] += str.toString();
+		String[] strServices = new String[currentServices.length()];
+		StringBuilder str = new StringBuilder();		
 		
 		for (int i = 0; i < currentServices.length(); i++) {
 			if (currentServices.get(i) != null) {
 				str.delete(0, str.capacity());
-				str.append(currentServices.get(i));
-				strServices[i + 1] = "";
-				strServices[i + 1] += str.toString();
+				str.append(currentServices.get(i).getName());
+				str.append(" ");
+				str.append(currentServices.get(i).getPrice());				
+				strServices[i] = "";
+				strServices[i] += str.toString();
 
 			}
 		}

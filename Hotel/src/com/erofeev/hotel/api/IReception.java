@@ -1,6 +1,5 @@
 package com.erofeev.hotel.api;
 
-import java.io.IOException;
 
 import com.erofeev.hotel.entity.Guest;
 import com.erofeev.hotel.entity.Room;
@@ -10,10 +9,10 @@ public interface IReception {
 	public void addService(Service service);
 
 	public void addRoom(Room room);
-	
-	public void addServiceToGuest(Guest guest,Service service);
-	
-	public void removeServiceToGuest(Guest guest,Service service);
+
+	public void addServiceToGuest(Guest guest, Service service);
+
+	public void removeServiceToGuest(Guest guest, Service service);
 
 	public void removeService(Service service);
 
@@ -50,12 +49,12 @@ public interface IReception {
 	public void viewRoomsSortedByStars();
 
 	public void viewServiceSortedByPrice();
-
-	public void saveToFile(String TEST_FILE) throws IOException;
-
+	
 	public void changeRoomPrice(Room room, float price);
 
 	public void changeServicePrice(Service service, float price);
 
 	public void changeRoomStatus(Room room, boolean status);
+
+	
 }

@@ -8,12 +8,10 @@ public class RoomManager implements IManager {
 	private MyList<Room> rooms = new MyList<Room>();
 
 	public void add(Room room) {
-		rooms.add(room);
-		System.out.println("Room: " + room + " was added");
+		rooms.add(room);		
 	}
 
-	public void remove(Room room) {
-		System.out.println("Room: " + room + " was removed");
+	public void remove(Room room) {		
 		rooms.remove(room);
 
 	}
@@ -47,19 +45,23 @@ public class RoomManager implements IManager {
 	@Override
 	public String[] read() {
 		MyList<Room> currentRooms = this.getRooms();
-		String[] strRooms = new String[currentRooms.length() + 1];
-		StringBuilder str = new StringBuilder();
-		str.append("Rooms: ");
-		strRooms[0] = "";
-		strRooms[0] += str.toString();		
+		String[] strRooms = new String[currentRooms.length() ];
+		StringBuilder str = new StringBuilder();			
 
 		for (int i = 0; i < currentRooms.length(); i++) {
 			if (currentRooms.get(i) != null) {
 				str.delete(0, str.capacity());
-				str.append(currentRooms.get(i));
-				strRooms[i + 1] = "";
-				strRooms[i + 1] += str.toString();
-				;
+				str.append(currentRooms.get(i).getName());
+				str.append(" ");
+				str.append(currentRooms.get(i).getStars());
+				str.append(" ");
+				str.append(currentRooms.get(i).getPrice());
+				str.append(" ");
+				str.append(currentRooms.get(i).getCapacity());
+				str.append(" ");
+				str.append(currentRooms.get(i).isEmpty());				
+				strRooms[i] = "";
+				strRooms[i] += str.toString();				
 			}
 		}
 		return strRooms;

@@ -1,14 +1,11 @@
 package com.erofeev.hotel.reception;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Arrays;
 
-import com.danco.training.TextFileWorker;
+import com.erofeev.hotel.print.Printer;
 import com.erofeev.hotel.api.IReception;
-
+import com.erofeev.hotel.api.Observable;
+import com.erofeev.hotel.api.Observer;
 import com.erofeev.hotel.entity.Guest;
 import com.erofeev.hotel.entity.Room;
 import com.erofeev.hotel.entity.Service;
@@ -16,6 +13,9 @@ import com.erofeev.hotel.managers.GuestManager;
 import com.erofeev.hotel.managers.RoomManager;
 import com.erofeev.hotel.managers.ServicesManager;
 import com.erofeev.hotel.mylist.MyList;
+import com.erofeev.hotel.observer.GuestObserver;
+import com.erofeev.hotel.observer.RoomsObserver;
+import com.erofeev.hotel.observer.ServicesObserver;
 import com.erofeev.hotel.sort.GuestSortedByDate;
 import com.erofeev.hotel.sort.GuestSotredByName;
 import com.erofeev.hotel.sort.RoomsSortedByCapacity;
@@ -23,22 +23,29 @@ import com.erofeev.hotel.sort.RoomsSortedByPrice;
 import com.erofeev.hotel.sort.RoomsSortedByStars;
 import com.erofeev.hotel.sort.ServiceSortedByPrice;
 
-public class Reception implements IReception {
+public class Reception implements IReception, Observable {
 	private RoomManager rooms;
 	private GuestManager guests;
 	private ServicesManager services;
+	private MyList<Observer> guestObservers = new MyList<Observer>();
+	private MyList<Observer> roomsObservers = new MyList<Observer>();
+	private MyList<Observer> servicesObservers = new MyList<Observer>();
 
 	public Reception() {
 		this.rooms = new RoomManager();
 		this.guests = new GuestManager();
 		this.services = new ServicesManager();
+
+		this.addGuestObserver(new GuestObserver());
+		this.addRoomsObserver(new RoomsObserver());
+		this.addServicesObserver(new ServicesObserver());
 	}
 
-	public RoomManager getRooms() {
+	public RoomManager getRoomManager() {
 		return rooms;
 	}
 
-	public GuestManager getGuests() {
+	public GuestManager getGuestsManager() {
 		return guests;
 	}
 
@@ -46,7 +53,7 @@ public class Reception implements IReception {
 		this.guests = guests;
 	}
 
-	public ServicesManager getServices() {
+	public ServicesManager getServicesManager() {
 		return services;
 	}
 
@@ -88,16 +95,16 @@ public class Reception implements IReception {
 
 	@Override
 	public void viewRoomDetails(Room room) {
-		System.out.println(room);
+		Printer.print(room);
 	}
 
 	@Override
 	public void viewRoomHistory(Room room) {
 		MyList<Guest> guestHistory = guests.getGuestsHistory();
-		System.out.println("Room History:");
+		Printer.print("Room History:");
 		for (int i = 0; i < guestHistory.length(); i++) {
 			if ((guestHistory.get(i).getRoom()).equals(room)) {
-				System.out.println(guestHistory.get(i));
+				Printer.print(guestHistory.get(i));
 			}
 		}
 	}
@@ -108,58 +115,56 @@ public class Reception implements IReception {
 		float roomPrice = guests.getGuestRoomPrice(guest);
 		float totalPrice = servicesPrice + roomPrice;
 
-		System.out.println("Room price: " + roomPrice);
-		System.out.println("Services price: " + servicesPrice);
-		System.out.println("Total price: " + totalPrice);
+		Printer.print("Room price: " + roomPrice);
+		Printer.print("Services price: " + servicesPrice);
+		Printer.print("Total price: " + totalPrice);
 
 	}
 
 	@Override
 	public void evicGuest(Guest guest) {
-		guest.getRoom().setEmpty(true);
-		guests.remove(guest);
+		Guest currentGuest = findExistingGuest(guest);
+		currentGuest.getRoom().setEmpty(true);
+		guests.remove(currentGuest);
+		this.notifyRoomsObservers();
+		this.notifyGuestObservers();
+	}
+
+	private Room findExistingRoom(Room room) {
+		Room findingRoom = null;
+		for (int i = 0; i < rooms.getRooms().length(); i++) {
+			if (rooms.getRooms().get(i).equals(room)) {
+				findingRoom = rooms.getRooms().get(i);
+			}
+		}
+		return findingRoom;
+	}
+
+	private Guest findExistingGuest(Guest guest) {
+		Guest findingGuest = null;
+		for (int i = 0; i < guests.getAllGuest().length(); i++) {
+			if (guests.getAllGuest().get(i).equals(guest)) {
+				findingGuest = guests.getAllGuest().get(i);
+			}
+		}
+		return findingGuest;
 	}
 
 	@Override
 	public void occupyGuest(Guest guest, Room room) {
-		room.setEmpty(false);
-		guest.setRoom(room);
-		guests.add(guest);
-	}
-
-	@Override
-	public void saveToFile(String TEST_FILE) throws IOException {
-		String[] strGuest = guests.read();
-		String[] strRooms = rooms.read();
-		String[] strServices = services.read();
-		int arrayLenght = strGuest.length + strRooms.length + strServices.length;
-		String[] testValues = new String[arrayLenght];
-		testValues[0] = "";
-
-		String[] tempValue = new String[strGuest.length + strRooms.length];
-		System.arraycopy(strGuest, 0, tempValue, 0, strGuest.length);
-		System.arraycopy(strRooms, 0, tempValue, strGuest.length, strRooms.length);
-		System.arraycopy(tempValue, 0, testValues, 0, tempValue.length);
-		System.arraycopy(strServices, 0, testValues, tempValue.length, strServices.length);
-
-		Path filePath = Paths.get(TEST_FILE);
-		Files.deleteIfExists(filePath);
-		Files.createFile(filePath);
-
-		try {
-			TextFileWorker fileWorker = new TextFileWorker(TEST_FILE);
-			fileWorker.writeToFile(testValues);
-			String[] readedValues = fileWorker.readFromFile();
-
-			for (int i = 0; i < testValues.length; i++) {
-				if (!readedValues[i].equals(testValues[i])) {
-					throw new RuntimeException("Error. Not equal values: " + readedValues[i] + " and " + testValues[i]);
-				}
+		Room currentRoom = findExistingRoom(room);	
+		if (currentRoom != null) {
+			if (currentRoom.isEmpty()) {
+				currentRoom.setEmpty(false);
+				guest.setRoom(currentRoom);
+				guests.add(guest);
+				this.notifyRoomsObservers();
+				this.notifyGuestObservers();
+			} else {
+				Printer.print("Room is busy");
 			}
-			System.out.println("File was saved");
-		} finally {
-
 		}
+
 	}
 
 	@Override
@@ -176,7 +181,7 @@ public class Reception implements IReception {
 
 	@Override
 	public void changeRoomStatus(Room room, boolean status) {
-		room.setStatus(status);
+		room.setEmpty(status);
 
 	}
 
@@ -185,7 +190,7 @@ public class Reception implements IReception {
 		Guest[] currentGuests = convertGuestsCollectionToArray();
 
 		Arrays.sort(currentGuests, new GuestSotredByName());
-		System.out.println("Guest sorted by name: ");
+		Printer.print("Guest sorted by name: ");
 		viewArray(currentGuests);
 	}
 
@@ -193,7 +198,7 @@ public class Reception implements IReception {
 	public void viewGuestSortedByData() {
 		Guest[] currentGuests = convertGuestsCollectionToArray();
 		Arrays.sort(currentGuests, new GuestSortedByDate());
-		System.out.println("Guest sorted by Date: ");
+		Printer.print("Guest sorted by Date: ");
 		viewArray(currentGuests);
 	}
 
@@ -201,7 +206,7 @@ public class Reception implements IReception {
 	public void viewServiceSortedByPrice() {
 		Service[] currentServices = convertServicesCollectionToArray();
 		Arrays.sort(currentServices, new ServiceSortedByPrice());
-		System.out.println("Services sorted by price: ");
+		Printer.print("Services sorted by price: ");
 		viewArray(currentServices);
 	}
 
@@ -209,7 +214,7 @@ public class Reception implements IReception {
 	public void viewRoomsSortedByCapacity() {
 		Room[] currentRooms = convertRoomsCollectionToArray();
 		Arrays.sort(currentRooms, new RoomsSortedByCapacity());
-		System.out.println("Rooms sorted by capacity: ");
+		Printer.print("Rooms sorted by capacity: ");
 		viewArray(currentRooms);
 	}
 
@@ -217,7 +222,7 @@ public class Reception implements IReception {
 	public void viewRoomsSortedByStars() {
 		Room[] currentRooms = convertRoomsCollectionToArray();
 		Arrays.sort(currentRooms, new RoomsSortedByStars());
-		System.out.println("Rooms sorted by stars: ");
+		Printer.print("Rooms sorted by stars: ");
 		viewArray(currentRooms);
 	}
 
@@ -225,31 +230,79 @@ public class Reception implements IReception {
 	public void viewRoomsSortedByPrice() {
 		Room[] currentRooms = convertRoomsCollectionToArray();
 		Arrays.sort(currentRooms, new RoomsSortedByPrice());
-		System.out.println("Rooms sorted by price: ");
+		Printer.print("Rooms sorted by price: ");
 		viewArray(currentRooms);
 	}
 
 	@Override
 	public void addService(Service service) {
-		services.add(service);
+		boolean flag = false;
+		for (int i = 0; i < services.getServices().length(); i++) {
+			if ((services.getServices().get(i).equals(service))) {
+				flag = true;
+			}
+		}
+		if (!flag) {
+			services.add(service);
+			this.notifyServicesObservers();
+		} else {
+			Printer.print("Service already exists");
+		}
 
 	}
 
 	@Override
 	public void addRoom(Room room) {
-		rooms.add(room);
 
+		boolean flag = false;
+		for (int i = 0; i < rooms.getRooms().length(); i++) {
+			if ((rooms.getRooms().get(i).equals(room))) {
+				flag = true;
+			}
+		}
+		if (!flag) {
+			rooms.add(room);
+			this.notifyServicesObservers();
+		} else {
+			Printer.print("Room already exists");
+		}
+
+	}
+
+	public void addRooms(MyList<Room> newRooms) {
+		for (int i = 0; i < newRooms.length(); i++) {
+			rooms.add(newRooms.get(i));
+		}
+
+	}
+
+	public void addServices(MyList<Service> newServices) {
+		for (int i = 0; i < newServices.length(); i++) {
+			services.add(newServices.get(i));
+		}
+
+	}
+
+	public void addGuests(MyList<Guest> newGuests) {
+		for (int i = 0; i < newGuests.length(); i++) {
+			// this.occupyGuest(newGuests.get(i), newGuests.get(i).getRoom());
+			newGuests.get(i).getRoom().setEmpty(false);
+			guests.add(newGuests.get(i));
+			// System.out.println(newGuests.get(i).getRoom().isEmpty());
+		}
 	}
 
 	@Override
 	public void removeService(Service service) {
 		services.remove(service);
+		this.notifyServicesObservers();
 
 	}
 
 	@Override
 	public void removeRoom(Room room) {
 		rooms.remove(room);
+		this.notifyRoomsObservers();
 
 	}
 
@@ -266,13 +319,13 @@ public class Reception implements IReception {
 
 	private void viewCmd(MyList list) {
 		for (int i = 0; i < (list).length(); i++) {
-			System.out.println(list.get(i));
+			Printer.print(list.get(i));
 		}
 	}
 
 	private void viewArray(Object[] array) {
 		for (int i = 0; i < array.length; i++) {
-			System.out.println(array[i]);
+			Printer.print(array[i]);
 		}
 	}
 
@@ -298,17 +351,90 @@ public class Reception implements IReception {
 
 	@Override
 	public void addServiceToGuest(Guest guest, Service service) {
-		guest.addGuestService(service);
-		
-		
+
+		Guest currentGuest = this.findExistingGuest(guest);
+		System.out.println(currentGuest);
+		if (currentGuest != null) {
+			currentGuest.addGuestService(service);
+			this.notifyServicesObservers();
+			this.notifyGuestObservers();
+		} else {
+			Printer.print("Guest not finded");
+		}
+
 	}
 
 	@Override
 	public void removeServiceToGuest(Guest guest, Service service) {
-		guest.removeGuestService(service);
-		
+		Guest currentGuest = this.findExistingGuest(guest);
+		if (currentGuest != null) {
+			currentGuest.removeGuestService(service);
+			this.notifyServicesObservers();
+			this.notifyGuestObservers();
+		} else {
+			Printer.print("Guest not finded");
+		}
+
 	}
-	
-	
+
+	@Override
+	public void addGuestObserver(Observer o) {
+		guestObservers.add(o);
+
+	}
+
+	@Override
+	public void removeGuestObserver(Observer o) {
+		guestObservers.remove(o);
+
+	}
+
+	@Override
+	public void notifyGuestObservers() {
+		for (int i = 0; i < guestObservers.length(); i++) {
+			guestObservers.get(i).update(this.getGuestsManager());
+		}
+
+	}
+
+	@Override
+	public void removeRoomsObserver(Observer o) {
+		roomsObservers.remove(o);
+
+	}
+
+	@Override
+	public void addRoomsObserver(Observer o) {
+		roomsObservers.add(o);
+
+	}
+
+	@Override
+	public void notifyRoomsObservers() {
+		for (int i = 0; i < roomsObservers.length(); i++) {
+			roomsObservers.get(i).update(this.getRoomManager());
+		}
+
+	}
+
+	@Override
+	public void removeServicesObserver(Observer o) {
+		servicesObservers.remove(o);
+
+	}
+
+	@Override
+	public void addServicesObserver(Observer o) {
+		servicesObservers.add(o);
+
+	}
+
+	@Override
+	public void notifyServicesObservers() {
+		for (int i = 0; i < servicesObservers.length(); i++) {
+			servicesObservers.get(i).update(this.getServicesManager());
+		}
+
+	}
 
 }
