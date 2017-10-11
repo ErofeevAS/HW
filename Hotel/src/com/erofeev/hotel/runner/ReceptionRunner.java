@@ -79,11 +79,13 @@ public class ReceptionRunner {
 		Service service4 = new Service("service#4", 15);
 		Service service5 = new Service("service#5", 765);
 		Service service6 = new Service("service#6", 666);
+		Service service7 = new Service("service#7", 1);
 
 		Room room1 = new Room(1, 5, 666f, 3);
 		Room room2 = new Room(2, 3, 2000f, 1);
 		Room room3 = new Room(3, 8, 3000f, 2);
 		Room room4 = new Room(4, 5, 199f, 2);
+		Room room5 = new Room(5, 2, 222f, 2);
 
 		reception.addRoom(room1);
 		reception.addRoom(room2);
@@ -94,27 +96,30 @@ public class ReceptionRunner {
 		reception.addService(service3);
 		reception.addService(service4);
 		reception.addService(service5);
-		reception.addService(service6);
-
-		// reception.addRoom(room1);
-		// reception.addService(service6);
+		reception.addService(service6);		
+		
+	
 		reception.occupyGuest(guest1, room1);
+	
+		reception.evicGuest(guest1,room1);
+		
+		
+		
+	
 		reception.occupyGuest(guest4, room2);
-		reception.occupyGuest(guest3, room3);
-		// reception.addServiceToGuest(guest4, service1);
-		// reception.addServiceToGuest(guest4, service3);
-		// reception.addServiceToGuest(guest1, service2);
-		// reception.addServiceToGuest(guest2, service1);
-
-		// reception.occupyGuest(guest2, room3);
-		// reception.addServiceToGuest(guest2, service2);
-		// reception.removeServiceToGuest(guest1, service2);
-
-		// reception.addServiceToGuest(guest2, service3);
-
-		// reception.evicGuest(guest2);
-
-		reception.viewAllGuests();
+		reception.occupyGuest(guest3, room3);		
+		
+		
+		reception.occupyGuest(guest2, room1);
+		reception.evicGuest(guest2,room1);
+		reception.occupyGuest(guest2, room1);
+		reception.evicGuest(guest2,room1);
+		
+		
+		reception.viewRoomHistory(room1);
+		
+		
+		
 
 	}
 

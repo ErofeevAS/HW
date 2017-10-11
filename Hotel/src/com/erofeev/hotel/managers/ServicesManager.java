@@ -8,8 +8,18 @@ public class ServicesManager implements IManager {
 
 	MyList<Service> services = new MyList<Service>();
 
-	public void add(Service service) {
-		services.add(service);		
+	public boolean add(Service service) {
+		boolean flag = false;
+		for (int i = 0; i < services.length(); i++) {
+			if ((services.get(i).equals(service))) {
+				flag = true;
+			}
+		}
+		if (!flag) {
+			services.add(service);
+		}
+			
+		return flag;
 	}
 
 	public void remove(Service service) {		
@@ -41,12 +51,9 @@ public class ServicesManager implements IManager {
 		
 		for (int i = 0; i < currentServices.length(); i++) {
 			if (currentServices.get(i) != null) {
-				str.delete(0, str.capacity());
-				str.append(currentServices.get(i).getName());
-				str.append(" ");
-				str.append(currentServices.get(i).getPrice());				
+							
 				strServices[i] = "";
-				strServices[i] += str.toString();
+				strServices[i] += currentServices.get(i).toString();
 
 			}
 		}

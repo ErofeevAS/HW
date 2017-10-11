@@ -34,7 +34,7 @@ public interface IReception {
 
 	public void viewGuestServices(Guest guest);
 
-	public void evicGuest(Guest guest);
+	public void evicGuest(Guest guest, Room room);
 
 	public void occupyGuest(Guest guest, Room room);
 

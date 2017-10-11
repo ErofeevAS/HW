@@ -20,7 +20,7 @@ public class Guest {
 		this.secondName = secondName;
 		this.arrivalDate = arrivalDate;
 		this.leavingDate = leavingDate;
-		this.services = new MyList<Service>();
+		this.services = new MyList<Service>();		
 	}
 
 	public Room getRoom() {
@@ -73,13 +73,12 @@ public class Guest {
 		MyList<Service> services;
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
 
-		str.append("Guest first name: ").append(this.getFirstName()).append(" second name: ")
-				.append(this.getSecondName()).append(". Arrival Date: ").append(dateFormat.format(getArrivalDate()))
-				.append(". Leaving Date: ").append(dateFormat.format(getLeavingDate()));
+		str.append(this.getFirstName()).append(" ")
+				.append(this.getSecondName()).append(" ").append(dateFormat.format(getArrivalDate()))
+				.append(" ").append(dateFormat.format(getLeavingDate()));
 
-		str.append(" room#");
-		str.append(this.getRoom().getName());
 		str.append(" ");
+		str.append(this.getRoom().getName());		
 
 		services = this.getGuestServices();
 		for (int i = 0; i < services.length(); i++) {

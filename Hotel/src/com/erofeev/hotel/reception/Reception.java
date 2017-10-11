@@ -100,11 +100,11 @@ public class Reception implements IReception, Observable {
 
 	@Override
 	public void viewRoomHistory(Room room) {
-		MyList<Guest> guestHistory = guests.getGuestsHistory();
+		MyList<Guest> guestsHistory = guests.getGuestsHistory();
 		Printer.print("Room History:");
-		for (int i = 0; i < guestHistory.length(); i++) {
-			if ((guestHistory.get(i).getRoom()).equals(room)) {
-				Printer.print(guestHistory.get(i));
+		for (int i = 0; i < guestsHistory.length(); i++) {
+			if ((guestsHistory.get(i).getRoom()).equals(room)) {
+				Printer.print(guestsHistory.get(i));
 			}
 		}
 	}
@@ -122,37 +122,25 @@ public class Reception implements IReception, Observable {
 	}
 
 	@Override
-	public void evicGuest(Guest guest) {
-		Guest currentGuest = findExistingGuest(guest);
-		currentGuest.getRoom().setEmpty(true);
-		guests.remove(currentGuest);
-		this.notifyRoomsObservers();
-		this.notifyGuestObservers();
-	}
-
-	private Room findExistingRoom(Room room) {
-		Room findingRoom = null;
-		for (int i = 0; i < rooms.getRooms().length(); i++) {
-			if (rooms.getRooms().get(i).equals(room)) {
-				findingRoom = rooms.getRooms().get(i);
-			}
+	public void evicGuest(Guest guest, Room room) {
+		Guest currentGuest = guests.findExistingGuest(guest);
+		Room currentRoom = rooms.findExistingRoom(room);
+		if ((currentGuest != null) && ((currentRoom != null))) {		
+			currentRoom.setEmpty(true);
+			guests.remove(currentGuest);
+			this.notifyRoomsObservers();
+			this.notifyGuestObservers();
+		} else if (currentGuest != null) {
+			Printer.print("Guest not found");
+		} else if (currentRoom != null) {
+			Printer.print("Room not found");
 		}
-		return findingRoom;
-	}
 
-	private Guest findExistingGuest(Guest guest) {
-		Guest findingGuest = null;
-		for (int i = 0; i < guests.getAllGuest().length(); i++) {
-			if (guests.getAllGuest().get(i).equals(guest)) {
-				findingGuest = guests.getAllGuest().get(i);
-			}
-		}
-		return findingGuest;
 	}
 
 	@Override
 	public void occupyGuest(Guest guest, Room room) {
-		Room currentRoom = findExistingRoom(room);	
+		Room currentRoom = rooms.findExistingRoom(room);
 		if (currentRoom != null) {
 			if (currentRoom.isEmpty()) {
 				currentRoom.setEmpty(false);
@@ -236,37 +224,20 @@ public class Reception implements IReception, Observable {
 
 	@Override
 	public void addService(Service service) {
-		boolean flag = false;
-		for (int i = 0; i < services.getServices().length(); i++) {
-			if ((services.getServices().get(i).equals(service))) {
-				flag = true;
-			}
-		}
-		if (!flag) {
-			services.add(service);
+		if (!services.add(service)) {
 			this.notifyServicesObservers();
 		} else {
 			Printer.print("Service already exists");
 		}
-
 	}
 
 	@Override
 	public void addRoom(Room room) {
-
-		boolean flag = false;
-		for (int i = 0; i < rooms.getRooms().length(); i++) {
-			if ((rooms.getRooms().get(i).equals(room))) {
-				flag = true;
-			}
-		}
-		if (!flag) {
-			rooms.add(room);
-			this.notifyServicesObservers();
+		if (!rooms.add(room)) {
+			this.notifyRoomsObservers();
 		} else {
 			Printer.print("Room already exists");
 		}
-
 	}
 
 	public void addRooms(MyList<Room> newRooms) {
@@ -352,27 +323,26 @@ public class Reception implements IReception, Observable {
 	@Override
 	public void addServiceToGuest(Guest guest, Service service) {
 
-		Guest currentGuest = this.findExistingGuest(guest);
-		System.out.println(currentGuest);
+		Guest currentGuest = guests.findExistingGuest(guest);
 		if (currentGuest != null) {
 			currentGuest.addGuestService(service);
 			this.notifyServicesObservers();
 			this.notifyGuestObservers();
 		} else {
-			Printer.print("Guest not finded");
+			Printer.print("Guest not found");
 		}
 
 	}
 
 	@Override
 	public void removeServiceToGuest(Guest guest, Service service) {
-		Guest currentGuest = this.findExistingGuest(guest);
+		Guest currentGuest = guests.findExistingGuest(guest);
 		if (currentGuest != null) {
 			currentGuest.removeGuestService(service);
 			this.notifyServicesObservers();
 			this.notifyGuestObservers();
 		} else {
-			Printer.print("Guest not finded");
+			Printer.print("Guest not found");
 		}
 
 	}

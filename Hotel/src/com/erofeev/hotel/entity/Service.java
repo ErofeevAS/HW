@@ -29,7 +29,7 @@ public class Service {
 	@Override
 	public String toString() {
 		StringBuilder str = new StringBuilder();
-		str.append("Service: ").append(this.getName()).append(". Price: ").append(this.getPrice());
+		str.append(this.getName()).append(" ").append(this.getPrice());
 		return str.toString();
 	}
 

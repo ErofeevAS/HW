@@ -6,9 +6,21 @@ import com.erofeev.hotel.mylist.MyList;
 
 public class RoomManager implements IManager {
 	private MyList<Room> rooms = new MyList<Room>();
+	
+	
 
-	public void add(Room room) {
-		rooms.add(room);		
+	public boolean add(Room room) {
+		boolean flag = false;
+		for (int i = 0; i < rooms.length(); i++) {
+			if ((rooms.get(i).equals(room))) {
+				flag = true;					
+			}			
+		}
+		if(!flag){
+			rooms.add(room);
+		}
+		return flag;
+			
 	}
 
 	public void remove(Room room) {		
@@ -41,27 +53,26 @@ public class RoomManager implements IManager {
 		}
 		return emptyRooms;
 	}
+	
+	public Room findExistingRoom(Room room) {
+		Room findingRoom = null;
+		for (int i = 0; i < rooms.length(); i++) {
+			if (rooms.get(i).equals(room)) {
+				findingRoom = rooms.get(i);
+			}
+		}
+		return findingRoom;
+	}
 
 	@Override
 	public String[] read() {
 		MyList<Room> currentRooms = this.getRooms();
-		String[] strRooms = new String[currentRooms.length() ];
-		StringBuilder str = new StringBuilder();			
+		String[] strRooms = new String[currentRooms.length() ];			
 
 		for (int i = 0; i < currentRooms.length(); i++) {
-			if (currentRooms.get(i) != null) {
-				str.delete(0, str.capacity());
-				str.append(currentRooms.get(i).getName());
-				str.append(" ");
-				str.append(currentRooms.get(i).getStars());
-				str.append(" ");
-				str.append(currentRooms.get(i).getPrice());
-				str.append(" ");
-				str.append(currentRooms.get(i).getCapacity());
-				str.append(" ");
-				str.append(currentRooms.get(i).isEmpty());				
+			if (currentRooms.get(i) != null) {								
 				strRooms[i] = "";
-				strRooms[i] += str.toString();				
+				strRooms[i] += currentRooms.get(i).toString();				
 			}
 		}
 		return strRooms;
