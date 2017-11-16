@@ -102,7 +102,8 @@ public class Reception implements IReception, Observable {
 			loggerReception.error("cant create file: " + e);
 		}
 		catch (NumberFormatException e) {
-			loggerReception.error("Can't read rooms file: " + e);			
+			loggerReception.error("Can't read rooms file: " + e);
+			// loggerReception.error((Thread.currentThread().getStackTrace()[1].getMethodName()));
 		}
 		try {
 			this.addGuests(fileManager.readGuestFromFile(this));			
@@ -120,6 +121,33 @@ public class Reception implements IReception, Observable {
 		loggerReception.info("Initilization finished.");
 
 	}
+
+	/*@Override
+	public void viewAllRooms() {
+		MyList<Room> currentRooms = rooms.getAll();
+		viewCmd(currentRooms);
+
+	}
+	
+	@Override
+	public void viewAllEmptyRooms() {
+		MyList<Room> emptyRooms = rooms.getEmptyRooms();
+		viewCmd(emptyRooms);
+
+	}
+	
+	@Override
+	public void viewAllGuests() {
+		MyList<Guest> currentGuest = guests.getAll();
+		viewCmd(currentGuest);
+	}
+	
+		@Override
+	public void viewAllServices() {
+		MyList<Service> currentServices = services.getAll();
+		viewCmd(currentServices);
+	}
+	*/
 	
 	public MyList<Room> getAllRooms() {
 		MyList<Room> currentRooms = rooms.getAll();
@@ -148,7 +176,7 @@ public class Reception implements IReception, Observable {
 		return currentServices;
 	}
 	
-	public Guest findGuestbyName(String name){		
+	public Guest findGuestbyName(String name){
 		return guests.findbyName(name);
 	}
 	
@@ -161,31 +189,40 @@ public class Reception implements IReception, Observable {
 	}
 	
 
+	
+
 
 
 	@Override
-	public MyList<Service> getGuestServices(Guest guest) {
+	public void viewGuestServices(Guest guest) {
 		MyList<Service> guestServices = guest.getGuestServices();
-		return guestServices;
-	}
-
-
-	@Override
-	public MyList<Guest> getRoomHistory(Room room) {
-		MyList<Guest> roomHistory = guests.getGuestsHistory();
-		return roomHistory;
+		viewCmd(guestServices);
 	}
 
 	@Override
-	public float[] getGuestPrice(Guest guest) {
+	public void viewRoomDetails(Room room) {
+		Printer.print(room);
+	}
+
+	@Override
+	public void viewRoomHistory(Room room) {
+		MyList<Guest> guestsHistory = guests.getGuestsHistory();
+		Printer.print("Room History:");
+		for (int i = 0; i < guestsHistory.length(); i++) {
+			if ((guestsHistory.get(i).getRoom()).equals(room)) {
+				Printer.print(guestsHistory.get(i));
+			}
+		}
+	}
+
+	@Override
+	public void viewGuestPrice(Guest guest) {
 		float servicesPrice = guests.getGuestServicesPrice(guest);
 		float roomPrice = guests.getGuestRoomPrice(guest);
 		float totalPrice = servicesPrice + roomPrice;
-		float[] guestPrice = new float[3];
-		guestPrice[0] = servicesPrice;
-		guestPrice[1] = roomPrice;
-		guestPrice[2] = totalPrice;
-		return guestPrice;
+		Printer.print("Room price: " + roomPrice);
+		Printer.print("Services price: " + servicesPrice);
+		Printer.print("Total price: " + totalPrice);
 
 	}
 
@@ -267,69 +304,67 @@ public class Reception implements IReception, Observable {
 	}
 
 	@Override
-	public MyList<Guest> getGuestSortedByName() throws ClassCastException {	
+	public void viewGuestSortedByName() throws ClassCastException {
 		
 		MyList<Guest> guestList = guests.getAll();		
 		Guest[] currentGuests = new Guest[guests.getAll().length()];	
 		currentGuests = guestList.convertToArray(currentGuests);		
-		Arrays.sort(currentGuests, new GuestSotredByName());		
-		MyList<Guest> sortedGuests = new MyList<Guest>(currentGuests);		
-		return sortedGuests;
+		Arrays.sort(currentGuests, new GuestSotredByName());
+		Printer.print("Guest sorted by name: ");
+		viewArray(currentGuests);
 	}
 
 	@Override
-	public MyList<Guest> getGuestSortedByData() throws ClassCastException {		
+	public void viewGuestSortedByData() throws ClassCastException {		
 		MyList<Guest> guestList = guests.getAll();		
-		Guest[] currentGuests = new Guest[guests.getAll().length()];		
+		Guest[] currentGuests = new Guest[guests.getAll().length()];	
 		currentGuests = guestList.convertToArray(currentGuests);		
-		Arrays.sort(currentGuests, new GuestSortedByDate());		
-		MyList<Guest> sortedGuests = new MyList<Guest>(currentGuests);			
-		return sortedGuests;
-		
+		Arrays.sort(currentGuests, new GuestSortedByDate());
+		Printer.print("Guest sorted by Date: ");
+		viewArray(currentGuests);
 	}
 
 	@Override
-	public MyList<Service> getServiceSortedByPrice() throws ClassCastException {		
+	public void viewServiceSortedByPrice() throws ClassCastException {		
 		MyList<Service> servicesList = services.getAll();		
 		Service[] arrServices = new Service[services.getAll().length()];	
 		arrServices = servicesList.convertToArray(arrServices);		
 		Arrays.sort(arrServices, new ServiceSortedByPrice());
-		MyList<Service> sortedServices = new MyList<Service>(arrServices);	
-		return sortedServices;
-	
+		Printer.print("Services sorted by price: ");
+		viewArray(arrServices);
 	}
 
 	@Override
-	public MyList<Room> getRoomsSortedByCapacity() throws ClassCastException {		
+	public void viewRoomsSortedByCapacity() throws ClassCastException {		
 		MyList<Room> roomsList = rooms.getAll();		
 		Room[] arrRooms = new Room[rooms.getAll().length()];	
 		arrRooms = roomsList.convertToArray(arrRooms);		
 		Arrays.sort(arrRooms, new RoomsSortedByCapacity());
-		MyList<Room> sortedRooms = new MyList<Room>(arrRooms);	
-		return sortedRooms;
+		Printer.print("Services sorted by price: ");
+		viewArray(arrRooms);
 	}
 
 	@Override
-	public MyList<Room> getRoomsSortedByStars() throws ClassCastException {
+	public void viewRoomsSortedByStars() throws ClassCastException {
 		
 		MyList<Room> roomsList = rooms.getAll();		
 		Room[] arrRooms = new Room[rooms.getAll().length()];	
 		arrRooms = roomsList.convertToArray(arrRooms);		
 		Arrays.sort(arrRooms, new RoomsSortedByStars());
-		MyList<Room> sortedRooms = new MyList<Room>(arrRooms);	
-		return sortedRooms;
+		Printer.print("Rooms sorted by stars: ");
+		viewArray(arrRooms);
 	}
 
 	@Override
 
-	public MyList<Room> getRoomsSortedByPrice() throws ClassCastException {
+	public void viewRoomsSortedByPrice() throws ClassCastException {
 		
 		MyList<Room> roomsList = rooms.getAll();		
 		Room[] arrRooms = new Room[rooms.getAll().length()];	
 		arrRooms = roomsList.convertToArray(arrRooms);		
 		Arrays.sort(arrRooms, new RoomsSortedByPrice());
-		MyList<Room> sortedRooms = new MyList<Room>(arrRooms);	
-		return sortedRooms;
+		Printer.print("Rooms sorted by price: ");
+		viewArray(arrRooms);
 	}
 
 	@Override
@@ -391,14 +426,30 @@ public class Reception implements IReception, Observable {
 	}
 
 
+	private void viewCmd(MyList list) {
+		for (int i = 0; i < (list).length(); i++) {
+			Printer.print(list.get(i));
+		}
+	}
+
+	private void viewArray(Object[] array) {
+		for (int i = 0; i < array.length; i++) {
+			Printer.print(array[i]);
+		}
+	}
+	
+
 	@Override
 	public void addServiceToGuest(Guest guest, Service service) {
+
 		Guest currentGuest = guests.findExistingEntity(guest);
 		if (currentGuest != null) {
 			currentGuest.addGuestService(service);
 			this.notifyServicesObservers();
 			this.notifyGuestObservers();
-		} 
+		} else {
+			Printer.print("Guest not found");
+		}
 
 	}
 
@@ -474,7 +525,10 @@ public class Reception implements IReception, Observable {
 		}
 
 	}
-
+	
+	/*public Room getRoom(int name){
+		rooms.findExistingEntity(entity)
+	}*/
 
 	
 

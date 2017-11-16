@@ -14,11 +14,6 @@ public class MyList<E> {
 	public MyList() {
 		myList = (E[]) new Object[100];
 	}
-	
-	public MyList(E[] obj) {
-		myList = (E[]) obj;
-	}
-	
 
 	private int counter = 0;
 
@@ -37,10 +32,6 @@ public class MyList<E> {
 	public E[] getMyList() {
 		return myList;
 	}
-	
-	public void setMyList(E[] obj){
-		this.myList = obj;
-	}
 
 	public void add(E obj) {
 		if (this.getCounter() == myList.length) {
@@ -58,14 +49,13 @@ public class MyList<E> {
 
 	public int length() {
 		int index = 0;
-		for (int i = 0; i < myList.length; i++) {
-			index = i;
-			if (myList[i] == null) {
-				index--;
+		for (int i = 0; i < getMyList().length; i++) {
+			if (getMyList()[i] == null) {
+				index = i;
 				break;
-			}			
+			}
 		}
-		return index+1;
+		return index;
 	}
 
 	public void remove(E obj) {

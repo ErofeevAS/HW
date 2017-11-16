@@ -46,6 +46,9 @@ public class ReceptionRunner {
 		reception.initFileManager(ROOMS_FILE, GUESTS_FILE, SERVICES_FILE);
 		
 
+		//reception.viewAllGuests();	
+		//reception.viewAllServices();
+		
 
 		
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
@@ -75,9 +78,37 @@ public class ReceptionRunner {
 		Room room4 = new Room("4", 5, 199f, 2);
 		Room room5 = new Room("5", 2, 222f, 2);		
 	
-		
+		//createRoom(-1, 2, 222f, 2);		
 
-	
+		reception.addRoom(room1);
+		reception.addRoom(room2);
+		reception.addRoom(room3);
+		reception.addRoom(room4);
+		reception.addService(service1);
+		reception.addService(service2);
+		reception.addService(service3);
+		reception.addService(service4);
+		reception.addService(service5);
+		reception.addService(service6);
+		
+		reception.occupyGuest(guest1, room1);
+		reception.evictGuest(guest1, room1);
+		reception.occupyGuest(guest4, room2);
+		reception.occupyGuest(guest3, room3);
+		reception.occupyGuest(guest2, room1);
+		reception.evictGuest(guest2, room1);
+		reception.occupyGuest(guest2, room1);
+		reception.evictGuest(guest2, room1);
+
+		reception.viewRoomHistory(room1);
+		reception.occupyGuest(guest1, room1);
+		reception.occupyGuest(guest1, room1);
+		
+		reception.changeRoomStatus(room1, RoomStatus.REPAIRABLE);	
+		System.out.println("!!!");
+		reception.viewGuestSortedByName();
+		reception.viewGuestSortedByData();
+		reception.viewRoomsSortedByPrice();
 		
 
 	}

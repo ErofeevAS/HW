@@ -3,7 +3,7 @@ package com.erofeev.hotel.managers;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-
+import com.erofeev.hotel.api.IManager;
 import com.erofeev.hotel.entity.Guest;
 import com.erofeev.hotel.entity.Service;
 import com.erofeev.hotel.mylist.MyList;

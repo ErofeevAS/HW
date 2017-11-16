@@ -11,9 +11,6 @@ public abstract class AbstractManager<E> implements IManager {
 	public MyList<E> getEntities() {
 		return entities;
 	}
-	public MyList<E> getAll() {
-		return entities;
-	}
 
 	public void setEntities(MyList<E> entities) {
 		this.entities = entities;
@@ -38,7 +35,9 @@ public abstract class AbstractManager<E> implements IManager {
 
 	}
 
-	
+	public MyList<E> getAll() {
+		return entities;
+	}
 
 	public E findExistingEntity(E entity) {
 		E foundEntity = null;
@@ -58,7 +57,6 @@ public abstract class AbstractManager<E> implements IManager {
 				break;
 			}
 		}
-		
 		return foundEntity;
 	}
 

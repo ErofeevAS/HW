@@ -128,8 +128,6 @@ public class FileManager {
 		TextFileWorker fileWorker = new TextFileWorker(ROOMS_FILE);
 
 		String[] readedValues = fileWorker.readFromFile();
-		
-		
 
 		String roomName = "";
 		int roomStars = 0;
@@ -166,7 +164,7 @@ public class FileManager {
 
 				room = new Room(roomName, roomStars, roomPrice, roomCapacity);
 				room.setEmpty(empty);
-				room.setRoomStatus(roomStatus);				
+				room.setRoomStatus(roomStatus);
 				rooms.add(room);
 			}
 		}

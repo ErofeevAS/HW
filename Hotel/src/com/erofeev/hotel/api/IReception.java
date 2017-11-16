@@ -18,13 +18,23 @@ public interface IReception {
 
 	public void removeService(Service service);
 
-	public void removeRoom(Room room);	
+	public void removeRoom(Room room);
 
-	public MyList<Guest> getRoomHistory(Room room);
+	//public void viewAllRooms();
 
-	public float[] getGuestPrice(Guest guest);
+	//public void viewAllEmptyRooms();
 
-	public MyList<Service> getGuestServices(Guest guest);
+	//public void viewAllGuests();
+
+	//public void viewAllServices();
+
+	public void viewRoomDetails(Room room);
+
+	public void viewRoomHistory(Room room);
+
+	public void viewGuestPrice(Guest guest);
+
+	public void viewGuestServices(Guest guest);
 
 	public void evictGuest(Guest guest, Room room);
 	
@@ -32,17 +42,17 @@ public interface IReception {
 
 	public void occupyGuest(Guest guest, Room room);
 
-	public MyList<Guest> getGuestSortedByData();
+	public void viewGuestSortedByData();
 
-	public MyList<Guest> getGuestSortedByName();
+	public void viewGuestSortedByName();
 
-	public MyList<Room> getRoomsSortedByPrice();
+	public void viewRoomsSortedByPrice();
 
-	public MyList<Room> getRoomsSortedByCapacity();
+	public void viewRoomsSortedByCapacity();
 
-	public MyList<Room> getRoomsSortedByStars();
+	public void viewRoomsSortedByStars();
 
-	public MyList<Service> getServiceSortedByPrice();
+	public void viewServiceSortedByPrice();
 	
 	public void changeRoomPrice(Room room, float price);
 
