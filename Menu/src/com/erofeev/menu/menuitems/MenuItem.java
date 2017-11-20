@@ -2,7 +2,7 @@ package com.erofeev.menu.menuitems;
 
 import java.io.IOException;
 
-import com.erofeev.menu.build.Menu;
+import com.erofeev.menu.menus.Menu;
 
 public class MenuItem extends AbstractMenuItem {
 

@@ -4,7 +4,7 @@ package com.erofeev.menu.menuitems;
 import java.io.IOException;
 
 import com.erofeev.menu.api.IAction;
-import com.erofeev.menu.build.Menu;
+import com.erofeev.menu.menus.Menu;
 
 
 abstract public class AbstractMenuItem {

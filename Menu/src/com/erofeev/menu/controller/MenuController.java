@@ -10,8 +10,8 @@ import org.apache.logging.log4j.Logger;
 import com.erofeev.hotel.api.IReception;
 import com.erofeev.hotel.print.Printer;
 import com.erofeev.menu.build.Builder;
-import com.erofeev.menu.build.Menu;
 import com.erofeev.menu.menuitems.AbstractMenuItem;
+import com.erofeev.menu.menus.Menu;
 
 public class MenuController {
 
@@ -44,6 +44,7 @@ public class MenuController {
 	public void run() {
 		builder.createMenus();
 		navigator.setCurrentMenu(builder.getRootMenu());
+		System.out.println(builder.getRootMenu());
 
 		try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
 

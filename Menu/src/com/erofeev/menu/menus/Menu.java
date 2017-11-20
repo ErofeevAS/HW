@@ -1,0 +1,14 @@
+package com.erofeev.menu.menus;
+
+public enum Menu {
+	MAIN,
+	VIEW,ACTION,
+	VIEWGUEST,VIEWROOM,VIEWSERVICE,	
+	ACTIONADD,ACTIONREMOVE,ACTIONCHANGE,
+	FINISH,
+	STOP
+
+	
+
+	
+}
