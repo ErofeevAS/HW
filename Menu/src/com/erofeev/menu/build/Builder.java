@@ -4,8 +4,6 @@ import java.util.EnumMap;
 import java.util.Map;
 
 import com.erofeev.hotel.api.IReception;
-
-
 import com.erofeev.menu.menus.AbstractMenu;
 import com.erofeev.menu.menus.ActionAddMenu;
 import com.erofeev.menu.menus.ActionChangeMenu;
@@ -20,16 +18,12 @@ import com.erofeev.menu.menus.ViewMenu;
 import com.erofeev.menu.menus.ViewRoomsMenu;
 import com.erofeev.menu.menus.ViewServicesMenu;
 
-
 public class Builder {
 	private Map<Menu, AbstractMenu> menus = new EnumMap<>(Menu.class);
 	private IReception model;
-	
-	
 
 	public Builder(IReception model) {
 		this.model = model;
-
 	}
 
 	public IReception getModel() {
@@ -40,9 +34,7 @@ public class Builder {
 		this.model = model;
 	}
 
-	
-
-	public void createMenus() {	
+	public void createMenus() {
 
 		menus.put(Menu.MAIN, new MainMenu());
 		menus.put(Menu.ACTION, new ActionMenu());
@@ -57,10 +49,9 @@ public class Builder {
 		menus.put(Menu.STOP, new StopMenu());
 
 		for (Menu menu : Menu.values()) {
-			AbstractMenu m = menus.get(menu);				
-			m.build();			
+			AbstractMenu m = menus.get(menu);
+			m.build();
 		}
-	
 
 	}
 

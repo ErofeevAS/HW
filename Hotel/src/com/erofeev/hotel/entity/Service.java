@@ -4,7 +4,9 @@ import java.io.Serializable;
 
 import com.erofeev.hotel.api.IEntity;
 
-public class Service implements IEntity,Serializable {
+public class Service implements IEntity, Serializable {
+
+	private static final long serialVersionUID = 1L;
 	private String name;
 	private float price;
 
@@ -15,7 +17,7 @@ public class Service implements IEntity,Serializable {
 	}
 
 	public Service() {
-		// TODO Auto-generated constructor stub
+
 	}
 
 	public String getName() {
@@ -41,8 +43,6 @@ public class Service implements IEntity,Serializable {
 		return str.toString();
 	}
 
-	
-
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -61,6 +61,5 @@ public class Service implements IEntity,Serializable {
 			return false;
 		return true;
 	}
-	
 
 }

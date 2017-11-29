@@ -10,7 +10,7 @@ import org.apache.logging.log4j.Logger;
 import com.erofeev.hotel.api.IReception;
 import com.erofeev.hotel.print.Printer;
 import com.erofeev.menu.build.Builder;
-import com.erofeev.menu.menuitems.AbstractMenuItem;
+import com.erofeev.menu.menuitems.MenuItem;
 import com.erofeev.menu.menus.Menu;
 
 public class MenuController {
@@ -44,7 +44,7 @@ public class MenuController {
 	public void run() {
 		builder.createMenus();
 		navigator.setCurrentMenu(builder.getRootMenu());
-		
+
 		try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
 
 			while (true) {
@@ -54,7 +54,7 @@ public class MenuController {
 				try {
 					int index = Integer.parseInt(reader.readLine());
 					Menu newMenu = navigator.navigate(index);
-					AbstractMenuItem menuItem = navigator.getCurrentMenu().getMenuitems()[index];
+					MenuItem menuItem = navigator.getCurrentMenu().getMenuitems()[index];
 					if (menuItem.getNextMenu().equals(Menu.STOP)) {
 						break;
 					}
@@ -62,7 +62,7 @@ public class MenuController {
 					navigator.setCurrentMenu(builder.getMenu(newMenu));
 				} catch (NumberFormatException e) {
 					loggerMenuControllerManager.warn("Wrong  DATA format, try again.  " + e);
-				} catch (IllegalArgumentException e) {					
+				} catch (IllegalArgumentException e) {
 					loggerMenuControllerManager.warn("Plz enter 0,1,2... , try again.  " + e);
 				} catch (NullPointerException e) {
 					loggerMenuControllerManager.warn("Cant found  entity, try agian. " + e);

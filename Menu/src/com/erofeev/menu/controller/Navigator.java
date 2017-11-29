@@ -1,10 +1,9 @@
 package com.erofeev.menu.controller;
 
 import com.erofeev.hotel.print.Printer;
-import com.erofeev.menu.menuitems.AbstractMenuItem;
+import com.erofeev.menu.menuitems.MenuItem;
 import com.erofeev.menu.menus.AbstractMenu;
 import com.erofeev.menu.menus.Menu;
-
 
 public class Navigator {
 	private AbstractMenu currentMenu;
@@ -19,7 +18,7 @@ public class Navigator {
 
 	public void printMenu() {
 		System.out.println((getCurrentMenu().getName()));
-		AbstractMenuItem[] menuItems = currentMenu.getMenuitems();
+		MenuItem[] menuItems = currentMenu.getMenuitems();
 		for (int i = 0; i < menuItems.length; i++) {
 			Printer.print(i + " - " + menuItems[i].getTitle());
 		}
@@ -28,6 +27,7 @@ public class Navigator {
 	public Menu navigate(Integer index) {
 		try {
 			Menu menu = currentMenu.getMenuitems()[index].getNextMenu();
+
 			return menu;
 		} catch (ArrayIndexOutOfBoundsException e) {
 			throw new IllegalArgumentException();

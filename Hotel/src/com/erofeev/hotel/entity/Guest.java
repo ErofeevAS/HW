@@ -9,6 +9,8 @@ import java.util.Locale;
 import com.erofeev.hotel.api.IEntity;
 
 public class Guest implements IEntity, Serializable {
+
+	private static final long serialVersionUID = 1L;
 	private String firstName;
 	private String secondName;
 	private Date arrivalDate;

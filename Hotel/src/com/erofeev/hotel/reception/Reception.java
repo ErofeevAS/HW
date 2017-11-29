@@ -35,9 +35,9 @@ public class Reception implements IReception, Observable {
 	private GuestManager guestManager;
 	private ServicesManager servicesManager;
 	private FileManager fileManager;
-	private ArrayList<Observer> guestObservers = new ArrayList<Observer>();
-	private ArrayList<Observer> roomsObservers = new ArrayList<Observer>();
-	private ArrayList<Observer> servicesObservers = new ArrayList<Observer>();
+	private ArrayList<Observer> guestObservers;
+	private ArrayList<Observer> roomsObservers;
+	private ArrayList<Observer> servicesObservers;
 
 	private static final Logger loggerReception = LogManager.getLogger(Reception.class);
 
@@ -47,9 +47,14 @@ public class Reception implements IReception, Observable {
 		this.servicesManager = new ServicesManager();
 		this.fileManager = FileManager.getInstance();
 
-		this.addGuestObserver(new GuestObserver());
-		this.addRoomsObserver(new RoomsObserver());
-		this.addServicesObserver(new ServicesObserver());
+		this.guestObservers = new ArrayList<Observer>();
+		this.roomsObservers = new ArrayList<Observer>();
+		this.servicesObservers = new ArrayList<Observer>();
+
+		this.guestObservers.add(new GuestObserver());
+		this.roomsObservers.add(new RoomsObserver());
+		this.servicesObservers.add(new ServicesObserver());
+
 	}
 
 	public FileManager getFileManager() {
@@ -82,7 +87,7 @@ public class Reception implements IReception, Observable {
 
 	public void initFileManager(String ROOMS_FILE, String GUESTS_FILE, String SERVICES_FILE)
 			throws IOException, ParseException {
-		getFileManager().initFileManager(ROOMS_FILE, GUESTS_FILE, SERVICES_FILE);
+		FileManager.getInstance().initFileManager(ROOMS_FILE, GUESTS_FILE, SERVICES_FILE);
 		loggerReception.info("Start initilization from files:");
 
 		try {
@@ -169,9 +174,9 @@ public class Reception implements IReception, Observable {
 			guestManager.remove(currentGuest);
 			this.notifyRoomsObservers();
 			this.notifyGuestObservers();
-		} else if (currentGuest != null) {			
+		} else if (currentGuest != null) {
 			loggerReception.info("Guest not found");
-		} else if (currentRoom != null) {		
+		} else if (currentRoom != null) {
 			loggerReception.info("Room not found");
 		}
 
@@ -179,24 +184,24 @@ public class Reception implements IReception, Observable {
 
 	@Override
 	public void evictGuest(Guest guest) {
-		
+
 		Guest currentGuest = guestManager.findExistingEntity(guest);
 		Room currentRoom = currentGuest.getRoom();
-		
+
 		if ((currentGuest != null) && ((currentRoom != null))) {
 			currentRoom.setEmpty(true);
 			guestManager.remove(currentGuest);
 			this.notifyRoomsObservers();
 			this.notifyGuestObservers();
-		} else if (currentGuest != null) {			
+		} else if (currentGuest != null) {
 			loggerReception.info("Guest not found");
-		} 
+		}
 
 	}
 
 	@Override
 	public void occupyGuest(Guest guest, Room room) {
-		
+
 		Room currentRoom = roomManager.findExistingEntity(room);
 		if (currentRoom != null) {
 			if (currentRoom.isEmpty()) {
@@ -294,16 +299,14 @@ public class Reception implements IReception, Observable {
 	@Override
 	public void addService(Service service) {
 		servicesManager.add(service);
-			this.notifyServicesObservers();
-			
-		
+		this.notifyServicesObservers();
+
 	}
 
 	@Override
 	public void addRoom(Room room) {
 		roomManager.add(room);
 		this.notifyRoomsObservers();
-		
 
 	}
 
@@ -329,14 +332,14 @@ public class Reception implements IReception, Observable {
 	}
 
 	@Override
-	public void removeService(Service service) {		
+	public void removeService(Service service) {
 		servicesManager.remove(service);
 		this.notifyServicesObservers();
 
 	}
 
 	@Override
-	public void removeRoom(Room room) {		
+	public void removeRoom(Room room) {
 		roomManager.remove(room);
 		this.notifyRoomsObservers();
 
@@ -344,7 +347,7 @@ public class Reception implements IReception, Observable {
 
 	@Override
 	public void addServiceToGuest(Guest guest, Service service) {
-		Guest currentGuest =guestManager.findExistingEntity(guest);
+		Guest currentGuest = guestManager.findExistingEntity(guest);
 		if (currentGuest != null) {
 			currentGuest.addGuestService(service);
 			this.notifyServicesObservers();
@@ -355,7 +358,7 @@ public class Reception implements IReception, Observable {
 
 	@Override
 	public void removeServiceToGuest(Guest guest, Service service) {
-		Guest currentGuest =guestManager.findExistingEntity(guest);
+		Guest currentGuest = guestManager.findExistingEntity(guest);
 		if (currentGuest != null) {
 			currentGuest.removeGuestService(service);
 			this.notifyServicesObservers();
