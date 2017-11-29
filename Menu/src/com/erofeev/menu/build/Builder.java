@@ -4,22 +4,38 @@ import java.util.EnumMap;
 import java.util.Map;
 
 import com.erofeev.hotel.api.IReception;
-import com.erofeev.menu.menus.AbstractMenu;
-import com.erofeev.menu.menus.ActionAddMenu;
-import com.erofeev.menu.menus.ActionChangeMenu;
-import com.erofeev.menu.menus.ActionMenu;
-import com.erofeev.menu.menus.ActionRemoveMenu;
-import com.erofeev.menu.menus.FinishMenu;
-import com.erofeev.menu.menus.MainMenu;
+import com.erofeev.menu.actions.AddRoom;
+import com.erofeev.menu.actions.AddService;
+import com.erofeev.menu.actions.AddServiceToGuest;
+import com.erofeev.menu.actions.ChangeRoomPrice;
+import com.erofeev.menu.actions.ChangeRoomStatus;
+import com.erofeev.menu.actions.ChangeServicePrice;
+import com.erofeev.menu.actions.EvictGuest;
+import com.erofeev.menu.actions.OccupyGuest;
+import com.erofeev.menu.actions.RemoveRoom;
+import com.erofeev.menu.actions.RemoveService;
+import com.erofeev.menu.actions.RemoveServiceToGues;
+import com.erofeev.menu.actions.ViewAllEmptyRooms;
+import com.erofeev.menu.actions.ViewAllGuests;
+import com.erofeev.menu.actions.ViewAllRooms;
+import com.erofeev.menu.actions.ViewAllServices;
+import com.erofeev.menu.actions.ViewGuestPrice;
+import com.erofeev.menu.actions.ViewGuestServices;
+import com.erofeev.menu.actions.ViewGuestsSortedbyDate;
+import com.erofeev.menu.actions.ViewGuestsSortedbyName;
+import com.erofeev.menu.actions.ViewRoomDetails;
+import com.erofeev.menu.actions.ViewRoomHistory;
+import com.erofeev.menu.actions.ViewRoomsSortedByCapacity;
+import com.erofeev.menu.actions.ViewRoomsSortedByPrice;
+import com.erofeev.menu.actions.ViewRoomsSortedByStars;
+import com.erofeev.menu.actions.ViewServiceSortedByPrice;
+import com.erofeev.menu.api.IAction;
+import com.erofeev.menu.menuitems.MenuItem;
 import com.erofeev.menu.menus.Menu;
-import com.erofeev.menu.menus.StopMenu;
-import com.erofeev.menu.menus.ViewGuestsMenu;
-import com.erofeev.menu.menus.ViewMenu;
-import com.erofeev.menu.menus.ViewRoomsMenu;
-import com.erofeev.menu.menus.ViewServicesMenu;
+import com.erofeev.menu.menus.Menus;
 
 public class Builder {
-	private Map<Menu, AbstractMenu> menus = new EnumMap<>(Menu.class);
+	private Map<Menus, Menu> menus = new EnumMap<>(Menus.class);
 	private IReception model;
 
 	public Builder(IReception model) {
@@ -36,31 +52,212 @@ public class Builder {
 
 	public void createMenus() {
 
-		menus.put(Menu.MAIN, new MainMenu());
-		menus.put(Menu.ACTION, new ActionMenu());
-		menus.put(Menu.ACTIONADD, new ActionAddMenu(model));
-		menus.put(Menu.ACTIONCHANGE, new ActionChangeMenu(model));
-		menus.put(Menu.ACTIONREMOVE, new ActionRemoveMenu(model));
-		menus.put(Menu.VIEW, new ViewMenu());
-		menus.put(Menu.VIEWGUEST, new ViewGuestsMenu(model));
-		menus.put(Menu.VIEWROOM, new ViewRoomsMenu(model));
-		menus.put(Menu.VIEWSERVICE, new ViewServicesMenu(model));
-		menus.put(Menu.FINISH, new FinishMenu());
-		menus.put(Menu.STOP, new StopMenu());
+		this.createMainMenu();
 
-		for (Menu menu : Menu.values()) {
-			AbstractMenu m = menus.get(menu);
-			m.build();
-		}
+		this.createViewMenu();
+		this.createActionMenu();
+
+		this.createViewGuestMenu();
+		this.createViewRoomMenu();
+		this.createViewServiceMenu();
+
+		this.createActionAddMenu();
+		this.createActionChangeMenu();
+		this.createActionRemoveMenu();
+
+		this.createFinishMenu();
 
 	}
 
-	public AbstractMenu getRootMenu() {
-		return menus.get(Menu.MAIN);
+	private void createMainMenu() {
+		Menu mainMenu = new Menu();
+		MenuItem menuItemAction = new MenuItem("Action menu:", Menus.ACTION);
+		MenuItem menuItemAView = new MenuItem("View menu:", Menus.VIEW);
+		MenuItem[] menuItems = { menuItemAction, menuItemAView };
+
+		mainMenu.initDefault(menuItems);
+		mainMenu.setName(Menus.MAIN.toString());
+		mainMenu.setMenuitems(menuItems);
+		menus.put(Menus.MAIN, mainMenu);
 
 	}
 
-	public AbstractMenu getMenu(Menu menu) {
+	private void createViewMenu() {
+		Menu viewMenu = new Menu();
+
+		MenuItem menuItemGuest = new MenuItem("Guest menu:", Menus.VIEWGUEST);
+		MenuItem menuItemRoom = new MenuItem("Room menu:", Menus.VIEWROOM);
+		MenuItem menuItemService = new MenuItem("Service menu:", Menus.VIEWSERVICE);
+		MenuItem[] menuItems = { menuItemGuest, menuItemRoom, menuItemService };
+
+		viewMenu.initDefault(menuItems);
+		viewMenu.setName(Menus.VIEW.toString());
+		viewMenu.setMenuitems(menuItems);
+		menus.put(Menus.VIEW, viewMenu);
+
+	}
+
+	private void createViewRoomMenu() {
+		Menu viewRoomMenu = new Menu();
+		MenuItem menuItemViewAllRooms = new MenuItem("view rooms :", Menus.FINISH);
+		MenuItem menuItemViewAllEmptyRooms = new MenuItem("view empty rooms :", Menus.FINISH);
+		MenuItem menuItemViewRoomsSotredByCapacity = new MenuItem("view rooms sorted by capacity :", Menus.FINISH);
+		MenuItem menuItemViewRoomsSotredByPrice = new MenuItem("view rooms sorted by price :", Menus.FINISH);
+		MenuItem menuItemViewRoomsSotredByStars = new MenuItem("view rooms sorted by stars :", Menus.FINISH);
+		MenuItem menuItemViewRoomDetails = new MenuItem("view room details :", Menus.FINISH);
+		MenuItem menItemViewRoomHistory = new MenuItem("view roomhistory :", Menus.FINISH);
+
+		IAction viewAllRooms = new ViewAllRooms(model);
+		IAction viewAllEmptyRooms = new ViewAllEmptyRooms(model);
+		IAction viewRoomsSotredByCapacity = new ViewRoomsSortedByCapacity(model);
+		IAction viewRoomsSotredByStars = new ViewRoomsSortedByStars(model);
+		IAction viewRoomsSotredByPrice = new ViewRoomsSortedByPrice(model);
+		IAction viewRoomDetails = new ViewRoomDetails(model);
+		IAction viewRoomHistory = new ViewRoomHistory(model);
+		menuItemViewAllRooms.setActiom(viewAllRooms);
+		menuItemViewAllEmptyRooms.setActiom(viewAllEmptyRooms);
+		menuItemViewRoomsSotredByCapacity.setActiom(viewRoomsSotredByCapacity);
+		menuItemViewRoomsSotredByStars.setActiom(viewRoomsSotredByStars);
+		menuItemViewRoomsSotredByPrice.setActiom(viewRoomsSotredByPrice);
+		menuItemViewRoomDetails.setActiom(viewRoomDetails);
+		menItemViewRoomHistory.setActiom(viewRoomHistory);
+		MenuItem[] menuItems = { menuItemViewAllRooms, menuItemViewAllEmptyRooms, menuItemViewRoomsSotredByCapacity,
+				menuItemViewRoomsSotredByPrice, menuItemViewRoomsSotredByStars, menuItemViewRoomDetails,
+				menItemViewRoomHistory };
+		viewRoomMenu.setName(Menus.VIEWROOM.toString());
+		viewRoomMenu.setMenuitems(menuItems);
+		menus.put(Menus.VIEWROOM, viewRoomMenu);
+
+	}
+
+	private void createViewGuestMenu() {
+		Menu viewGuestMenu = new Menu();
+		MenuItem menuItemViewAllGuest = new MenuItem("view guests :", Menus.FINISH);
+		MenuItem menuItemViewGuestServices = new MenuItem("view guest service :", Menus.FINISH);
+		MenuItem menuItemViewGuestPrice = new MenuItem("view guest price :", Menus.FINISH);
+		MenuItem menuItemViewGuestsSortedbyDate = new MenuItem("view guests sorted by date :", Menus.FINISH);
+		MenuItem menuItemViewGuestsSortedbyName = new MenuItem("view guests sorted by name :", Menus.FINISH);
+		IAction viewAllGuest = new ViewAllGuests(model);
+		IAction viewGuestServices = new ViewGuestServices(model);
+		IAction viewGuestPrice = new ViewGuestPrice(model);
+		IAction viewGuestsSortedbyDate = new ViewGuestsSortedbyDate(model);
+		IAction viewGuestsSortedbyName = new ViewGuestsSortedbyName(model);
+		menuItemViewAllGuest.setActiom(viewAllGuest);
+		menuItemViewGuestServices.setActiom(viewGuestServices);
+		menuItemViewGuestPrice.setActiom(viewGuestPrice);
+		menuItemViewGuestsSortedbyDate.setActiom(viewGuestsSortedbyDate);
+		menuItemViewGuestsSortedbyName.setActiom(viewGuestsSortedbyName);
+		MenuItem[] menuItems = { menuItemViewAllGuest, menuItemViewGuestServices, menuItemViewGuestPrice,
+				menuItemViewGuestsSortedbyDate, menuItemViewGuestsSortedbyName };
+		viewGuestMenu.setName(Menus.VIEWGUEST.toString());
+		viewGuestMenu.setMenuitems(menuItems);
+		menus.put(Menus.VIEWGUEST, viewGuestMenu);
+
+	}
+
+	private void createViewServiceMenu() {
+		Menu viewServiceMenu = new Menu();
+		MenuItem menuItemViewAllServices = new MenuItem("view services :", Menus.FINISH);
+		MenuItem menuItemViewServiceSortedByPrice = new MenuItem("view services sorted by price :", Menus.FINISH);
+		IAction viewAllServices = new ViewAllServices(model);
+		IAction viewServiceSortedByPrice = new ViewServiceSortedByPrice(model);
+		menuItemViewAllServices.setActiom(viewAllServices);
+		menuItemViewServiceSortedByPrice.setActiom(viewServiceSortedByPrice);
+		MenuItem[] menuItems = { menuItemViewAllServices, menuItemViewServiceSortedByPrice };
+		viewServiceMenu.setName(Menus.VIEWSERVICE.toString());
+		viewServiceMenu.setMenuitems(menuItems);
+		menus.put(Menus.VIEWSERVICE, viewServiceMenu);
+
+	}
+
+	private void createActionMenu() {
+		Menu viewActionMenu = new Menu();
+		MenuItem menuItemAdd = new MenuItem("add menu :", Menus.ACTIONADD);
+		MenuItem menuItemRemove = new MenuItem("remove menu :", Menus.ACTIONREMOVE);
+		MenuItem menuItemChange = new MenuItem("change menu :", Menus.ACTIONCHANGE);
+		MenuItem[] menuItems = { menuItemAdd, menuItemRemove, menuItemChange };
+		viewActionMenu.initDefault(menuItems);
+		viewActionMenu.setName(Menus.ACTION.toString());
+		viewActionMenu.setMenuitems(menuItems);
+		menus.put(Menus.ACTION, viewActionMenu);
+	}
+
+	private void createActionAddMenu() {
+		Menu viewActionAddMenu = new Menu();
+		MenuItem menuItemAddRoom = new MenuItem("add room :", Menus.FINISH);
+		MenuItem menuItemAddService = new MenuItem("add service :", Menus.FINISH);
+		MenuItem menuItemOccupyGuest = new MenuItem("occupy guest :", Menus.FINISH);
+		MenuItem menuItemAddServiceToGuest = new MenuItem("add service to guest :", Menus.FINISH);
+		IAction addRoom = new AddRoom(model);
+		IAction addService = new AddService(model);
+		IAction occupyGuest = new OccupyGuest(model);
+		IAction addServiceToGuest = new AddServiceToGuest(model);
+		menuItemAddRoom.setActiom(addRoom);
+		menuItemAddService.setActiom(addService);
+		menuItemOccupyGuest.setActiom(occupyGuest);
+		menuItemAddServiceToGuest.setActiom(addServiceToGuest);
+		MenuItem[] menuItems = { menuItemAddRoom, menuItemAddService, menuItemOccupyGuest, menuItemAddServiceToGuest };
+		viewActionAddMenu.setName(Menus.ACTIONADD.toString());
+		viewActionAddMenu.setMenuitems(menuItems);
+		menus.put(Menus.ACTIONADD, viewActionAddMenu);
+	}
+
+	private void createActionRemoveMenu() {
+		Menu viewActionRemoveMenu = new Menu();
+		MenuItem menuItemRemoveRoom = new MenuItem("remove room :", Menus.FINISH);
+		MenuItem menuItemRemoveService = new MenuItem("remove service :", Menus.FINISH);
+		MenuItem menuItemEvictGuest = new MenuItem("evict guest :", Menus.FINISH);
+		MenuItem menuItemRemoveServiceToGuest = new MenuItem("remove service from guest :", Menus.FINISH);
+		IAction removeRoom = new RemoveRoom(model);
+		IAction removeService = new RemoveService(model);
+		IAction evictGuest = new EvictGuest(model);
+		IAction removeServiceToGues = new RemoveServiceToGues(model);
+		menuItemRemoveRoom.setActiom(removeRoom);
+		menuItemRemoveService.setActiom(removeService);
+		menuItemEvictGuest.setActiom(evictGuest);
+		menuItemRemoveServiceToGuest.setActiom(removeServiceToGues);
+		MenuItem[] menuItems = { menuItemRemoveRoom, menuItemRemoveService, menuItemEvictGuest,
+				menuItemRemoveServiceToGuest };
+		viewActionRemoveMenu.setName(Menus.ACTIONREMOVE.toString());
+		viewActionRemoveMenu.setMenuitems(menuItems);
+		menus.put(Menus.ACTIONREMOVE, viewActionRemoveMenu);
+	}
+
+	private void createActionChangeMenu() {
+		Menu viewActionChangeMenu = new Menu();
+		MenuItem menuItemChangeRoomPrice = new MenuItem("change room price :", Menus.FINISH);
+		MenuItem menuItemChangeServicePrice = new MenuItem("change serivce price :", Menus.FINISH);
+		MenuItem menuItemChangeRoomStatus = new MenuItem("change room status :", Menus.FINISH);
+		IAction changeRoomPrice = new ChangeRoomPrice(model);
+		IAction changeServicePrice = new ChangeServicePrice(model);
+		IAction changeRoomStatus = new ChangeRoomStatus(model);
+		menuItemChangeRoomPrice.setActiom(changeRoomPrice);
+		menuItemChangeServicePrice.setActiom(changeServicePrice);
+		menuItemChangeRoomStatus.setActiom(changeRoomStatus);
+		MenuItem[] menuItems = { menuItemChangeRoomPrice, menuItemChangeServicePrice, menuItemChangeRoomStatus };
+		viewActionChangeMenu.setName(Menus.ACTIONCHANGE.toString());
+		viewActionChangeMenu.setMenuitems(menuItems);
+		menus.put(Menus.ACTIONCHANGE, viewActionChangeMenu);
+
+	}
+
+	private void createFinishMenu() {
+		Menu viewFinishMenu = new Menu();
+		MenuItem menuItemYes = new MenuItem("Yes ", Menus.STOP);
+		MenuItem menuItemNo = new MenuItem("No", Menus.MAIN);
+		MenuItem[] menuItems = { menuItemYes, menuItemNo };
+		viewFinishMenu.initDefault(menuItems);
+		viewFinishMenu.setName(Menus.FINISH.toString());
+		viewFinishMenu.setMenuitems(menuItems);
+		menus.put(Menus.FINISH, viewFinishMenu);
+	}
+
+	public Menu getRootMenu() {
+		return menus.get(Menus.MAIN);
+
+	}
+
+	public Menu getMenu(Menus menu) {
 		return menus.get(menu);
 
 	}

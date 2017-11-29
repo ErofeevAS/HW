@@ -11,7 +11,7 @@ import com.erofeev.hotel.api.IReception;
 import com.erofeev.hotel.print.Printer;
 import com.erofeev.menu.build.Builder;
 import com.erofeev.menu.menuitems.MenuItem;
-import com.erofeev.menu.menus.Menu;
+import com.erofeev.menu.menus.Menus;
 
 public class MenuController {
 
@@ -53,9 +53,9 @@ public class MenuController {
 				Printer.print("choose line:");
 				try {
 					int index = Integer.parseInt(reader.readLine());
-					Menu newMenu = navigator.navigate(index);
+					Menus newMenu = navigator.navigate(index);
 					MenuItem menuItem = navigator.getCurrentMenu().getMenuitems()[index];
-					if (menuItem.getNextMenu().equals(Menu.STOP)) {
+					if (menuItem.getNextMenu().equals(Menus.STOP)) {
 						break;
 					}
 					menuItem.doAction();

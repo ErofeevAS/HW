@@ -57,34 +57,6 @@ public class Reception implements IReception, Observable {
 
 	}
 
-	public FileManager getFileManager() {
-		return fileManager;
-	}
-
-	public void setFileManager(FileManager fileManager) {
-		this.fileManager = fileManager;
-	}
-
-	public RoomManager getRoomManager() {
-		return roomManager;
-	}
-
-	public GuestManager getGuestsManager() {
-		return guestManager;
-	}
-
-	public void setGuests(GuestManager guests) {
-		this.guestManager = guests;
-	}
-
-	public ServicesManager getServicesManager() {
-		return servicesManager;
-	}
-
-	public void setServices(ServicesManager services) {
-		this.servicesManager = services;
-	}
-
 	public void initFileManager(String ROOMS_FILE, String GUESTS_FILE, String SERVICES_FILE)
 			throws IOException, ParseException {
 		FileManager.getInstance().initFileManager(ROOMS_FILE, GUESTS_FILE, SERVICES_FILE);
@@ -106,7 +78,6 @@ public class Reception implements IReception, Observable {
 	public ArrayList<Room> getAllRooms() {
 		ArrayList<Room> currentRooms = roomManager.getAll();
 		return currentRooms;
-
 	}
 
 	@Override
@@ -119,7 +90,6 @@ public class Reception implements IReception, Observable {
 	public ArrayList<Guest> getAllGuests() {
 		ArrayList<Guest> currentGuests = guestManager.getAll();
 		return currentGuests;
-
 	}
 
 	@Override
@@ -174,9 +144,11 @@ public class Reception implements IReception, Observable {
 			guestManager.remove(currentGuest);
 			this.notifyRoomsObservers();
 			this.notifyGuestObservers();
-		} else if (currentGuest != null) {
+		}
+		if (currentGuest == null) {
 			loggerReception.info("Guest not found");
-		} else if (currentRoom != null) {
+		}
+		if (currentRoom == null) {
 			loggerReception.info("Room not found");
 		}
 
@@ -193,7 +165,8 @@ public class Reception implements IReception, Observable {
 			guestManager.remove(currentGuest);
 			this.notifyRoomsObservers();
 			this.notifyGuestObservers();
-		} else if (currentGuest != null) {
+		}
+		if (currentGuest == null) {
 			loggerReception.info("Guest not found");
 		}
 
@@ -215,7 +188,6 @@ public class Reception implements IReception, Observable {
 				loggerReception.info("Room is busy");
 			}
 		}
-
 	}
 
 	@Override
@@ -384,7 +356,7 @@ public class Reception implements IReception, Observable {
 	@Override
 	public void notifyGuestObservers() {
 		for (int i = 0; i < guestObservers.size(); i++) {
-			guestObservers.get(i).update(this.getGuestsManager());
+			guestObservers.get(i).update(this.guestManager);
 		}
 
 	}
@@ -404,7 +376,7 @@ public class Reception implements IReception, Observable {
 	@Override
 	public void notifyRoomsObservers() {
 		for (int i = 0; i < roomsObservers.size(); i++) {
-			roomsObservers.get(i).update(this.getRoomManager());
+			roomsObservers.get(i).update(this.roomManager);
 		}
 
 	}
@@ -424,7 +396,7 @@ public class Reception implements IReception, Observable {
 	@Override
 	public void notifyServicesObservers() {
 		for (int i = 0; i < servicesObservers.size(); i++) {
-			servicesObservers.get(i).update(this.getServicesManager());
+			servicesObservers.get(i).update(this.servicesManager);
 		}
 
 	}

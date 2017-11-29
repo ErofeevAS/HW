@@ -7,7 +7,6 @@ import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
 
@@ -15,7 +14,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.danco.training.TextFileWorker;
-import com.erofeev.hotel.api.IManager;
 import com.erofeev.hotel.entity.Guest;
 import com.erofeev.hotel.entity.Room;
 import com.erofeev.hotel.entity.RoomStatus;
@@ -84,7 +82,6 @@ public class FileManager {
 
 	public void saveToFile(AbstractManager manager) {
 		String FILE_PATH = "";
-		
 
 		if (manager instanceof GuestManager) {
 			FILE_PATH = this.getGuestsPath();
@@ -230,24 +227,24 @@ public class FileManager {
 
 		for (int i = 0; i < readedValues.length; i++) {
 
-			String[] strValue = readedValues[i].split(" ");			
+			String[] strValue = readedValues[i].split(" ");
 			guestFirstName = strValue[0];
 			guestSecondName = strValue[1];
 			arrivalDate = dateFormat.parse(strValue[2]);
 			leavingDate = dateFormat.parse(strValue[3]);
 			guest = new Guest(guestFirstName, guestSecondName, arrivalDate, leavingDate);
 			roomName = strValue[4];
-			ArrayList<Room> rooms = reception.getRoomManager().getAll();
+			ArrayList<Room> rooms = reception.getAllRooms();
 			for (int k = 0; k < rooms.size(); k++) {
 				if (rooms.get(k).getName().equals(roomName)) {
-					room = rooms.get(k);					
+					room = rooms.get(k);
 				}
 			}
 			room.setEmpty(false);
 			guest.setRoom(room);
 			for (int j = 5; j < strValue.length; j++) {
 				serviceName = strValue[j];
-				ArrayList<Service> services = reception.getServicesManager().getAll();
+				ArrayList<Service> services = reception.getAllServices();
 				for (int k = 0; k < services.size(); k++) {
 					if (services.get(k).getName().equals(serviceName)) {
 						service = services.get(k);

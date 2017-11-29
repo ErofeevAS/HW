@@ -2,17 +2,17 @@ package com.erofeev.menu.controller;
 
 import com.erofeev.hotel.print.Printer;
 import com.erofeev.menu.menuitems.MenuItem;
-import com.erofeev.menu.menus.AbstractMenu;
 import com.erofeev.menu.menus.Menu;
+import com.erofeev.menu.menus.Menus;
 
 public class Navigator {
-	private AbstractMenu currentMenu;
+	private Menu currentMenu;
 
-	public AbstractMenu getCurrentMenu() {
+	public Menu getCurrentMenu() {
 		return currentMenu;
 	}
 
-	public void setCurrentMenu(AbstractMenu currentMenu) {
+	public void setCurrentMenu(Menu currentMenu) {
 		this.currentMenu = currentMenu;
 	}
 
@@ -24,9 +24,9 @@ public class Navigator {
 		}
 	}
 
-	public Menu navigate(Integer index) {
+	public Menus navigate(Integer index) {
 		try {
-			Menu menu = currentMenu.getMenuitems()[index].getNextMenu();
+			Menus menu = currentMenu.getMenuitems()[index].getNextMenu();
 
 			return menu;
 		} catch (ArrayIndexOutOfBoundsException e) {

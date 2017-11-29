@@ -3,15 +3,15 @@ package com.erofeev.menu.menuitems;
 import java.io.IOException;
 
 import com.erofeev.menu.api.IAction;
-import com.erofeev.menu.menus.Menu;
+import com.erofeev.menu.menus.Menus;
 
 public class MenuItem {
 
 	private String title;
 	private IAction action;
-	private Menu nextMenu;
+	private Menus nextMenu;
 
-	public MenuItem(String title, Menu menu) {
+	public MenuItem(String title, Menus menu) {
 		this.setTitle(title);
 		this.setNextMenu(menu);
 	}
@@ -32,11 +32,11 @@ public class MenuItem {
 		this.action = actiom;
 	}
 
-	public Menu getNextMenu() {
+	public Menus getNextMenu() {
 		return nextMenu;
 	}
 
-	public void setNextMenu(Menu nextMenu) {
+	public void setNextMenu(Menus nextMenu) {
 		this.nextMenu = nextMenu;
 	}
 

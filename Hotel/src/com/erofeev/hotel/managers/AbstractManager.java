@@ -2,9 +2,7 @@ package com.erofeev.hotel.managers;
 
 import java.util.ArrayList;
 
-import com.erofeev.hotel.api.IManager;
-
-public abstract class AbstractManager<E> implements IManager {
+public abstract class AbstractManager<E> {
 
 	private ArrayList<E> entities = new ArrayList<>();
 
@@ -25,7 +23,13 @@ public abstract class AbstractManager<E> implements IManager {
 	public abstract E findbyName(String name);
 
 	public E findExistingEntity(E entity) {
-		return this.getAll().get(this.getAll().indexOf(entity));
+		int index = this.getAll().indexOf(entity);
+		if (index == -1) {
+			return null;
+		} else {
+			return this.getAll().get(index);
+		}
+
 	}
 
 	public String[] read() {
