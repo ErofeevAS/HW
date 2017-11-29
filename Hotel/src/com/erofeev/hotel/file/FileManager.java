@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
 
@@ -204,7 +205,7 @@ public class FileManager {
 	}
 
 	public ArrayList<Guest> readGuestsFromFile(Reception reception)
-			throws ParseException, NumberFormatException, NullPointerException, IOException {
+			throws ParseException, NumberFormatException, IOException {
 		String GUESTS_FILE = this.getGuestsPath();
 		ArrayList<Guest> guests = new ArrayList<Guest>();
 		Path filePath = Paths.get(GUESTS_FILE);
@@ -229,7 +230,7 @@ public class FileManager {
 
 		for (int i = 0; i < readedValues.length; i++) {
 
-			String[] strValue = readedValues[i].split(" ");
+			String[] strValue = readedValues[i].split(" ");			
 			guestFirstName = strValue[0];
 			guestSecondName = strValue[1];
 			arrivalDate = dateFormat.parse(strValue[2]);
@@ -239,7 +240,7 @@ public class FileManager {
 			ArrayList<Room> rooms = reception.getRoomManager().getAll();
 			for (int k = 0; k < rooms.size(); k++) {
 				if (rooms.get(k).getName().equals(roomName)) {
-					room = rooms.get(k);
+					room = rooms.get(k);					
 				}
 			}
 			room.setEmpty(false);

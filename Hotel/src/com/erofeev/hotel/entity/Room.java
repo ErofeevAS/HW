@@ -1,14 +1,10 @@
 package com.erofeev.hotel.entity;
 
-
 import java.io.Serializable;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import com.erofeev.hotel.api.IEntity;
 
-public class Room implements IEntity,Serializable{
+public class Room implements IEntity, Serializable {
 	private int stars;
 	private float price;
 	private int capacity;
@@ -16,28 +12,25 @@ public class Room implements IEntity,Serializable{
 	private String name;
 	private RoomStatus roomStatus = RoomStatus.SERVICED;
 
-
-
 	public Room(String name, int stars, float price, int capacity) {
 		super();
 		this.name = name;
 		this.stars = stars;
 		this.price = price;
 		this.capacity = capacity;
-		this.empty = true;		
+		this.empty = true;
 
 	}
 
 	public Room() {
-	
+
 	}
 
 	public String getName() {
 		return name;
 	}
-	
 
-	public void setName(String name) {		
+	public void setName(String name) {
 		this.name = name;
 
 	}
@@ -47,7 +40,7 @@ public class Room implements IEntity,Serializable{
 	}
 
 	public void setStars(int stars) {
-		
+
 		this.stars = stars;
 
 	}
@@ -56,7 +49,7 @@ public class Room implements IEntity,Serializable{
 		return price;
 	}
 
-	public void setPrice(float price) {		
+	public void setPrice(float price) {
 		this.price = price;
 
 	}
@@ -65,7 +58,7 @@ public class Room implements IEntity,Serializable{
 		return capacity;
 	}
 
-	public void setCapacity(int capacity) {	
+	public void setCapacity(int capacity) {
 		this.capacity = capacity;
 
 	}
@@ -76,8 +69,7 @@ public class Room implements IEntity,Serializable{
 
 	public void setEmpty(boolean empty) {
 		this.empty = empty;
-	}	
-	
+	}
 
 	public RoomStatus getRoomStatus() {
 		return roomStatus;
@@ -97,7 +89,7 @@ public class Room implements IEntity,Serializable{
 		str.append(this.isEmpty());
 		str.append(" ");
 		str.append(this.getRoomStatus());
-		str.append(" ");		
+		str.append(" ");
 		return str.toString();
 	}
 
@@ -112,9 +104,15 @@ public class Room implements IEntity,Serializable{
 		Room other = (Room) obj;
 		if (capacity != other.capacity)
 			return false;
-		if (name != other.name)
+
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
 			return false;
 		if (Float.floatToIntBits(price) != Float.floatToIntBits(other.price))
+			return false;
+		if (roomStatus != other.roomStatus)
 			return false;
 		if (stars != other.stars)
 			return false;

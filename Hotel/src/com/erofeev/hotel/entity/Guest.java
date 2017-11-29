@@ -8,7 +8,7 @@ import java.util.Locale;
 
 import com.erofeev.hotel.api.IEntity;
 
-public class Guest implements IEntity,Serializable {
+public class Guest implements IEntity, Serializable {
 	private String firstName;
 	private String secondName;
 	private Date arrivalDate;
@@ -26,7 +26,7 @@ public class Guest implements IEntity,Serializable {
 	}
 
 	public Guest() {
-		// TODO Auto-generated constructor stub
+
 	}
 
 	public String getName() {

@@ -44,8 +44,7 @@ public class MenuController {
 	public void run() {
 		builder.createMenus();
 		navigator.setCurrentMenu(builder.getRootMenu());
-		System.out.println(builder.getRootMenu());
-
+		
 		try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
 
 			while (true) {

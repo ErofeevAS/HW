@@ -19,7 +19,7 @@ public class RemoveRoom implements IAction {
 
 	@Override
 	public void execute() throws IOException {
-		String name = Viewer.findEntity("Room");
+		String name = Viewer.findEntity("Room");		
 		model.removeRoom(model.findRoombyName(name));
 		
 		

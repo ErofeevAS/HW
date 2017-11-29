@@ -21,9 +21,11 @@ public class AddServiceToGuest implements IAction {
 	@Override
 	public void execute() throws IOException {		
 		String guestName = Viewer.findEntity("Guest");
-		Guest guest = model.findGuestbyName(guestName);
+		Guest guest = model.findGuestbyName(guestName);	
 		String serviceName = Viewer.findEntity("Service");
-		Service service = model.findServicebyName(serviceName);		
+		Service service = model.findServicebyName(serviceName);	
+		System.out.println(guest);
+		System.out.println(service);
 		model.addServiceToGuest(guest, service);
 	}		
 

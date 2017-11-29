@@ -31,9 +31,9 @@ import com.erofeev.hotel.sort.RoomsSortedByStars;
 import com.erofeev.hotel.sort.ServiceSortedByPrice;
 
 public class Reception implements IReception, Observable {
-	private RoomManager rooms;
-	private GuestManager guests;
-	private ServicesManager services;
+	private RoomManager roomManager;
+	private GuestManager guestManager;
+	private ServicesManager servicesManager;
 	private FileManager fileManager;
 	private ArrayList<Observer> guestObservers = new ArrayList<Observer>();
 	private ArrayList<Observer> roomsObservers = new ArrayList<Observer>();
@@ -42,9 +42,9 @@ public class Reception implements IReception, Observable {
 	private static final Logger loggerReception = LogManager.getLogger(Reception.class);
 
 	public Reception() {
-		this.rooms = new RoomManager();
-		this.guests = new GuestManager();
-		this.services = new ServicesManager();
+		this.roomManager = new RoomManager();
+		this.guestManager = new GuestManager();
+		this.servicesManager = new ServicesManager();
 		this.fileManager = FileManager.getInstance();
 
 		this.addGuestObserver(new GuestObserver());
@@ -61,99 +61,79 @@ public class Reception implements IReception, Observable {
 	}
 
 	public RoomManager getRoomManager() {
-		return rooms;
+		return roomManager;
 	}
 
 	public GuestManager getGuestsManager() {
-		return guests;
+		return guestManager;
 	}
 
 	public void setGuests(GuestManager guests) {
-		this.guests = guests;
+		this.guestManager = guests;
 	}
 
 	public ServicesManager getServicesManager() {
-		return services;
+		return servicesManager;
 	}
 
 	public void setServices(ServicesManager services) {
-		this.services = services;
+		this.servicesManager = services;
 	}
 
-	public void initFileManager(String ROOMS_FILE, String GUESTS_FILE, String SERVICES_FILE) throws IOException, ParseException {
+	public void initFileManager(String ROOMS_FILE, String GUESTS_FILE, String SERVICES_FILE)
+			throws IOException, ParseException {
 		getFileManager().initFileManager(ROOMS_FILE, GUESTS_FILE, SERVICES_FILE);
 		loggerReception.info("Start initilization from files:");
 
 		try {
 			this.addServices(fileManager.readServicesFromFile());
-		} 
-		
-		catch (NumberFormatException e) {
-			loggerReception.error("Can't read services file: " + e);
-		}
-		
-		
-		try {
 			this.addRooms(fileManager.readRoomsFromFile());
-		}
-		
-		catch (NumberFormatException e) {
-			loggerReception.error("Can't read rooms file: " + e);			
-		}
-		try {
-			//this.addGuests(fileManager.readGuestFromFile(this));
 			this.addGuests(fileManager.readGuestsFromFile(this));
-		} 
-		
-		 catch (RuntimeException e) {
-			loggerReception.error("Can't read file: " + e);
 		}
 
+		catch (NumberFormatException e) {
+			loggerReception.error("Can't read  file: " + e);
+		}
 		loggerReception.info("Initilization finished.");
 
 	}
-	
+
 	public ArrayList<Room> getAllRooms() {
-		ArrayList<Room> currentRooms = rooms.getAll();
+		ArrayList<Room> currentRooms = roomManager.getAll();
 		return currentRooms;
 
 	}
 
-	
-	
 	@Override
 	public ArrayList<Room> getAllEmptyRooms() {
-		ArrayList<Room> emptyRooms = rooms.getEmptyRooms();
+		ArrayList<Room> emptyRooms = roomManager.getEmptyRooms();
 		return emptyRooms;
 
 	}
-	
+
 	public ArrayList<Guest> getAllGuests() {
-		ArrayList<Guest> currentGuests = guests.getAll();
+		ArrayList<Guest> currentGuests = guestManager.getAll();
 		return currentGuests;
 
 	}
-	
+
 	@Override
 	public ArrayList<Service> getAllServices() {
-		ArrayList<Service> currentServices = services.getAll();
+		ArrayList<Service> currentServices = servicesManager.getAll();
 		return currentServices;
 	}
-	
-	public Guest findGuestbyName(String name){		
-		return guests.findbyName(name);
-	}
-	
-	public Room findRoombyName(String name){
-		return rooms.findbyName(name);
-	}
-	
-	public Service findServicebyName(String name){
-		return services.findbyName(name);
-	}
-	
 
+	public Guest findGuestbyName(String name) {
+		return guestManager.findbyName(name);
+	}
 
+	public Room findRoombyName(String name) {
+		return roomManager.findbyName(name);
+	}
+
+	public Service findServicebyName(String name) {
+		return servicesManager.findbyName(name);
+	}
 
 	@Override
 	public ArrayList<Service> getGuestServices(Guest guest) {
@@ -161,17 +141,16 @@ public class Reception implements IReception, Observable {
 		return guestServices;
 	}
 
-
 	@Override
 	public ArrayList<Guest> getRoomHistory(Room room) {
-		ArrayList<Guest> roomHistory = guests.getGuestsHistory();
+		ArrayList<Guest> roomHistory = guestManager.getGuestsHistory();
 		return roomHistory;
 	}
 
 	@Override
 	public float[] getGuestPrice(Guest guest) {
-		float servicesPrice = guests.getGuestServicesPrice(guest);
-		float roomPrice = guests.getGuestRoomPrice(guest);
+		float servicesPrice = guestManager.getGuestServicesPrice(guest);
+		float roomPrice = guestManager.getGuestRoomPrice(guest);
 		float totalPrice = servicesPrice + roomPrice;
 		float[] guestPrice = new float[3];
 		guestPrice[0] = servicesPrice;
@@ -183,54 +162,51 @@ public class Reception implements IReception, Observable {
 
 	@Override
 	public void evictGuest(Guest guest, Room room) {
-		Guest currentGuest = guests.findExistingEntity(guest);
-		Room currentRoom = rooms.findExistingEntity(room);
+		Guest currentGuest = guestManager.findExistingEntity(guest);
+		Room currentRoom = roomManager.findExistingEntity(room);
 		if ((currentGuest != null) && ((currentRoom != null))) {
 			currentRoom.setEmpty(true);
-			guests.remove(currentGuest);
+			guestManager.remove(currentGuest);
 			this.notifyRoomsObservers();
 			this.notifyGuestObservers();
-		} else if (currentGuest != null) {
-			// Printer.print("Guest not found");
+		} else if (currentGuest != null) {			
 			loggerReception.info("Guest not found");
-		} else if (currentRoom != null) {
-			// Printer.print("Room not found");
+		} else if (currentRoom != null) {		
 			loggerReception.info("Room not found");
 		}
 
 	}
-	
+
 	@Override
 	public void evictGuest(Guest guest) {
-		Guest currentGuest = guests.findExistingEntity(guest);
+		
+		Guest currentGuest = guestManager.findExistingEntity(guest);
 		Room currentRoom = currentGuest.getRoom();
+		
 		if ((currentGuest != null) && ((currentRoom != null))) {
 			currentRoom.setEmpty(true);
-			guests.remove(currentGuest);
+			guestManager.remove(currentGuest);
 			this.notifyRoomsObservers();
 			this.notifyGuestObservers();
-		} else if (currentGuest != null) {
-			// Printer.print("Guest not found");
+		} else if (currentGuest != null) {			
 			loggerReception.info("Guest not found");
-		} else if (currentRoom != null) {
-			// Printer.print("Room not found");
-			loggerReception.info("Room not found");
-		}
+		} 
 
 	}
 
 	@Override
 	public void occupyGuest(Guest guest, Room room) {
-		Room currentRoom = rooms.findExistingEntity(room);
+		
+		Room currentRoom = roomManager.findExistingEntity(room);
 		if (currentRoom != null) {
 			if (currentRoom.isEmpty()) {
 				currentRoom.setEmpty(false);
 				guest.setRoom(currentRoom);
-				guests.add(guest);
+				guestManager.add(guest);
 				this.notifyRoomsObservers();
 				this.notifyGuestObservers();
 				loggerReception.info("Guest was occupy");
-			} else {				
+			} else {
 				loggerReception.info("Room is busy");
 			}
 		}
@@ -252,100 +228,95 @@ public class Reception implements IReception, Observable {
 
 	@Override
 	public void changeRoomStatus(Room room, RoomStatus status) {
-		rooms.findExistingEntity(room).setRoomStatus(status);		
+		roomManager.findExistingEntity(room).setRoomStatus(status);
 		loggerReception.info(room.toString() + " status was changed");
 		this.notifyRoomsObservers();
 
 	}
 
 	@Override
-	public ArrayList<Guest> getGuestSortedByName() throws ClassCastException {		
-		ArrayList<Guest> guestList = guests.getAll();			
+	public ArrayList<Guest> getGuestSortedByName() throws ClassCastException {
+		ArrayList<Guest> guestList = guestManager.getAll();
 		Guest[] currentGuests = guestList.toArray(new Guest[guestList.size()]);
-		Arrays.sort(currentGuests, new GuestSotredByName());		
-		ArrayList<Guest> sortedGuests = new ArrayList<Guest>(Arrays.asList(currentGuests));		
+		Arrays.sort(currentGuests, new GuestSotredByName());
+		ArrayList<Guest> sortedGuests = new ArrayList<Guest>(Arrays.asList(currentGuests));
 		return sortedGuests;
 	}
 
 	@Override
-	public ArrayList<Guest> getGuestSortedByData() throws ClassCastException {		
-		ArrayList<Guest> guestList = guests.getAll();				
-		Guest[] currentGuests = guestList.toArray(new Guest[guestList.size()]);		
-		Arrays.sort(currentGuests, new GuestSortedByDate());		
-		ArrayList<Guest> sortedGuests = new ArrayList<Guest>(Arrays.asList(currentGuests));		
+	public ArrayList<Guest> getGuestSortedByData() throws ClassCastException {
+		ArrayList<Guest> guestList = guestManager.getAll();
+		Guest[] currentGuests = guestList.toArray(new Guest[guestList.size()]);
+		Arrays.sort(currentGuests, new GuestSortedByDate());
+		ArrayList<Guest> sortedGuests = new ArrayList<Guest>(Arrays.asList(currentGuests));
 		return sortedGuests;
-		
+
 	}
 
 	@Override
-	public ArrayList<Service> getServiceSortedByPrice() throws ClassCastException {		
-		ArrayList<Service> servicesList = services.getAll();		
+	public ArrayList<Service> getServiceSortedByPrice() throws ClassCastException {
+		ArrayList<Service> servicesList = servicesManager.getAll();
 		Service[] arrServices = servicesList.toArray(new Service[servicesList.size()]);
 		Arrays.sort(arrServices, new ServiceSortedByPrice());
-		ArrayList<Service> sortedServices = new ArrayList<Service>(Arrays.asList(arrServices));	
+		ArrayList<Service> sortedServices = new ArrayList<Service>(Arrays.asList(arrServices));
 		return sortedServices;
-	
+
 	}
 
 	@Override
-	public ArrayList<Room> getRoomsSortedByCapacity() throws ClassCastException {		
-		ArrayList<Room> roomsList = rooms.getAll();			
+	public ArrayList<Room> getRoomsSortedByCapacity() throws ClassCastException {
+		ArrayList<Room> roomsList = roomManager.getAll();
 		Room[] arrRooms = roomsList.toArray(new Room[roomsList.size()]);
 		Arrays.sort(arrRooms, new RoomsSortedByCapacity());
-		ArrayList<Room> sortedRooms = new ArrayList<Room>(Arrays.asList(arrRooms));	
+		ArrayList<Room> sortedRooms = new ArrayList<Room>(Arrays.asList(arrRooms));
 		return sortedRooms;
 	}
 
 	@Override
-	public ArrayList<Room> getRoomsSortedByStars() throws ClassCastException {		
-		ArrayList<Room> roomsList = rooms.getAll();		
+	public ArrayList<Room> getRoomsSortedByStars() throws ClassCastException {
+		ArrayList<Room> roomsList = roomManager.getAll();
 		Room[] arrRooms = roomsList.toArray(new Room[roomsList.size()]);
 		Arrays.sort(arrRooms, new RoomsSortedByStars());
-		ArrayList<Room> sortedRooms = new ArrayList<Room>(Arrays.asList(arrRooms));	
+		ArrayList<Room> sortedRooms = new ArrayList<Room>(Arrays.asList(arrRooms));
 		return sortedRooms;
 	}
 
 	@Override
 
-	public ArrayList<Room> getRoomsSortedByPrice() throws ClassCastException {		
-		ArrayList<Room> roomsList = rooms.getAll();		
+	public ArrayList<Room> getRoomsSortedByPrice() throws ClassCastException {
+		ArrayList<Room> roomsList = roomManager.getAll();
 		Room[] arrRooms = roomsList.toArray(new Room[roomsList.size()]);
 		Arrays.sort(arrRooms, new RoomsSortedByPrice());
-		ArrayList<Room> sortedRooms = new ArrayList<Room>(Arrays.asList(arrRooms));	
+		ArrayList<Room> sortedRooms = new ArrayList<Room>(Arrays.asList(arrRooms));
 		return sortedRooms;
 	}
 
 	@Override
 	public void addService(Service service) {
-		if (!services.add(service)) {
+		servicesManager.add(service);
 			this.notifyServicesObservers();
-		} else {
-			//Printer.print("Service already exists");
-			loggerReception.info(service.toString() + " already exists");
 			
-		}
+		
 	}
 
 	@Override
 	public void addRoom(Room room) {
-		if (!rooms.add(room)) {
-			this.notifyRoomsObservers();
-		} else {
-			//Printer.print("Room already exists");
-			loggerReception.info(room.toString() + " already exists");
-		}
+		roomManager.add(room);
+		this.notifyRoomsObservers();
+		
+
 	}
 
 	public void addRooms(ArrayList<Room> newRooms) {
 		for (int i = 0; i < newRooms.size(); i++) {
-			rooms.add(newRooms.get(i));
+			roomManager.add(newRooms.get(i));
 		}
 
 	}
 
 	public void addServices(ArrayList<Service> newServices) {
 		for (int i = 0; i < newServices.size(); i++) {
-			services.add(newServices.get(i));
+			servicesManager.add(newServices.get(i));
 		}
 
 	}
@@ -353,41 +324,38 @@ public class Reception implements IReception, Observable {
 	public void addGuests(ArrayList<Guest> newGuests) {
 		for (int i = 0; i < newGuests.size(); i++) {
 			newGuests.get(i).getRoom().setEmpty(false);
-			guests.add(newGuests.get(i));
+			guestManager.add(newGuests.get(i));
 		}
 	}
 
 	@Override
-	public void removeService(Service service) {
-		loggerReception.info(service.toString() + " was revomed");
-		services.remove(service);		
+	public void removeService(Service service) {		
+		servicesManager.remove(service);
 		this.notifyServicesObservers();
 
 	}
 
 	@Override
-	public void removeRoom(Room room) {
-		loggerReception.info(room.toString() + " was revomed");
-		rooms.remove(room);		
+	public void removeRoom(Room room) {		
+		roomManager.remove(room);
 		this.notifyRoomsObservers();
 
 	}
 
-
 	@Override
 	public void addServiceToGuest(Guest guest, Service service) {
-		Guest currentGuest = guests.findExistingEntity(guest);
+		Guest currentGuest =guestManager.findExistingEntity(guest);
 		if (currentGuest != null) {
 			currentGuest.addGuestService(service);
 			this.notifyServicesObservers();
 			this.notifyGuestObservers();
-		} 
+		}
 
 	}
 
 	@Override
 	public void removeServiceToGuest(Guest guest, Service service) {
-		Guest currentGuest = guests.findExistingEntity(guest);
+		Guest currentGuest =guestManager.findExistingEntity(guest);
 		if (currentGuest != null) {
 			currentGuest.removeGuestService(service);
 			this.notifyServicesObservers();
@@ -457,8 +425,5 @@ public class Reception implements IReception, Observable {
 		}
 
 	}
-
-
-	
 
 }

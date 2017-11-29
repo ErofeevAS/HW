@@ -1,22 +1,18 @@
 package com.erofeev.hotel.runner;
 
-import org.apache.logging.log4j.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.erofeev.hotel.entity.Guest;
 import com.erofeev.hotel.entity.Room;
-import com.erofeev.hotel.entity.RoomStatus;
 import com.erofeev.hotel.entity.Service;
 import com.erofeev.hotel.reception.Reception;
 
 public class ReceptionRunner {
-	
-	
 
 	private static final Logger loggerRunner = LogManager.getLogger(ReceptionRunner.class);
 
@@ -43,10 +39,7 @@ public class ReceptionRunner {
 
 		Reception reception = new Reception();
 		reception.initFileManager(ROOMS_FILE, GUESTS_FILE, SERVICES_FILE);
-		
 
-
-		
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
 		Date arrivalDate1 = dateFormat.parse("2017-10-10");
 		Date leavingDate1 = dateFormat.parse("2017-11-15");
@@ -72,12 +65,22 @@ public class ReceptionRunner {
 		Room room2 = new Room("2", 3, 2000f, 1);
 		Room room3 = new Room("3", 8, 3000f, 2);
 		Room room4 = new Room("4", 5, 199f, 2);
-		Room room5 = new Room("5", 2, 222f, 2);		
-	
-		
+		Room room5 = new Room("5", 2, 222f, 2);
 
-	
-		
+		// reception.addRoom(room5);
+		// reception.addRoom(room1);
+
+		// reception.removeRoom(room2);
+		/*
+		 * reception.addService(service1); reception.addService(service2);
+		 * reception.addService(service3);
+		 */
+		// reception.addService(service4);
+
+		// reception.removeService(service1);
+
+		// reception.occupyGuest(guest2, room1);
+		// reception.evictGuest(guest2,room1);
 
 	}
 
