@@ -1,50 +1,46 @@
 package com.erofeev.hotel.managers;
 
-
+import java.util.ArrayList;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.erofeev.hotel.entity.Room;
-import com.erofeev.hotel.mylist.MyList;
 
-
-public class RoomManager extends AbstractManager<Room>  {
-	private MyList<Room> rooms = getEntities();
+public class RoomManager extends AbstractManager<Room> {
+	private ArrayList<Room> rooms = new ArrayList<Room>();
 	private static final Logger LoggerRoomManager = LogManager.getLogger(RoomManager.class);
 
-	
 	public boolean add(Room room) {
-		if (super.add(room)) {			
+		if (super.add(room)) {
 			return true;
-		} else {			
-			LoggerRoomManager.info(room.toString()  + " was added.");
+		} else {
+			LoggerRoomManager.info(room.toString() + " was added.");
 			return false;
 		}
 	}
-	
-	public void remove(Room room){
+
+	public void remove(Room room) {
 		super.remove(room);
-		LoggerRoomManager.info(room.toString()  + " was removed.");
+		LoggerRoomManager.info(room.toString() + " was removed.");
 	}
 
 	public void changeRoomPrice(Room room, float price) {		
-		int index = rooms.find(room);
+		int index = rooms.indexOf(room);
 		rooms.get(index).setPrice(price);
-		LoggerRoomManager.info(room.toString()  + " price was changed.");
-		
+		LoggerRoomManager.info(room.toString() + " price was changed.");
+
 	}
 
-	public void changeRoomStatus(Room room, boolean status) {
-		int index = rooms.find(room);
+	public void changeRoomStatus(Room room, boolean status) {		
+		int index = rooms.indexOf(room);
 		rooms.get(index).setEmpty(status);
-		LoggerRoomManager.info(room.toString()  + " status was changed.");
+		LoggerRoomManager.info(room.toString() + " status was changed.");
 	}
 
-
-	public MyList<Room> getEmptyRooms() {
-		MyList<Room> emptyRooms = new MyList<Room>();
-		for (int i = 0; i < getAll().length(); i++) {
+	public ArrayList<Room> getEmptyRooms() {
+		ArrayList<Room> emptyRooms = new ArrayList<Room>();
+		for (int i = 0; i < getAll().size(); i++) {
 			Room room = getAll().get(i);
 			if (room.isEmpty()) {
 				emptyRooms.add(room);
@@ -52,7 +48,5 @@ public class RoomManager extends AbstractManager<Room>  {
 		}
 		return emptyRooms;
 	}
-
-	
 
 }

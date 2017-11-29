@@ -1,11 +1,14 @@
 package com.erofeev.hotel.api;
 
 
+import java.io.IOException;
+import java.text.ParseException;
+import java.util.ArrayList;
+
 import com.erofeev.hotel.entity.Guest;
 import com.erofeev.hotel.entity.Room;
 import com.erofeev.hotel.entity.RoomStatus;
 import com.erofeev.hotel.entity.Service;
-import com.erofeev.hotel.mylist.MyList;
 
 public interface IReception {
 	public void addService(Service service);
@@ -18,23 +21,13 @@ public interface IReception {
 
 	public void removeService(Service service);
 
-	public void removeRoom(Room room);
+	public void removeRoom(Room room);	
 
-	//public void viewAllRooms();
+	public ArrayList<Guest> getRoomHistory(Room room);
 
-	//public void viewAllEmptyRooms();
+	public float[] getGuestPrice(Guest guest);
 
-	//public void viewAllGuests();
-
-	//public void viewAllServices();
-
-	public void viewRoomDetails(Room room);
-
-	public void viewRoomHistory(Room room);
-
-	public void viewGuestPrice(Guest guest);
-
-	public void viewGuestServices(Guest guest);
+	public ArrayList<Service> getGuestServices(Guest guest);
 
 	public void evictGuest(Guest guest, Room room);
 	
@@ -42,17 +35,17 @@ public interface IReception {
 
 	public void occupyGuest(Guest guest, Room room);
 
-	public void viewGuestSortedByData();
+	public ArrayList<Guest> getGuestSortedByData();
 
-	public void viewGuestSortedByName();
+	public ArrayList<Guest> getGuestSortedByName();
 
-	public void viewRoomsSortedByPrice();
+	public ArrayList<Room> getRoomsSortedByPrice();
 
-	public void viewRoomsSortedByCapacity();
+	public ArrayList<Room> getRoomsSortedByCapacity();
 
-	public void viewRoomsSortedByStars();
+	public ArrayList<Room> getRoomsSortedByStars();
 
-	public void viewServiceSortedByPrice();
+	public ArrayList<Service> getServiceSortedByPrice();
 	
 	public void changeRoomPrice(Room room, float price);
 
@@ -60,19 +53,21 @@ public interface IReception {
 
 	public void changeRoomStatus(Room room, RoomStatus status);
 	
-	public MyList<Room> getAllRooms();
+	public ArrayList<Room> getAllRooms();
 	
-	public MyList<Room> getAllEmptyRooms();
+	public ArrayList<Room> getAllEmptyRooms();
 	
-	public MyList<Guest> getAllGuests();
+	public ArrayList<Guest> getAllGuests();
 	
-	public MyList<Service> getAllServices();
+	public ArrayList<Service> getAllServices();
 	
 	public Guest findGuestbyName(String name);
 	
 	public Room findRoombyName(String name);
 	
 	public Service findServicebyName(String name);
+	
+	public void initFileManager(String ROOMS_FILE, String GUESTS_FILE, String SERVICES_FILE) throws IOException, ParseException;
 
 	
 	

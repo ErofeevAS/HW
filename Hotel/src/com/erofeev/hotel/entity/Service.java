@@ -1,8 +1,10 @@
 package com.erofeev.hotel.entity;
 
+import java.io.Serializable;
+
 import com.erofeev.hotel.api.IEntity;
 
-public class Service implements IEntity {
+public class Service implements IEntity,Serializable {
 	private String name;
 	private float price;
 
@@ -10,6 +12,10 @@ public class Service implements IEntity {
 		super();
 		this.name = name;
 		this.price = price;
+	}
+
+	public Service() {
+		// TODO Auto-generated constructor stub
 	}
 
 	public String getName() {

@@ -1,12 +1,14 @@
 package com.erofeev.hotel.entity;
 
 
+import java.io.Serializable;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.erofeev.hotel.api.IEntity;
 
-public class Room implements IEntity{
+public class Room implements IEntity,Serializable{
 	private int stars;
 	private float price;
 	private int capacity;
@@ -14,31 +16,26 @@ public class Room implements IEntity{
 	private String name;
 	private RoomStatus roomStatus = RoomStatus.SERVICED;
 
-	private static final Logger roomLogger = LogManager.getLogger(Room.class);
+
 
 	public Room(String name, int stars, float price, int capacity) {
 		super();
-		setName(name);
-		setStars(stars);
-		setPrice(price);
-		setCapacity(capacity);
-		setEmpty(true);
+		this.name = name;
+		this.stars = stars;
+		this.price = price;
+		this.capacity = capacity;
+		this.empty = true;		
 
+	}
+
+	public Room() {
+	
 	}
 
 	public String getName() {
 		return name;
 	}
-
-	public void checkInPutData(int data) {
-		if (((float) data) <= 0) {
-			roomLogger.warn("Input data less then 0");
-			//throw new IllegalArgumentException();
-		} else {
-
-		}
-
-	}
+	
 
 	public void setName(String name) {		
 		this.name = name;
@@ -50,7 +47,7 @@ public class Room implements IEntity{
 	}
 
 	public void setStars(int stars) {
-		this.checkInPutData(stars);
+		
 		this.stars = stars;
 
 	}
@@ -59,8 +56,7 @@ public class Room implements IEntity{
 		return price;
 	}
 
-	public void setPrice(float price) {
-		this.checkInPutData((int) price);
+	public void setPrice(float price) {		
 		this.price = price;
 
 	}
@@ -69,8 +65,7 @@ public class Room implements IEntity{
 		return capacity;
 	}
 
-	public void setCapacity(int capacity) {
-		this.checkInPutData(capacity);
+	public void setCapacity(int capacity) {	
 		this.capacity = capacity;
 
 	}
@@ -102,7 +97,7 @@ public class Room implements IEntity{
 		str.append(this.isEmpty());
 		str.append(" ");
 		str.append(this.getRoomStatus());
-		str.append(" ");
+		str.append(" ");		
 		return str.toString();
 	}
 

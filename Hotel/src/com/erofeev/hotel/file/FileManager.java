@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
@@ -18,10 +19,10 @@ import com.erofeev.hotel.entity.Guest;
 import com.erofeev.hotel.entity.Room;
 import com.erofeev.hotel.entity.RoomStatus;
 import com.erofeev.hotel.entity.Service;
+import com.erofeev.hotel.managers.AbstractManager;
 import com.erofeev.hotel.managers.GuestManager;
 import com.erofeev.hotel.managers.RoomManager;
 import com.erofeev.hotel.managers.ServicesManager;
-import com.erofeev.hotel.mylist.MyList;
 import com.erofeev.hotel.reception.Reception;
 
 public class FileManager {
@@ -31,6 +32,10 @@ public class FileManager {
 	private String roomsPath;
 	private String guestsPath;
 	private String servicesPath;
+
+	private FileManager() {
+
+	}
 
 	public String getRoomsPath() {
 		return roomsPath;
@@ -76,8 +81,9 @@ public class FileManager {
 		this.setServicesPath(SERVICES_FILE);
 	}
 
-	public void saveToFile(IManager manager) {
+	public void saveToFile(AbstractManager manager) {
 		String FILE_PATH = "";
+		
 
 		if (manager instanceof GuestManager) {
 			FILE_PATH = this.getGuestsPath();
@@ -94,11 +100,9 @@ public class FileManager {
 		String[] strManager = manager.read();
 		Path filePath = Paths.get(FILE_PATH);
 		try {
-			System.out.println(!Files.exists(filePath));
-			if(!Files.exists(filePath)){
+			if (!Files.exists(filePath)) {
 				Files.createFile(filePath);
-			}	
-			
+			}
 
 		} catch (UnsupportedOperationException | IOException | SecurityException e) {
 			loggerFileManager.error("Can't create file " + e);
@@ -107,7 +111,7 @@ public class FileManager {
 
 		try {
 			TextFileWorker fileManager = new TextFileWorker(FILE_PATH);
-			
+
 			fileManager.writeToFile(strManager);
 			loggerFileManager.debug(manager.getClass().getSimpleName() + "File was saved");
 		} catch (RuntimeException e) {
@@ -118,11 +122,11 @@ public class FileManager {
 
 	}
 
-	public MyList<Room> readRoomsFromFile() throws NumberFormatException, IOException {
-		String ROOMS_FILE = this.getRoomsPath();		
-		MyList<Room> rooms = new MyList<Room>();
+	public ArrayList<Room> readRoomsFromFile() throws NumberFormatException, IOException {
+		String ROOMS_FILE = this.getRoomsPath();
+		ArrayList<Room> rooms = new ArrayList<Room>();
 		Path filePath = Paths.get(ROOMS_FILE);
-		if(!Files.exists(filePath)){
+		if (!Files.exists(filePath)) {
 			Files.createFile(filePath);
 		}
 		TextFileWorker fileWorker = new TextFileWorker(ROOMS_FILE);
@@ -153,13 +157,17 @@ public class FileManager {
 				} else {
 
 				}
-				if (strValue[5].equals("REPAIRABLE")) {
+				switch (strValue[5]) {
+				case "REPAIRABLE":
 					roomStatus = RoomStatus.REPAIRABLE;
-				}
-				if (strValue[5].equals("SERVICED")) {
+					break;
+				case "SERVICED":
 					roomStatus = RoomStatus.SERVICED;
-				} else {
+					break;
+
+				default:
 					loggerFileManager.warn("Unidentified room status");
+					break;
 				}
 
 				room = new Room(roomName, roomStars, roomPrice, roomCapacity);
@@ -173,11 +181,11 @@ public class FileManager {
 
 	}
 
-	public MyList<Service> readServicesFromFile() throws NumberFormatException, IOException {
+	public ArrayList<Service> readServicesFromFile() throws NumberFormatException, IOException {
 		String SERVICES_FILE = this.getServicesPath();
-		MyList<Service> services = new MyList<Service>();
+		ArrayList<Service> services = new ArrayList<Service>();
 		Path filePath = Paths.get(SERVICES_FILE);
-		if(!Files.exists(filePath)){
+		if (!Files.exists(filePath)) {
 			Files.createFile(filePath);
 		}
 		TextFileWorker fileWorker = new TextFileWorker(SERVICES_FILE);
@@ -195,16 +203,16 @@ public class FileManager {
 		return services;
 	}
 
-	public MyList<Guest> readGuestFromFile(Reception reception)
+	public ArrayList<Guest> readGuestsFromFile(Reception reception)
 			throws ParseException, NumberFormatException, NullPointerException, IOException {
 		String GUESTS_FILE = this.getGuestsPath();
-		MyList<Guest> guests = new MyList<Guest>();
+		ArrayList<Guest> guests = new ArrayList<Guest>();
 		Path filePath = Paths.get(GUESTS_FILE);
-		if(!Files.exists(filePath)){
-			
+		if (!Files.exists(filePath)) {
+
 			Files.createFile(filePath);
 		}
-		
+
 		TextFileWorker fileWorker = new TextFileWorker(GUESTS_FILE);
 		String[] readedValues = fileWorker.readFromFile();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
@@ -228,9 +236,9 @@ public class FileManager {
 			leavingDate = dateFormat.parse(strValue[3]);
 			guest = new Guest(guestFirstName, guestSecondName, arrivalDate, leavingDate);
 			roomName = strValue[4];
-			MyList<Room> rooms = reception.getRoomManager().getAll();
-			for (int k = 0; k < rooms.length(); k++) {
-				if (rooms.get(k).getName().equals(roomName) ) {
+			ArrayList<Room> rooms = reception.getRoomManager().getAll();
+			for (int k = 0; k < rooms.size(); k++) {
+				if (rooms.get(k).getName().equals(roomName)) {
 					room = rooms.get(k);
 				}
 			}
@@ -238,8 +246,8 @@ public class FileManager {
 			guest.setRoom(room);
 			for (int j = 5; j < strValue.length; j++) {
 				serviceName = strValue[j];
-				MyList<Service> services = reception.getServicesManager().getAll();
-				for (int k = 0; k < services.length(); k++) {
+				ArrayList<Service> services = reception.getServicesManager().getAll();
+				for (int k = 0; k < services.size(); k++) {
 					if (services.get(k).getName().equals(serviceName)) {
 						service = services.get(k);
 						guest.addGuestService(service);
