@@ -1,4 +1,4 @@
-package com.erofeev.menu.actions;
+package com.erofeev.menu.actions.guest;
 
 import java.io.IOException;
 import java.util.ArrayList;

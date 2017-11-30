@@ -1,4 +1,4 @@
-package com.erofeev.menu.actions;
+package com.erofeev.menu.actions.room;
 
 import com.erofeev.hotel.api.IReception;
 import com.erofeev.menu.api.IAction;

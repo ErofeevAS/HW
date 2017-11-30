@@ -1,4 +1,4 @@
-package com.erofeev.menu.actions;
+package com.erofeev.menu.actions.room;
 
 
 
