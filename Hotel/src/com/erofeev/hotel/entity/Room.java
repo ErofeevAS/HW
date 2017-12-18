@@ -1,6 +1,7 @@
 package com.erofeev.hotel.entity;
 
 import java.io.Serializable;
+import java.util.ArrayDeque;
 
 import com.erofeev.hotel.api.IEntity;
 
@@ -13,6 +14,7 @@ public class Room implements IEntity, Serializable {
 	private boolean empty;
 	private String name;
 	private RoomStatus roomStatus = RoomStatus.SERVICED;
+	private ArrayDeque<Guest> roomHistory = new ArrayDeque<Guest>();
 
 	public Room(String name, int stars, float price, int capacity) {
 		super();
@@ -26,6 +28,14 @@ public class Room implements IEntity, Serializable {
 
 	public Room() {
 
+	}
+
+	public ArrayDeque<Guest> getRoomHistory() {
+		return roomHistory;
+	}
+
+	public void setRoomHistory(ArrayDeque<Guest> roomHistory) {
+		this.roomHistory = roomHistory;
 	}
 
 	public String getName() {

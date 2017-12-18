@@ -1,11 +1,13 @@
 package com.erofeev.hotel.managers;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.erofeev.hotel.api.IEntity;
+import com.erofeev.hotel.entity.Guest;
 import com.erofeev.hotel.entity.Room;
 
 public class RoomManager extends AbstractManager<Room> {
@@ -60,6 +62,10 @@ public class RoomManager extends AbstractManager<Room> {
 			}
 		}
 		return emptyRooms;
+	}
+
+	public ArrayDeque<Guest> getRoomHistory(Room room) {
+		return room.getRoomHistory();
 	}
 
 	public ArrayList<Room> getAll() {

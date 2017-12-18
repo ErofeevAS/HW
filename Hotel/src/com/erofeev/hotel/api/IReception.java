@@ -1,8 +1,8 @@
 package com.erofeev.hotel.api;
 
-
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 
 import com.erofeev.hotel.entity.Guest;
@@ -21,16 +21,16 @@ public interface IReception {
 
 	public void removeService(Service service);
 
-	public void removeRoom(Room room);	
+	public void removeRoom(Room room);
 
-	public ArrayList<Guest> getRoomHistory(Room room);
+	public ArrayDeque<Guest> getRoomHistory(Room room);
 
 	public float[] getGuestPrice(Guest guest);
 
 	public ArrayList<Service> getGuestServices(Guest guest);
 
 	public void evictGuest(Guest guest, Room room);
-	
+
 	public void evictGuest(Guest guest);
 
 	public void occupyGuest(Guest guest, Room room);
@@ -46,31 +46,28 @@ public interface IReception {
 	public ArrayList<Room> getRoomsSortedByStars();
 
 	public ArrayList<Service> getServiceSortedByPrice();
-	
+
 	public void changeRoomPrice(Room room, float price);
 
-	public void changeServicePrice(Service service, float price);	
+	public void changeServicePrice(Service service, float price);
 
 	public void changeRoomStatus(Room room, RoomStatus status);
-	
+
 	public ArrayList<Room> getAllRooms();
-	
+
 	public ArrayList<Room> getAllEmptyRooms();
-	
+
 	public ArrayList<Guest> getAllGuests();
-	
+
 	public ArrayList<Service> getAllServices();
-	
+
 	public Guest findGuestbyName(String name);
-	
+
 	public Room findRoombyName(String name);
-	
+
 	public Service findServicebyName(String name);
-	
-	public void initFileManager(String ROOMS_FILE, String GUESTS_FILE, String SERVICES_FILE) throws IOException, ParseException;
 
-	
-	
+	public void initFileManager(String ROOMS_FILE, String GUESTS_FILE, String SERVICES_FILE)
+			throws IOException, ParseException;
 
-	
 }

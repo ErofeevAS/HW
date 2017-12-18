@@ -6,7 +6,7 @@ import com.erofeev.hotel.managers.AbstractManager;
 
 public class ServicesObserver implements Observer {
 	@Override
-	public void update(AbstractManager manager) {		
-		FileManager.getInstance().saveToFile(manager);			
+	public void update(AbstractManager manager) {
+		FileManager.getInstance().saveToFile(manager);
 	}
 }

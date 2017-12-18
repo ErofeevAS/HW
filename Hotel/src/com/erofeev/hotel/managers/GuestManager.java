@@ -19,7 +19,7 @@ public class GuestManager extends AbstractManager<Guest> {
 
 	public void add(Guest guest) {
 		if (guests.add(guest)) {
-			guestsHistory.add(guest);
+			// guestsHistory.add(guest);
 			loggerGuestManager.info(guest.toString() + " was added.");
 		} else {
 			loggerGuestManager.info(guest.toString() + " already exists.");

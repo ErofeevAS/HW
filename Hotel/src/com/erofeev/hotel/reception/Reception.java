@@ -2,6 +2,7 @@ package com.erofeev.hotel.reception;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -65,7 +66,7 @@ public class Reception implements IReception, Observable {
 		try {
 			this.addServices(fileManager.readServicesFromFile());
 			this.addRooms(fileManager.readRoomsFromFile());
-			this.addGuests(fileManager.readGuestsFromFile(this));
+			this.addGuests(fileManager.readGuestsFromFile());
 		}
 
 		catch (NumberFormatException e) {
@@ -117,9 +118,8 @@ public class Reception implements IReception, Observable {
 	}
 
 	@Override
-	public ArrayList<Guest> getRoomHistory(Room room) {
-		ArrayList<Guest> roomHistory = guestManager.getGuestsHistory();
-		return roomHistory;
+	public ArrayDeque<Guest> getRoomHistory(Room room) {
+		return roomManager.getRoomHistory(room);
 	}
 
 	@Override
@@ -181,6 +181,7 @@ public class Reception implements IReception, Observable {
 				currentRoom.setEmpty(false);
 				guest.setRoom(currentRoom);
 				guestManager.add(guest);
+				room.getRoomHistory().addFirst(guest);
 				this.notifyRoomsObservers();
 				this.notifyGuestObservers();
 				loggerReception.info("Guest was occupy");

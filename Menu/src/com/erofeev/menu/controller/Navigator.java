@@ -17,7 +17,7 @@ public class Navigator {
 	}
 
 	public void printMenu() {
-		System.out.println((getCurrentMenu().getName()));
+		Printer.print((getCurrentMenu().getName()));
 		MenuItem[] menuItems = currentMenu.getMenuitems();
 		for (int i = 0; i < menuItems.length; i++) {
 			Printer.print(i + " - " + menuItems[i].getTitle());
