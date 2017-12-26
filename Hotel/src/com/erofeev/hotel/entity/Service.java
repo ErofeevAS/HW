@@ -7,6 +7,7 @@ import com.erofeev.hotel.api.IEntity;
 public class Service implements IEntity, Serializable {
 
 	private static final long serialVersionUID = 1L;
+	private int serviceId;
 	private String name;
 	private float price;
 
@@ -18,6 +19,14 @@ public class Service implements IEntity, Serializable {
 
 	public Service() {
 
+	}
+
+	public int getServiceId() {
+		return serviceId;
+	}
+
+	public void setServiceId(int serviceId) {
+		this.serviceId = serviceId;
 	}
 
 	public String getName() {
@@ -38,9 +47,7 @@ public class Service implements IEntity, Serializable {
 
 	@Override
 	public String toString() {
-		StringBuilder str = new StringBuilder();
-		str.append(this.getName()).append(" ").append(this.getPrice());
-		return str.toString();
+		return "Service [serviceId=" + serviceId + ", name=" + name + ", price=" + price + "]";
 	}
 
 	@Override

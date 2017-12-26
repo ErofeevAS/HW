@@ -39,6 +39,11 @@ public class Reception implements IReception, Observable {
 	private ArrayList<Observer> guestObservers;
 	private ArrayList<Observer> roomsObservers;
 	private ArrayList<Observer> servicesObservers;
+	private int roomHistorySize = 0;
+	private boolean changeStatusFlag = true;
+	private String ROOMS_FILE;
+	private String GUESTS_FILE;
+	private String SERVICES_FILE;
 
 	private static final Logger loggerReception = LogManager.getLogger(Reception.class);
 
@@ -58,9 +63,34 @@ public class Reception implements IReception, Observable {
 
 	}
 
-	public void initFileManager(String ROOMS_FILE, String GUESTS_FILE, String SERVICES_FILE)
-			throws IOException, ParseException {
-		FileManager.getInstance().initFileManager(ROOMS_FILE, GUESTS_FILE, SERVICES_FILE);
+	public void initReception(ArrayList<String> parameters) {
+
+		String changeStatusFlagStr = parameters.get(0);
+		String roomHistorySizeStr = parameters.get(1);
+		String ROOMS_FILE = parameters.get(2);
+		String GUESTS_FILE = parameters.get(3);
+		String SERVICES_FILE = parameters.get(4);
+
+		if (changeStatusFlagStr.equals("true")) {
+			this.changeStatusFlag = true;
+		} else {
+			this.changeStatusFlag = false;
+		}
+		this.roomHistorySize = Integer.parseInt(roomHistorySizeStr);
+		this.ROOMS_FILE = ROOMS_FILE;
+		this.GUESTS_FILE = GUESTS_FILE;
+		this.SERVICES_FILE = SERVICES_FILE;
+		try {
+			this.initFileManager();
+		} catch (IOException | ParseException e) {
+			Printer.print("Cant init FileManager");
+			e.printStackTrace();
+		}
+
+	}
+
+	private void initFileManager() throws IOException, ParseException {
+		FileManager.getInstance().initFileManager(this.ROOMS_FILE, this.GUESTS_FILE, this.SERVICES_FILE);
 		loggerReception.info("Start initilization from files:");
 
 		try {
@@ -206,9 +236,13 @@ public class Reception implements IReception, Observable {
 
 	@Override
 	public void changeRoomStatus(Room room, RoomStatus status) {
-		roomManager.findExistingEntity(room).setRoomStatus(status);
-		loggerReception.info(room.toString() + " status was changed");
-		this.notifyRoomsObservers();
+		if (!this.changeStatusFlag) {
+			loggerReception.info("You cant change status!");
+		} else {
+			roomManager.findExistingEntity(room).setRoomStatus(status);
+			loggerReception.info(room.toString() + " status was changed");
+			this.notifyRoomsObservers();
+		}
 
 	}
 
@@ -278,7 +312,13 @@ public class Reception implements IReception, Observable {
 
 	@Override
 	public void addRoom(Room room) {
-		roomManager.add(room);
+		if (this.roomHistorySize != 0) {
+			room.setRoomHistory(new ArrayDeque<Guest>(roomHistorySize));
+			roomManager.add(room);
+		} else {
+			roomManager.add(room);
+		}
+
 		this.notifyRoomsObservers();
 
 	}
@@ -291,9 +331,13 @@ public class Reception implements IReception, Observable {
 	}
 
 	public void addServices(ArrayList<Service> newServices) {
-		for (int i = 0; i < newServices.size(); i++) {
-			servicesManager.add(newServices.get(i));
-		}
+		/*
+		 * for (int i = 0; i < newServices.size(); i++) {
+		 * servicesManager.add(newServices.get(i));
+		 * 
+		 * }
+		 **/
+		servicesManager.add(newServices);
 
 	}
 
@@ -400,6 +444,46 @@ public class Reception implements IReception, Observable {
 			servicesObservers.get(i).update(this.servicesManager);
 		}
 
+	}
+
+	public int getRoomHistorySize() {
+		return roomHistorySize;
+	}
+
+	public void setRoomHistorySize(int roomHistorySize) {
+		this.roomHistorySize = roomHistorySize;
+	}
+
+	public boolean isChangeStatusFlag() {
+		return changeStatusFlag;
+	}
+
+	public void setChangeStatusFlag(boolean changeStatusFlag) {
+		this.changeStatusFlag = changeStatusFlag;
+	}
+
+	public String getROOMS_FILE() {
+		return ROOMS_FILE;
+	}
+
+	public void setROOMS_FILE(String rOOMS_FILE) {
+		ROOMS_FILE = rOOMS_FILE;
+	}
+
+	public String getGUESTS_FILE() {
+		return GUESTS_FILE;
+	}
+
+	public void setGUESTS_FILE(String gUESTS_FILE) {
+		GUESTS_FILE = gUESTS_FILE;
+	}
+
+	public String getSERVICES_FILE() {
+		return SERVICES_FILE;
+	}
+
+	public void setSERVICES_FILE(String sERVICES_FILE) {
+		SERVICES_FILE = sERVICES_FILE;
 	}
 
 }

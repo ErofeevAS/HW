@@ -11,15 +11,43 @@ import com.erofeev.hotel.entity.Service;
 public class ServicesManager extends AbstractManager<Service> {
 
 	private static final Logger servicesManagerLogger = LogManager.getLogger(ServicesManager.class);
+	private int currentId = 0;
 
 	ArrayList<Service> services = new ArrayList<Service>();
 
+	private int getMaxId() {
+		int maxId = 0;
+		for (Service service : services) {
+			if (service.getServiceId() > maxId) {
+				maxId = service.getServiceId();
+			}
+		}
+		return maxId;
+	}
+
 	public void add(Service service) {
+		service.setServiceId(currentId);
+		currentId++;
 		if (services.add(service)) {
 			servicesManagerLogger.info(service.toString() + " was added.");
 		} else {
+			currentId--;
 			servicesManagerLogger.info(service.toString() + " already exists.");
 		}
+	}
+
+	public void add(ArrayList<Service> newServices) {
+
+		if (services.addAll(newServices)) {
+			servicesManagerLogger.info(services.toString() + " was added.");
+		} else {
+			currentId--;
+			servicesManagerLogger.info(services.toString() + " already exists.");
+		}
+
+		currentId = this.getMaxId();
+		System.out.println(this.getMaxId() + " @#");
+
 	}
 
 	public void remove(Service service) {

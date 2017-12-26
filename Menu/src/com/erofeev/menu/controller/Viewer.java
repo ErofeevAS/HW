@@ -126,4 +126,19 @@ public class Viewer {
 
 	}
 
+	public static ArrayList<String> modifyRoom() throws IOException {
+		ArrayList<String> newParameters = new ArrayList<String>();
+		Printer.print("If you dont need change current parameter just enter: null");
+		Printer.print("Enter new Room Number:");
+		newParameters.add(Viewer.readLine());
+		Printer.print("Enter new Room Stars:");
+		newParameters.add(Viewer.readLine());
+		Printer.print("Enter new  Room Price:");
+		newParameters.add(Viewer.readLine());
+		Printer.print("Enter new Room Capacity:");
+		newParameters.add(Viewer.readLine());
+
+		return newParameters;
+	}
+
 }

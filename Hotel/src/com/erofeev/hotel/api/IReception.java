@@ -1,7 +1,5 @@
 package com.erofeev.hotel.api;
 
-import java.io.IOException;
-import java.text.ParseException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 
@@ -67,7 +65,6 @@ public interface IReception {
 
 	public Service findServicebyName(String name);
 
-	public void initFileManager(String ROOMS_FILE, String GUESTS_FILE, String SERVICES_FILE)
-			throws IOException, ParseException;
+	public void initReception(ArrayList<String> parameters);
 
 }

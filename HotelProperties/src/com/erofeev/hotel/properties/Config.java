@@ -3,26 +3,36 @@ package com.erofeev.hotel.properties;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Properties;
 
-public class Conf {
+public class Config {
 
-	public void getConf() {
+	public static ArrayList<String> getConfig() {
 		String GUESTS_FILE;
 		String ROOMS_FILE;
 		String SERVICES_FILE;
-		String status;
-		String roomNote;
+		String changeStatusFlag;
+		String roomHistorySize;
 		Properties properties = new Properties();
+		ArrayList<String> parameters = new ArrayList<String>();
 
 		try (FileInputStream in = new FileInputStream("ui.properties")) {
 
 			properties.load(in);
-			GUESTS_FILE = properties.getProperty("guests");
+			changeStatusFlag = properties.getProperty("changeStatusFlag");
+			roomHistorySize = properties.getProperty("roomHistorySize");
 			ROOMS_FILE = properties.getProperty("rooms");
+			GUESTS_FILE = properties.getProperty("guests");
 			SERVICES_FILE = properties.getProperty("services");
-			status = properties.getProperty("status");
-			roomNote = properties.getProperty("roomNote");
+
+			if (changeStatusFlag.equals(null)) {
+				changeStatusFlag = "false";
+			}
+
+			if (roomHistorySize.equals(null)) {
+				roomHistorySize = "10";
+			}
 
 			if (GUESTS_FILE.equals(null)) {
 				GUESTS_FILE = "guests.txt";
@@ -35,6 +45,12 @@ public class Conf {
 				SERVICES_FILE = "services.txt";
 			}
 
+			parameters.add(changeStatusFlag);
+			parameters.add(roomHistorySize);
+			parameters.add(ROOMS_FILE);
+			parameters.add(GUESTS_FILE);
+			parameters.add(SERVICES_FILE);
+
 		} catch (FileNotFoundException e) {
 			System.out.println(e.getStackTrace());
 
@@ -42,6 +58,7 @@ public class Conf {
 			e.getMessage();
 
 		}
+		return parameters;
 	}
 
 }

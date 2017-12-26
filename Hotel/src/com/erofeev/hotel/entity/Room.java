@@ -8,6 +8,7 @@ import com.erofeev.hotel.api.IEntity;
 public class Room implements IEntity, Serializable {
 
 	private static final long serialVersionUID = 1L;
+	private int roomId;
 	private int stars;
 	private float price;
 	private int capacity;

@@ -38,7 +38,7 @@ public class ReceptionRunner {
 		}
 
 		Reception reception = new Reception();
-		reception.initFileManager(ROOMS_FILE, GUESTS_FILE, SERVICES_FILE);
+		// reception.initFileManager(ROOMS_FILE, GUESTS_FILE, SERVICES_FILE);
 
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
 		Date arrivalDate1 = dateFormat.parse("2017-10-10");
