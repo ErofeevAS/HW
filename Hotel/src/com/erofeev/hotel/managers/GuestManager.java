@@ -12,22 +12,29 @@ import com.erofeev.hotel.entity.Service;
 public class GuestManager extends AbstractManager<Guest> {
 
 	private ArrayList<Guest> guests = new ArrayList<Guest>();
-	private ArrayList<Guest> guestsHistory = new ArrayList<Guest>();
 	private static final Logger loggerGuestManager = LogManager.getLogger(GuestManager.class);
+	private int currentId = 0;
 
 	final long MILISEC_IN_DAY = 86400000;
 
 	public void add(Guest guest) {
+		guest.setID(currentId);
+		currentId++;
 		if (guests.add(guest)) {
-			// guestsHistory.add(guest);
 			loggerGuestManager.info(guest.toString() + " was added.");
 		} else {
 			loggerGuestManager.info(guest.toString() + " already exists.");
+			currentId--;
 		}
 	}
 
-	public ArrayList<Guest> getGuestsHistory() {
-		return guestsHistory;
+	public void add(ArrayList<Guest> newGuests) {
+		if (guests.addAll(newGuests)) {
+			loggerGuestManager.info(newGuests.toString() + " was added.");
+		} else {
+			loggerGuestManager.info(newGuests.toString() + " already exists.");
+		}
+		currentId = this.getMaxId();
 	}
 
 	public void remove(Guest guest) {

@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import com.erofeev.hotel.api.IReception;
 import com.erofeev.hotel.entity.Service;
-
 import com.erofeev.menu.api.IAction;
 import com.erofeev.menu.controller.Viewer;
 

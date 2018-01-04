@@ -141,4 +141,9 @@ public class Viewer {
 		return newParameters;
 	}
 
+	public static String getFileName() throws IOException {
+		Printer.print("Enter file name:");
+		return Viewer.readLine();
+	}
+
 }

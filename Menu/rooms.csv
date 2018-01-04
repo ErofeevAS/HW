@@ -1,0 +1,3 @@
+RoomId;Name;Stars;Capacity;Price;Status;Empy;RoomHistory;
+0;1;2;2;10.0;SERVICED;false;Alex Puplin 2016-11-11 2016-12-12 1 supper 
+1;2;5;1;1024.0;SERVICED;true;

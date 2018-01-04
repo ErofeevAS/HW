@@ -13,13 +13,26 @@ import com.erofeev.hotel.entity.Room;
 public class RoomManager extends AbstractManager<Room> {
 	private ArrayList<Room> rooms = new ArrayList<Room>();
 	private static final Logger loggerRoomManager = LogManager.getLogger(RoomManager.class);
+	private int currentId = 0;
 
 	public void add(Room room) {
+		room.setID(currentId);
+		currentId++;
 		if (rooms.add(room)) {
 			loggerRoomManager.info(room.toString() + " was added.");
 		} else {
 			loggerRoomManager.info(room.toString() + " already exists.");
+			currentId--;
 		}
+	}
+
+	public void add(ArrayList<Room> newRooms) {
+		if (rooms.addAll(newRooms)) {
+			loggerRoomManager.info(newRooms.toString() + " was added.");
+		} else {
+			loggerRoomManager.info(newRooms.toString() + " already exists.");
+		}
+		currentId = this.getMaxId();
 	}
 
 	public void remove(Room room) {

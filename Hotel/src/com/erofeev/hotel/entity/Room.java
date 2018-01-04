@@ -8,7 +8,7 @@ import com.erofeev.hotel.api.IEntity;
 public class Room implements IEntity, Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private int roomId;
+	private int ID;
 	private int stars;
 	private float price;
 	private int capacity;
@@ -29,6 +29,14 @@ public class Room implements IEntity, Serializable {
 
 	public Room() {
 
+	}
+
+	public int getID() {
+		return ID;
+	}
+
+	public void setID(int id) {
+		ID = id;
 	}
 
 	public ArrayDeque<Guest> getRoomHistory() {
@@ -96,13 +104,15 @@ public class Room implements IEntity, Serializable {
 	public String toString() {
 
 		StringBuilder str = new StringBuilder();
-		str.append(this.getName()).append(" ").append(this.getStars()).append(" ").append(this.getPrice()).append(" ")
-				.append(this.getCapacity());
-		str.append(" ");
+		String separator = " ";
+		str.append("RoomId: ").append(this.getID()).append(separator);
+		str.append(this.getName()).append(separator).append(this.getStars()).append(separator).append(this.getPrice())
+				.append(separator).append(this.getCapacity());
+		str.append(separator);
 		str.append(this.isEmpty());
-		str.append(" ");
+		str.append(separator);
 		str.append(this.getRoomStatus());
-		str.append(" ");
+		str.append(separator);
 		return str.toString();
 	}
 

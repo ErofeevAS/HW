@@ -67,4 +67,6 @@ public interface IReception {
 
 	public void initReception(ArrayList<String> parameters);
 
+	public void importServices(ArrayList<Service> desrialize);
+
 }

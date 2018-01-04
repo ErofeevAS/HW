@@ -7,9 +7,13 @@ import com.erofeev.hotel.api.IEntity;
 public class Service implements IEntity, Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private int serviceId;
+	private int ID;
 	private String name;
 	private float price;
+
+	public Service() {
+
+	}
 
 	public Service(String name, float price) {
 		super();
@@ -17,16 +21,20 @@ public class Service implements IEntity, Serializable {
 		this.price = price;
 	}
 
-	public Service() {
-
+	public Service(int id, String name, float price) {
+		super();
+		this.ID = id;
+		this.name = name;
+		this.price = price;
 	}
 
-	public int getServiceId() {
-		return serviceId;
+	@Override
+	public int getID() {
+		return ID;
 	}
 
-	public void setServiceId(int serviceId) {
-		this.serviceId = serviceId;
+	public void setID(int serviceId) {
+		this.ID = serviceId;
 	}
 
 	public String getName() {
@@ -47,7 +55,15 @@ public class Service implements IEntity, Serializable {
 
 	@Override
 	public String toString() {
-		return "Service [serviceId=" + serviceId + ", name=" + name + ", price=" + price + "]";
+		StringBuilder str = new StringBuilder();
+		String separator = " ";
+		str.append("serviceId").append(separator).append(this.getID()).append(separator);
+		// str.append(System.getProperty("line.separator"));
+		str.append("name").append(separator).append(this.getName()).append(separator);
+		// str.append(System.getProperty("line.separator"));
+		str.append("price").append(separator).append(this.getPrice()).append(separator);
+		// str.append(System.getProperty("line.separator"));
+		return str.toString();
 	}
 
 	@Override

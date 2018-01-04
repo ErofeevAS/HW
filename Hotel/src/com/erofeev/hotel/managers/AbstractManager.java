@@ -2,6 +2,8 @@ package com.erofeev.hotel.managers;
 
 import java.util.ArrayList;
 
+import com.erofeev.hotel.api.IEntity;
+
 public abstract class AbstractManager<E> {
 
 	private ArrayList<E> entities = new ArrayList<>();
@@ -21,6 +23,17 @@ public abstract class AbstractManager<E> {
 	public abstract void remove(E entity);
 
 	public abstract E findbyName(String name);
+
+	public int getMaxId() {
+		int maxId = 0;
+		ArrayList<E> list = getAll();
+		for (E entity : list) {
+			if (((IEntity) entity).getID() > maxId) {
+				maxId = ((IEntity) entity).getID();
+			}
+		}
+		return maxId;
+	}
 
 	public E findExistingEntity(E entity) {
 		int index = this.getAll().indexOf(entity);

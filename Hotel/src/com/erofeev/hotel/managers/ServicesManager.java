@@ -15,18 +15,8 @@ public class ServicesManager extends AbstractManager<Service> {
 
 	ArrayList<Service> services = new ArrayList<Service>();
 
-	private int getMaxId() {
-		int maxId = 0;
-		for (Service service : services) {
-			if (service.getServiceId() > maxId) {
-				maxId = service.getServiceId();
-			}
-		}
-		return maxId;
-	}
-
 	public void add(Service service) {
-		service.setServiceId(currentId);
+		service.setID(currentId);
 		currentId++;
 		if (services.add(service)) {
 			servicesManagerLogger.info(service.toString() + " was added.");
@@ -41,12 +31,10 @@ public class ServicesManager extends AbstractManager<Service> {
 		if (services.addAll(newServices)) {
 			servicesManagerLogger.info(services.toString() + " was added.");
 		} else {
-			currentId--;
 			servicesManagerLogger.info(services.toString() + " already exists.");
 		}
 
 		currentId = this.getMaxId();
-		System.out.println(this.getMaxId() + " @#");
 
 	}
 

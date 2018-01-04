@@ -6,6 +6,8 @@ import java.util.Map;
 import com.erofeev.hotel.api.IReception;
 import com.erofeev.menu.actions.guest.AddServiceToGuest;
 import com.erofeev.menu.actions.guest.EvictGuest;
+import com.erofeev.menu.actions.guest.ExportGuest;
+import com.erofeev.menu.actions.guest.ImportGuests;
 import com.erofeev.menu.actions.guest.OccupyGuest;
 import com.erofeev.menu.actions.guest.RemoveServiceToGues;
 import com.erofeev.menu.actions.guest.ViewAllGuests;
@@ -17,6 +19,8 @@ import com.erofeev.menu.actions.room.AddRoom;
 import com.erofeev.menu.actions.room.ChangeRoomPrice;
 import com.erofeev.menu.actions.room.ChangeRoomStatus;
 import com.erofeev.menu.actions.room.CloneRoom;
+import com.erofeev.menu.actions.room.ExportRooms;
+import com.erofeev.menu.actions.room.ImportRooms;
 import com.erofeev.menu.actions.room.RemoveRoom;
 import com.erofeev.menu.actions.room.ViewAllEmptyRooms;
 import com.erofeev.menu.actions.room.ViewAllRooms;
@@ -27,6 +31,8 @@ import com.erofeev.menu.actions.room.ViewRoomsSortedByPrice;
 import com.erofeev.menu.actions.room.ViewRoomsSortedByStars;
 import com.erofeev.menu.actions.service.AddService;
 import com.erofeev.menu.actions.service.ChangeServicePrice;
+import com.erofeev.menu.actions.service.ExportServices;
+import com.erofeev.menu.actions.service.ImportServices;
 import com.erofeev.menu.actions.service.RemoveService;
 import com.erofeev.menu.actions.service.ViewAllServices;
 import com.erofeev.menu.actions.service.ViewServiceSortedByPrice;
@@ -72,6 +78,13 @@ public class Builder {
 
 		this.createExportMenu();
 		this.createExportServiceMenu();
+		this.createExportRoomMenu();
+		this.createExportGuestMenu();
+
+		this.createImportMenu();
+		this.createImportGuestsMenu();
+		this.createImportRoomsMenu();
+		this.createImportServicesMenu();
 
 	}
 
@@ -81,12 +94,18 @@ public class Builder {
 		MenuItem menuItemAView = new MenuItem("View menu:", Menus.VIEW);
 		MenuItem menuItemClone = new MenuItem("Clone menu:", Menus.CLONE);
 		MenuItem menuItemExport = new MenuItem("Export menu:", Menus.EXPORT);
-		MenuItem[] menuItems = { menuItemAction, menuItemAView, menuItemClone, menuItemExport };
+		MenuItem menuItemImport = new MenuItem("Import menu:", Menus.IMPORT);
+		MenuItem[] menuItems = { menuItemAction, menuItemAView, menuItemClone, menuItemExport, menuItemImport };
 
 		mainMenu.initDefault(menuItems);
 		mainMenu.setName(Menus.MAIN.toString());
 		mainMenu.setMenuitems(menuItems);
 		menus.put(Menus.MAIN, mainMenu);
+
+	}
+
+	private void createBackMenu() {
+		Menu backMenu = new Menu();
 
 	}
 
@@ -104,8 +123,10 @@ public class Builder {
 	private void createExportMenu() {
 		Menu exportMenu = new Menu();
 
-		MenuItem menuItemCloneRoom = new MenuItem("Export menu:", Menus.EXPORTSERVICE);
-		MenuItem[] menuItems = { menuItemCloneRoom };
+		MenuItem menuItemExportRoom = new MenuItem("Export services menu:", Menus.EXPORTSERVICE);
+		MenuItem menuItemExportService = new MenuItem("Export rooms menu:", Menus.EXPORTROOM);
+		MenuItem menuItemExprotGuest = new MenuItem("Export guests menu:", Menus.EXPORTGUEST);
+		MenuItem[] menuItems = { menuItemExportRoom, menuItemExportService, menuItemExprotGuest };
 		exportMenu.initDefault(menuItems);
 		exportMenu.setName(Menus.EXPORT.toString());
 		exportMenu.setMenuitems(menuItems);
@@ -115,12 +136,85 @@ public class Builder {
 	private void createExportServiceMenu() {
 		Menu exportMenu = new Menu();
 
-		MenuItem menuItemCloneRoom = new MenuItem("Export service:", Menus.FINISH);
-		MenuItem[] menuItems = { menuItemCloneRoom };
-		exportMenu.initDefault(menuItems);
+		MenuItem menuItemExportService = new MenuItem("Export service:", Menus.FINISH);
+		MenuItem[] menuItems = { menuItemExportService };
+		IAction exportService = new ExportServices(model);
+		menuItemExportService.setActiom(exportService);
 		exportMenu.setName(Menus.EXPORTSERVICE.toString());
 		exportMenu.setMenuitems(menuItems);
 		menus.put(Menus.EXPORTSERVICE, exportMenu);
+	}
+
+	private void createExportRoomMenu() {
+		Menu exportMenu = new Menu();
+
+		MenuItem menuItemExprotRoom = new MenuItem("Export rooms:", Menus.FINISH);
+		MenuItem[] menuItems = { menuItemExprotRoom };
+		IAction exportRooms = new ExportRooms(model);
+		menuItemExprotRoom.setActiom(exportRooms);
+		exportMenu.setName(Menus.EXPORTROOM.toString());
+		exportMenu.setMenuitems(menuItems);
+		menus.put(Menus.EXPORTROOM, exportMenu);
+	}
+
+	private void createImportMenu() {
+		Menu importmenu = new Menu();
+		MenuItem menuItemImportRoom = new MenuItem("Import services menu:", Menus.IMPORTSERVICES);
+		MenuItem menuItemImportService = new MenuItem("Import rooms menu:", Menus.IMPORTROOMS);
+		MenuItem menuItemImportGuest = new MenuItem("Import guests menu:", Menus.IMPORTGUESTS);
+		MenuItem[] menuItems = { menuItemImportRoom, menuItemImportService, menuItemImportGuest };
+		importmenu.initDefault(menuItems);
+		importmenu.setName(Menus.IMPORT.toString());
+		importmenu.setMenuitems(menuItems);
+		menus.put(Menus.IMPORT, importmenu);
+	}
+
+	private void createImportServicesMenu() {
+		Menu importmenu = new Menu();
+
+		MenuItem menuItemImportService = new MenuItem("Import service:", Menus.FINISH);
+		MenuItem[] menuItems = { menuItemImportService };
+		IAction importServices = new ImportServices(model);
+		menuItemImportService.setActiom(importServices);
+		importmenu.setName(Menus.IMPORTSERVICES.toString());
+		importmenu.setMenuitems(menuItems);
+		menus.put(Menus.IMPORTSERVICES, importmenu);
+	}
+
+	private void createImportGuestsMenu() {
+		Menu importmenu = new Menu();
+
+		MenuItem menuItemImport = new MenuItem("Import guests:", Menus.FINISH);
+		MenuItem[] menuItems = { menuItemImport };
+		ImportGuests importGuests = new ImportGuests(model);
+		menuItemImport.setActiom(importGuests);
+		importmenu.setName(Menus.IMPORTGUESTS.toString());
+		importmenu.setMenuitems(menuItems);
+		menus.put(Menus.IMPORTGUESTS, importmenu);
+	}
+
+	private void createImportRoomsMenu() {
+		Menu importmenu = new Menu();
+
+		MenuItem menuItemImportRoom = new MenuItem("Import rooms:", Menus.FINISH);
+		MenuItem[] menuItems = { menuItemImportRoom };
+		IAction importRooms = new ImportRooms(model);
+		menuItemImportRoom.setActiom(importRooms);
+		importmenu.setName(Menus.IMPORTROOMS.toString());
+		importmenu.setMenuitems(menuItems);
+		menus.put(Menus.IMPORTROOMS, importmenu);
+	}
+
+	private void createExportGuestMenu() {
+		Menu exportMenu = new Menu();
+
+		MenuItem menuItemCloneRoom = new MenuItem("Export guests:", Menus.FINISH);
+		MenuItem[] menuItems = { menuItemCloneRoom };
+		IAction exportGuest = new ExportGuest(model);
+		menuItemCloneRoom.setActiom(exportGuest);
+		exportMenu.setName(Menus.EXPORTGUEST.toString());
+		exportMenu.setMenuitems(menuItems);
+		menus.put(Menus.EXPORTGUEST, exportMenu);
 	}
 
 	private void createCloneRoomMenu() {

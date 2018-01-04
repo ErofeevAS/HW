@@ -10,22 +10,31 @@ import com.erofeev.menu.controller.Viewer;
 import com.erofeev.menu.export.TextFileManager;
 import com.erofeev.menu.serializator.SerializatorServiceCSV;
 
-public class ExportServices implements IAction {
+public class ImportServices implements IAction {
 	private IReception model;
 
-	public ExportServices(IReception model) {
+	public ImportServices(IReception model) {
 		this.model = model;
 	}
 
 	@Override
 	public void execute() throws IOException {
-		ArrayList<Service> services = model.getAllServices();
 
 		SerializatorServiceCSV serialCSV = new SerializatorServiceCSV();
 		TextFileManager fileManager = new TextFileManager();
+		System.out.println("Enter file name:");
 
-		String[] serialServices = serialCSV.serialize(services);
-		fileManager.writeToFile(Viewer.getFileName(), serialServices);
+		String fileName = Viewer.readLine();
+		ArrayList<String> lines = (ArrayList<String>) fileManager.readFromFile(fileName);
+
+		ArrayList<Service> services = serialCSV.desrialize(lines);
+
+		for (Service service : services) {
+			System.out.println(service);
+		}
+		model.importServices(services);
+		// String[] serialServices = serialCSV.serialize(services);
+		// fileManager.writeToFile(Viewer.getFileName(), serialServices);
 
 	}
 

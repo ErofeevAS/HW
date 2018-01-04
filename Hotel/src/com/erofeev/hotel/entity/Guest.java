@@ -11,9 +11,9 @@ import com.erofeev.hotel.api.IEntity;
 public class Guest implements IEntity, Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private int guestId;
+	private int ID;
 	private String firstName;
-	private String secondName;
+	private String surName;
 	private Date arrivalDate;
 	private Date leavingDate;
 	private Room room;
@@ -22,7 +22,7 @@ public class Guest implements IEntity, Serializable {
 	public Guest(String firstName, String secondName, Date arrivalDate, Date leavingDate) {
 		super();
 		this.firstName = firstName;
-		this.secondName = secondName;
+		this.surName = secondName;
 		this.arrivalDate = arrivalDate;
 		this.leavingDate = leavingDate;
 		this.services = new ArrayList<Service>();
@@ -33,7 +33,7 @@ public class Guest implements IEntity, Serializable {
 	}
 
 	public String getName() {
-		return (this.getFirstName() + " " + this.getSecondName());
+		return (this.getFirstName() + " " + this.getSurName());
 	}
 
 	public Room getRoom() {
@@ -60,16 +60,16 @@ public class Guest implements IEntity, Serializable {
 		return firstName;
 	}
 
-	public String getSecondName() {
-		return secondName;
+	public String getSurName() {
+		return surName;
 	}
 
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
 
-	public void setSecondName(String secondName) {
-		this.secondName = secondName;
+	public void setSurName(String lastName) {
+		this.surName = lastName;
 	}
 
 	public Date getArrivalDate() {
@@ -84,19 +84,21 @@ public class Guest implements IEntity, Serializable {
 	public String toString() {
 		StringBuilder str = new StringBuilder();
 		ArrayList<Service> services;
+		String separator = " ";
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
 
-		str.append(this.getFirstName()).append(" ").append(this.getSecondName()).append(" ")
-				.append(dateFormat.format(getArrivalDate())).append(" ").append(dateFormat.format(getLeavingDate()));
+		str.append(this.getFirstName()).append(separator).append(this.getSurName()).append(separator)
+				.append(dateFormat.format(getArrivalDate())).append(separator)
+				.append(dateFormat.format(getLeavingDate()));
 
-		str.append(" ");
+		str.append(separator);
 		str.append(this.getRoom().getName());
 
 		services = this.getGuestServices();
 		for (int i = 0; i < services.size(); i++) {
-			str.append(" ");
+			str.append(separator);
 			str.append(services.get(i).getName());
-			str.append(" ");
+			str.append(separator);
 
 		}
 
@@ -127,13 +129,22 @@ public class Guest implements IEntity, Serializable {
 				return false;
 		} else if (!leavingDate.equals(other.leavingDate))
 			return false;
-		if (secondName == null) {
-			if (other.secondName != null)
+		if (surName == null) {
+			if (other.surName != null)
 				return false;
-		} else if (!secondName.equals(other.secondName))
+		} else if (!surName.equals(other.surName))
 			return false;
 
 		return true;
+	}
+
+	public int getID() {
+
+		return this.ID;
+	}
+
+	public void setID(int id) {
+		ID = id;
 	}
 
 }

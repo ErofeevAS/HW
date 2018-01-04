@@ -324,28 +324,18 @@ public class Reception implements IReception, Observable {
 	}
 
 	public void addRooms(ArrayList<Room> newRooms) {
-		for (int i = 0; i < newRooms.size(); i++) {
-			roomManager.add(newRooms.get(i));
-		}
+		roomManager.add(newRooms);
 
 	}
 
 	public void addServices(ArrayList<Service> newServices) {
-		/*
-		 * for (int i = 0; i < newServices.size(); i++) {
-		 * servicesManager.add(newServices.get(i));
-		 * 
-		 * }
-		 **/
 		servicesManager.add(newServices);
+		this.notifyServicesObservers();
 
 	}
 
 	public void addGuests(ArrayList<Guest> newGuests) {
-		for (int i = 0; i < newGuests.size(); i++) {
-			newGuests.get(i).getRoom().setEmpty(false);
-			guestManager.add(newGuests.get(i));
-		}
+		guestManager.add(newGuests);
 	}
 
 	@Override
@@ -484,6 +474,12 @@ public class Reception implements IReception, Observable {
 
 	public void setSERVICES_FILE(String sERVICES_FILE) {
 		SERVICES_FILE = sERVICES_FILE;
+	}
+
+	@Override
+	public void importServices(ArrayList<Service> desrialize) {
+		this.addServices(desrialize);
+
 	}
 
 }
