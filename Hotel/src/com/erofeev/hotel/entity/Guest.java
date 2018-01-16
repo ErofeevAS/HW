@@ -48,6 +48,10 @@ public class Guest implements IEntity, Serializable {
 		return services;
 	}
 
+	public void setGuestServices(ArrayList<Service> guestServices) {
+		this.services = guestServices;
+	}
+
 	public void addGuestService(Service service) {
 		services.add(service);
 	}
@@ -92,7 +96,7 @@ public class Guest implements IEntity, Serializable {
 				.append(dateFormat.format(getLeavingDate()));
 
 		str.append(separator);
-		str.append(this.getRoom().getName());
+		// str.append(this.getRoom().getName());
 
 		services = this.getGuestServices();
 		for (int i = 0; i < services.size(); i++) {

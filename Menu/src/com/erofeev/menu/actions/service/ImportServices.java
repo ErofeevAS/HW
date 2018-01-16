@@ -5,10 +5,11 @@ import java.util.ArrayList;
 
 import com.erofeev.hotel.api.IReception;
 import com.erofeev.hotel.entity.Service;
+import com.erofeev.hotel.print.Printer;
 import com.erofeev.menu.api.IAction;
 import com.erofeev.menu.controller.Viewer;
 import com.erofeev.menu.export.TextFileManager;
-import com.erofeev.menu.serializator.SerializatorServiceCSV;
+import com.erofeev.menu.parsercsv.ParserServicesCSV;
 
 public class ImportServices implements IAction {
 	private IReception model;
@@ -20,18 +21,14 @@ public class ImportServices implements IAction {
 	@Override
 	public void execute() throws IOException {
 
-		SerializatorServiceCSV serialCSV = new SerializatorServiceCSV();
+		ParserServicesCSV serialCSV = new ParserServicesCSV();
 		TextFileManager fileManager = new TextFileManager();
-		System.out.println("Enter file name:");
+		Printer.print("Enter file name:");
 
 		String fileName = Viewer.readLine();
 		ArrayList<String> lines = (ArrayList<String>) fileManager.readFromFile(fileName);
+		ArrayList<Service> services = serialCSV.parseCSV(lines);
 
-		ArrayList<Service> services = serialCSV.desrialize(lines);
-
-		for (Service service : services) {
-			System.out.println(service);
-		}
 		model.importServices(services);
 		// String[] serialServices = serialCSV.serialize(services);
 		// fileManager.writeToFile(Viewer.getFileName(), serialServices);

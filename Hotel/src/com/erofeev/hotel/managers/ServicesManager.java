@@ -47,6 +47,28 @@ public class ServicesManager extends AbstractManager<Service> {
 
 	}
 
+	// public void update(ArrayList<Service> newServices) {
+	// for (int i = 0; i < newServices.size(); i++) {
+	// boolean containFlag = false;
+	// Service newService = newServices.get(i);
+	// int newID = newService.getID();
+	// for (int j = 0; j < services.size(); j++) {
+	// Service service = services.get(j);
+	// int ID = service.getID();
+	// if (ID == newID) {
+	// services.remove(j);
+	// services.add(j, newService);
+	// containFlag = true;
+	// break;
+	// }
+	// }
+	// if (containFlag == false) {
+	// services.add(newService);
+	// }
+	// }
+	//
+	// }
+
 	public Service findbyName(String name) {
 		Service foundEntity = null;
 		for (int i = 0; i < services.size(); i++) {
@@ -56,6 +78,18 @@ public class ServicesManager extends AbstractManager<Service> {
 			}
 		}
 		return foundEntity;
+	}
+
+	public Service findbyID(int id) {
+		Service foundEntity = null;
+		for (int i = 0; i < services.size(); i++) {
+			if ((((IEntity) services.get(i)).getID()) == (id)) {
+				foundEntity = services.get(i);
+				break;
+			}
+		}
+		return foundEntity;
+
 	}
 
 	public ArrayList<Service> getAll() {

@@ -17,6 +17,10 @@ public class Room implements IEntity, Serializable {
 	private RoomStatus roomStatus = RoomStatus.SERVICED;
 	private ArrayDeque<Guest> roomHistory = new ArrayDeque<Guest>();
 
+	public Room() {
+
+	}
+
 	public Room(String name, int stars, float price, int capacity) {
 		super();
 		this.name = name;
@@ -27,7 +31,14 @@ public class Room implements IEntity, Serializable {
 
 	}
 
-	public Room() {
+	public Room(int id, String name, int stars, float price, int capacity, boolean empty) {
+		super();
+		this.ID = id;
+		this.name = name;
+		this.stars = stars;
+		this.price = price;
+		this.capacity = capacity;
+		this.empty = empty;
 
 	}
 

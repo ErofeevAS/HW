@@ -1,14 +1,14 @@
-package com.erofeev.menu.serializator;
+package com.erofeev.menu.parsercsv;
 
 import java.util.ArrayList;
 
 import com.erofeev.hotel.entity.Service;
 
-public class SerializatorServiceCSV {
+public class ParserServicesCSV {
 
 	private final String separator = ";";
 
-	public String[] serialize(ArrayList<Service> services) {
+	public String[] listToCSV(ArrayList<Service> services) {
 
 		String separator = ";";
 		int cnt = 1;
@@ -29,7 +29,7 @@ public class SerializatorServiceCSV {
 
 	}
 
-	public ArrayList<Service> desrialize(ArrayList<String> fileString) {
+	public ArrayList<Service> parseCSV(ArrayList<String> fileString) {
 		ArrayList<Service> services = new ArrayList<Service>();
 		for (int i = 1; i < fileString.size(); i++) {
 			String[] parts = null;
@@ -38,7 +38,6 @@ public class SerializatorServiceCSV {
 			String name = parts[1];
 			Float price = Float.parseFloat(parts[2]);
 			Service service = new Service(ID, name, price);
-			System.out.println(service);
 			services.add(service);
 		}
 		return services;

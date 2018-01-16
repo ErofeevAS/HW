@@ -4,11 +4,13 @@ import java.util.EnumMap;
 import java.util.Map;
 
 import com.erofeev.hotel.api.IReception;
+import com.erofeev.menu.actions.guest.AddGuest;
 import com.erofeev.menu.actions.guest.AddServiceToGuest;
 import com.erofeev.menu.actions.guest.EvictGuest;
 import com.erofeev.menu.actions.guest.ExportGuest;
 import com.erofeev.menu.actions.guest.ImportGuests;
 import com.erofeev.menu.actions.guest.OccupyGuest;
+import com.erofeev.menu.actions.guest.RemoveGuest;
 import com.erofeev.menu.actions.guest.RemoveServiceToGues;
 import com.erofeev.menu.actions.guest.ViewAllGuests;
 import com.erofeev.menu.actions.guest.ViewGuestPrice;
@@ -332,17 +334,21 @@ public class Builder {
 		Menu viewActionAddMenu = new Menu();
 		MenuItem menuItemAddRoom = new MenuItem("add room :", Menus.FINISH);
 		MenuItem menuItemAddService = new MenuItem("add service :", Menus.FINISH);
+		MenuItem menuItemAddGuest = new MenuItem("add guest :", Menus.FINISH);
 		MenuItem menuItemOccupyGuest = new MenuItem("occupy guest :", Menus.FINISH);
 		MenuItem menuItemAddServiceToGuest = new MenuItem("add service to guest :", Menus.FINISH);
 		IAction addRoom = new AddRoom(model);
 		IAction addService = new AddService(model);
+		IAction addGuest = new AddGuest(model);
 		IAction occupyGuest = new OccupyGuest(model);
 		IAction addServiceToGuest = new AddServiceToGuest(model);
 		menuItemAddRoom.setActiom(addRoom);
 		menuItemAddService.setActiom(addService);
+		menuItemAddGuest.setActiom(addGuest);
 		menuItemOccupyGuest.setActiom(occupyGuest);
 		menuItemAddServiceToGuest.setActiom(addServiceToGuest);
-		MenuItem[] menuItems = { menuItemAddRoom, menuItemAddService, menuItemOccupyGuest, menuItemAddServiceToGuest };
+		MenuItem[] menuItems = { menuItemAddRoom, menuItemAddService, menuItemAddGuest, menuItemOccupyGuest,
+				menuItemAddServiceToGuest };
 		viewActionAddMenu.setName(Menus.ACTIONADD.toString());
 		viewActionAddMenu.setMenuitems(menuItems);
 		menus.put(Menus.ACTIONADD, viewActionAddMenu);
@@ -354,16 +360,20 @@ public class Builder {
 		MenuItem menuItemRemoveService = new MenuItem("remove service :", Menus.FINISH);
 		MenuItem menuItemEvictGuest = new MenuItem("evict guest :", Menus.FINISH);
 		MenuItem menuItemRemoveServiceToGuest = new MenuItem("remove service from guest :", Menus.FINISH);
+		MenuItem menuItemRemoveGuest = new MenuItem("remove guest :", Menus.FINISH);
 		IAction removeRoom = new RemoveRoom(model);
 		IAction removeService = new RemoveService(model);
 		IAction evictGuest = new EvictGuest(model);
 		IAction removeServiceToGues = new RemoveServiceToGues(model);
+		IAction removeGuest = new RemoveGuest(model);
+
 		menuItemRemoveRoom.setActiom(removeRoom);
 		menuItemRemoveService.setActiom(removeService);
 		menuItemEvictGuest.setActiom(evictGuest);
+		menuItemEvictGuest.setActiom(removeGuest);
 		menuItemRemoveServiceToGuest.setActiom(removeServiceToGues);
 		MenuItem[] menuItems = { menuItemRemoveRoom, menuItemRemoveService, menuItemEvictGuest,
-				menuItemRemoveServiceToGuest };
+				menuItemRemoveServiceToGuest, menuItemRemoveGuest };
 		viewActionRemoveMenu.setName(Menus.ACTIONREMOVE.toString());
 		viewActionRemoveMenu.setMenuitems(menuItems);
 		menus.put(Menus.ACTIONREMOVE, viewActionRemoveMenu);

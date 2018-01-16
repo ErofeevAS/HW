@@ -8,7 +8,7 @@ import com.erofeev.hotel.entity.Service;
 import com.erofeev.menu.api.IAction;
 import com.erofeev.menu.controller.Viewer;
 import com.erofeev.menu.export.TextFileManager;
-import com.erofeev.menu.serializator.SerializatorServiceCSV;
+import com.erofeev.menu.parsercsv.ParserServicesCSV;
 
 public class ExportServices implements IAction {
 	private IReception model;
@@ -21,10 +21,10 @@ public class ExportServices implements IAction {
 	public void execute() throws IOException {
 		ArrayList<Service> services = model.getAllServices();
 
-		SerializatorServiceCSV serialCSV = new SerializatorServiceCSV();
+		ParserServicesCSV serialCSV = new ParserServicesCSV();
 		TextFileManager fileManager = new TextFileManager();
 
-		String[] serialServices = serialCSV.serialize(services);
+		String[] serialServices = serialCSV.listToCSV(services);
 		fileManager.writeToFile(Viewer.getFileName(), serialServices);
 
 	}

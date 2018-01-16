@@ -35,6 +35,29 @@ public abstract class AbstractManager<E> {
 		return maxId;
 	}
 
+	public void update(ArrayList newServices) {
+		ArrayList<E> entityes = getAll();
+		for (int i = 0; i < newServices.size(); i++) {
+			boolean containFlag = false;
+			IEntity newEntity = (IEntity) newServices.get(i);
+			int newID = newEntity.getID();
+			for (int j = 0; j < entityes.size(); j++) {
+				IEntity entity = (IEntity) entityes.get(j);
+				int ID = entity.getID();
+				if (ID == newID) {
+					entityes.remove(j);
+					entityes.add(j, (E) newEntity);
+					containFlag = true;
+					break;
+				}
+			}
+			if (containFlag == false) {
+				entityes.add((E) newEntity);
+			}
+		}
+
+	}
+
 	public E findExistingEntity(E entity) {
 		int index = this.getAll().indexOf(entity);
 		if (index == -1) {

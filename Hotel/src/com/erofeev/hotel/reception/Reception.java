@@ -171,7 +171,7 @@ public class Reception implements IReception, Observable {
 		Room currentRoom = roomManager.findExistingEntity(room);
 		if ((currentGuest != null) && ((currentRoom != null))) {
 			currentRoom.setEmpty(true);
-			guestManager.remove(currentGuest);
+			guestManager.evict(currentGuest);
 			this.notifyRoomsObservers();
 			this.notifyGuestObservers();
 		}
@@ -192,12 +192,9 @@ public class Reception implements IReception, Observable {
 
 		if ((currentGuest != null) && ((currentRoom != null))) {
 			currentRoom.setEmpty(true);
-			guestManager.remove(currentGuest);
+			guestManager.evict(currentGuest);
 			this.notifyRoomsObservers();
 			this.notifyGuestObservers();
-		}
-		if (currentGuest == null) {
-			loggerReception.info("Guest not found");
 		}
 
 	}
@@ -325,6 +322,7 @@ public class Reception implements IReception, Observable {
 
 	public void addRooms(ArrayList<Room> newRooms) {
 		roomManager.add(newRooms);
+		this.notifyRoomsObservers();
 
 	}
 
@@ -336,6 +334,12 @@ public class Reception implements IReception, Observable {
 
 	public void addGuests(ArrayList<Guest> newGuests) {
 		guestManager.add(newGuests);
+		this.notifyGuestObservers();
+	}
+
+	public void addGuest(Guest newGuests) {
+		guestManager.add(newGuests);
+		this.notifyGuestObservers();
 	}
 
 	@Override
@@ -349,6 +353,12 @@ public class Reception implements IReception, Observable {
 	public void removeRoom(Room room) {
 		roomManager.remove(room);
 		this.notifyRoomsObservers();
+
+	}
+
+	public void removeGuest(Guest guest) {
+		guestManager.remove(guest);
+		this.notifyGuestObservers();
 
 	}
 
@@ -477,9 +487,40 @@ public class Reception implements IReception, Observable {
 	}
 
 	@Override
-	public void importServices(ArrayList<Service> desrialize) {
-		this.addServices(desrialize);
+	public void importServices(ArrayList<Service> services) {
+		servicesManager.update(services);
+		this.notifyServicesObservers();
 
+	}
+
+	public void importRooms(ArrayList<Room> rooms) {
+		roomManager.update(rooms);
+		this.notifyRoomsObservers();
+
+	}
+
+	public void importGuests(ArrayList<Guest> guests) {
+		guestManager.update(guests);
+		this.notifyGuestObservers();
+
+	}
+
+	@Override
+	public Guest findGuestbyID(int id) {
+		// TODO Auto-generated method stub
+		return guestManager.findbyID(id);
+	}
+
+	@Override
+	public Room findRoombyID(int id) {
+		// TODO Auto-generated method stub
+		return roomManager.findbyID(id);
+	}
+
+	@Override
+	public Service findServicebyID(int id) {
+		// TODO Auto-generated method stub
+		return servicesManager.findbyID(id);
 	}
 
 }

@@ -13,6 +13,8 @@ public interface IReception {
 
 	public void addRoom(Room room);
 
+	public void addGuest(Guest guest);
+
 	public void addServiceToGuest(Guest guest, Service service);
 
 	public void removeServiceToGuest(Guest guest, Service service);
@@ -65,8 +67,20 @@ public interface IReception {
 
 	public Service findServicebyName(String name);
 
+	public Guest findGuestbyID(int id);
+
+	public Room findRoombyID(int id);
+
+	public Service findServicebyID(int id);
+
 	public void initReception(ArrayList<String> parameters);
 
-	public void importServices(ArrayList<Service> desrialize);
+	public void importServices(ArrayList<Service> services);
+
+	public void importRooms(ArrayList<Room> rooms);
+
+	public void importGuests(ArrayList<Guest> guests);
+
+	public void removeGuest(Guest guest);
 
 }

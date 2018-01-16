@@ -54,6 +54,18 @@ public class RoomManager extends AbstractManager<Room> {
 		return foundEntity;
 	}
 
+	public Room findbyID(int id) {
+		Room foundEntity = null;
+		for (int i = 0; i < rooms.size(); i++) {
+			if ((((IEntity) rooms.get(i)).getID()) == (id)) {
+				foundEntity = rooms.get(i);
+				break;
+			}
+		}
+		return foundEntity;
+
+	}
+
 	public void changeRoomPrice(Room room, float price) {
 		int index = rooms.indexOf(room);
 		rooms.get(index).setPrice(price);

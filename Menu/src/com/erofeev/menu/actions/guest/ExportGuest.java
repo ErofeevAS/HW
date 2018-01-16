@@ -9,7 +9,7 @@ import com.erofeev.hotel.entity.Guest;
 import com.erofeev.menu.api.IAction;
 import com.erofeev.menu.controller.Viewer;
 import com.erofeev.menu.export.TextFileManager;
-import com.erofeev.menu.serializator.SerializatorGuestCSV;
+import com.erofeev.menu.parsercsv.ParserGuestsCSV;
 
 public class ExportGuest implements IAction {
 	private IReception model;
@@ -22,10 +22,10 @@ public class ExportGuest implements IAction {
 	public void execute() throws IOException {
 		ArrayList<Guest> guests = model.getAllGuests();
 
-		SerializatorGuestCSV serialCSV = new SerializatorGuestCSV();
+		ParserGuestsCSV serialCSV = new ParserGuestsCSV();
 		TextFileManager fileManager = new TextFileManager();
 
-		String[] serialGuests = serialCSV.serialize(guests);
+		String[] serialGuests = serialCSV.listToCSV(guests);
 		fileManager.writeToFile(Viewer.getFileName(), serialGuests);
 
 	}

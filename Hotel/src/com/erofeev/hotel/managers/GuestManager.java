@@ -42,6 +42,11 @@ public class GuestManager extends AbstractManager<Guest> {
 		loggerGuestManager.info(guest.toString() + " was removed.");
 	}
 
+	public void evict(Guest guest) {
+		guest.getRoom().setEmpty(true);
+		loggerGuestManager.info(guest.toString() + " was evicted.");
+	}
+
 	public Guest findbyName(String name) {
 		Guest foundEntity = null;
 		for (int i = 0; i < guests.size(); i++) {
@@ -52,6 +57,18 @@ public class GuestManager extends AbstractManager<Guest> {
 		}
 
 		return foundEntity;
+	}
+
+	public Guest findbyID(int id) {
+		Guest foundEntity = null;
+		for (int i = 0; i < guests.size(); i++) {
+			if ((((IEntity) guests.get(i)).getID()) == (id)) {
+				foundEntity = guests.get(i);
+				break;
+			}
+		}
+		return foundEntity;
+
 	}
 
 	public long getGuestOccupyDays(Guest guest) {
