@@ -11,6 +11,7 @@ import com.erofeev.hotel.entity.RoomStatus;
 public class ParserRoomsCSV {
 
 	private final String separator = ";";
+	private final String nestedSeparator = " ";
 
 	public String[] listToCSV(ArrayList<Room> rooms) {
 
@@ -36,18 +37,16 @@ public class ParserRoomsCSV {
 			str2.append(room.getID()).append(separator);
 			str2.append(room.getName()).append(separator);
 			str2.append(room.getStars()).append(separator);
-			str2.append(room.getPrice()).append(separator);
 			str2.append(room.getCapacity()).append(separator);
+			str2.append(room.getPrice()).append(separator);
 			str2.append(room.getRoomStatus()).append(separator);
 			str2.append(room.isEmpty()).append(separator);
 
 			if (!roomHistory.isEmpty()) {
-				str2.append("\"");
 				for (Guest guest : roomHistory) {
 					str2.append(guest.getID());
-					str2.append(separator);
+					str2.append(nestedSeparator);
 				}
-				str2.append("\"");
 			} else {
 				str2.append("null");
 			}
@@ -61,11 +60,12 @@ public class ParserRoomsCSV {
 
 	}
 
-	public ArrayList<Room> parseCSV(ArrayList<String> fileString, IReception reception) {
+	public ArrayList<Room> parseCSV(ArrayList<String> fileString, IReception reception) throws NumberFormatException {
 
 		ArrayList<Room> rooms = new ArrayList<Room>();
 		ArrayDeque<Guest> roomHistory = new ArrayDeque<Guest>();
 		for (int i = 1; i < fileString.size(); i++) {
+			roomHistory.clear();
 			String[] parts = null;
 			parts = fileString.get(i).split(separator);
 			int ID = Integer.parseInt(parts[0]);
@@ -92,7 +92,7 @@ public class ParserRoomsCSV {
 			if (roomHistoryStr.equals("null")) {
 
 			} else {
-				String[] roomHistoryGuestsID = roomHistoryStr.split(separator);
+				String[] roomHistoryGuestsID = roomHistoryStr.split(nestedSeparator);
 				for (int j = 0; j < roomHistoryGuestsID.length; j++) {
 					Guest guest = reception.findGuestbyID(Integer.parseInt(roomHistoryGuestsID[j]));
 					roomHistory.add(guest);

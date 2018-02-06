@@ -218,6 +218,25 @@ public class Reception implements IReception, Observable {
 		}
 	}
 
+	public void occupyGuest(String fullName, Room room) {
+
+		Room currentRoom = roomManager.findExistingEntity(room);
+		Guest guest = guestManager.findbyName(fullName);
+		if (currentRoom != null) {
+			if (currentRoom.isEmpty()) {
+				currentRoom.setEmpty(false);
+				guest.setRoom(currentRoom);
+				guestManager.add(guest);
+				room.getRoomHistory().addFirst(guest);
+				this.notifyRoomsObservers();
+				this.notifyGuestObservers();
+				loggerReception.info("Guest was occupy");
+			} else {
+				loggerReception.info("Room is busy");
+			}
+		}
+	}
+
 	@Override
 	public void changeRoomPrice(Room room, float price) {
 		room.setPrice(price);

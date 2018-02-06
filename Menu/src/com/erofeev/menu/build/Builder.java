@@ -4,6 +4,7 @@ import java.util.EnumMap;
 import java.util.Map;
 
 import com.erofeev.hotel.api.IReception;
+import com.erofeev.menu.actions.NoAction;
 import com.erofeev.menu.actions.guest.AddGuest;
 import com.erofeev.menu.actions.guest.AddServiceToGuest;
 import com.erofeev.menu.actions.guest.EvictGuest;
@@ -106,20 +107,30 @@ public class Builder {
 
 	}
 
-	private void createBackMenu() {
-		Menu backMenu = new Menu();
-
-	}
-
 	private void createCloneMenu() {
 		Menu cloneMenu = new Menu();
 
 		MenuItem menuItemCloneRoom = new MenuItem("Clone menu:", Menus.CLONEROOM);
-		MenuItem[] menuItems = { menuItemCloneRoom };
+		MenuItem menuItemBack = new MenuItem("back to previous menu :", Menus.MAIN);
+		MenuItem[] menuItems = { menuItemCloneRoom, menuItemBack };
 		cloneMenu.initDefault(menuItems);
 		cloneMenu.setName(Menus.CLONE.toString());
 		cloneMenu.setMenuitems(menuItems);
 		menus.put(Menus.CLONE, cloneMenu);
+	}
+
+	private void createCloneRoomMenu() {
+		Menu cloneRoomMenu = new Menu();
+		MenuItem menuItemmodifyRoom = new MenuItem("modify room :", Menus.FINISH);
+		MenuItem menuItemBack = new MenuItem("back to previous menu :", Menus.CLONE);
+		IAction cloneRoom = new CloneRoom(model);
+		IAction noAction = new NoAction();
+		menuItemBack.setAction(noAction);
+		menuItemmodifyRoom.setAction(cloneRoom);
+		MenuItem[] menuItems = { menuItemmodifyRoom, menuItemBack };
+		cloneRoomMenu.setName(Menus.CLONEROOM.toString());
+		cloneRoomMenu.setMenuitems(menuItems);
+		menus.put(Menus.CLONEROOM, cloneRoomMenu);
 	}
 
 	private void createExportMenu() {
@@ -128,7 +139,8 @@ public class Builder {
 		MenuItem menuItemExportRoom = new MenuItem("Export services menu:", Menus.EXPORTSERVICE);
 		MenuItem menuItemExportService = new MenuItem("Export rooms menu:", Menus.EXPORTROOM);
 		MenuItem menuItemExprotGuest = new MenuItem("Export guests menu:", Menus.EXPORTGUEST);
-		MenuItem[] menuItems = { menuItemExportRoom, menuItemExportService, menuItemExprotGuest };
+		MenuItem menuItemBack = new MenuItem("back to previous menu :", Menus.MAIN);
+		MenuItem[] menuItems = { menuItemExportRoom, menuItemExportService, menuItemExprotGuest, menuItemBack };
 		exportMenu.initDefault(menuItems);
 		exportMenu.setName(Menus.EXPORT.toString());
 		exportMenu.setMenuitems(menuItems);
@@ -139,9 +151,12 @@ public class Builder {
 		Menu exportMenu = new Menu();
 
 		MenuItem menuItemExportService = new MenuItem("Export service:", Menus.FINISH);
-		MenuItem[] menuItems = { menuItemExportService };
+		MenuItem menuItemBack = new MenuItem("back to previous menu :", Menus.EXPORT);
+		MenuItem[] menuItems = { menuItemExportService, menuItemBack };
 		IAction exportService = new ExportServices(model);
-		menuItemExportService.setActiom(exportService);
+		IAction noAction = new NoAction();
+		menuItemBack.setAction(noAction);
+		menuItemExportService.setAction(exportService);
 		exportMenu.setName(Menus.EXPORTSERVICE.toString());
 		exportMenu.setMenuitems(menuItems);
 		menus.put(Menus.EXPORTSERVICE, exportMenu);
@@ -151,12 +166,30 @@ public class Builder {
 		Menu exportMenu = new Menu();
 
 		MenuItem menuItemExprotRoom = new MenuItem("Export rooms:", Menus.FINISH);
-		MenuItem[] menuItems = { menuItemExprotRoom };
+		MenuItem menuItemBack = new MenuItem("back to previous menu :", Menus.EXPORT);
+		MenuItem[] menuItems = { menuItemExprotRoom, menuItemBack };
 		IAction exportRooms = new ExportRooms(model);
-		menuItemExprotRoom.setActiom(exportRooms);
+		IAction noAction = new NoAction();
+		menuItemBack.setAction(noAction);
+		menuItemExprotRoom.setAction(exportRooms);
 		exportMenu.setName(Menus.EXPORTROOM.toString());
 		exportMenu.setMenuitems(menuItems);
 		menus.put(Menus.EXPORTROOM, exportMenu);
+	}
+
+	private void createExportGuestMenu() {
+		Menu exportMenu = new Menu();
+
+		MenuItem menuItemCloneRoom = new MenuItem("Export guests:", Menus.FINISH);
+		MenuItem menuItemBack = new MenuItem("back to previous menu :", Menus.EXPORT);
+		MenuItem[] menuItems = { menuItemCloneRoom, menuItemBack };
+		IAction exportGuest = new ExportGuest(model);
+		IAction noAction = new NoAction();
+		menuItemBack.setAction(noAction);
+		menuItemCloneRoom.setAction(exportGuest);
+		exportMenu.setName(Menus.EXPORTGUEST.toString());
+		exportMenu.setMenuitems(menuItems);
+		menus.put(Menus.EXPORTGUEST, exportMenu);
 	}
 
 	private void createImportMenu() {
@@ -164,7 +197,8 @@ public class Builder {
 		MenuItem menuItemImportRoom = new MenuItem("Import services menu:", Menus.IMPORTSERVICES);
 		MenuItem menuItemImportService = new MenuItem("Import rooms menu:", Menus.IMPORTROOMS);
 		MenuItem menuItemImportGuest = new MenuItem("Import guests menu:", Menus.IMPORTGUESTS);
-		MenuItem[] menuItems = { menuItemImportRoom, menuItemImportService, menuItemImportGuest };
+		MenuItem menuItemBack = new MenuItem("back to previous menu :", Menus.MAIN);
+		MenuItem[] menuItems = { menuItemImportRoom, menuItemImportService, menuItemImportGuest, menuItemBack };
 		importmenu.initDefault(menuItems);
 		importmenu.setName(Menus.IMPORT.toString());
 		importmenu.setMenuitems(menuItems);
@@ -175,9 +209,12 @@ public class Builder {
 		Menu importmenu = new Menu();
 
 		MenuItem menuItemImportService = new MenuItem("Import service:", Menus.FINISH);
-		MenuItem[] menuItems = { menuItemImportService };
+		MenuItem menuItemBack = new MenuItem("back to previous menu :", Menus.IMPORT);
+		MenuItem[] menuItems = { menuItemImportService, menuItemBack };
 		IAction importServices = new ImportServices(model);
-		menuItemImportService.setActiom(importServices);
+		IAction noAction = new NoAction();
+		menuItemBack.setAction(noAction);
+		menuItemImportService.setAction(importServices);
 		importmenu.setName(Menus.IMPORTSERVICES.toString());
 		importmenu.setMenuitems(menuItems);
 		menus.put(Menus.IMPORTSERVICES, importmenu);
@@ -187,9 +224,12 @@ public class Builder {
 		Menu importmenu = new Menu();
 
 		MenuItem menuItemImport = new MenuItem("Import guests:", Menus.FINISH);
-		MenuItem[] menuItems = { menuItemImport };
-		ImportGuests importGuests = new ImportGuests(model);
-		menuItemImport.setActiom(importGuests);
+		MenuItem menuItemBack = new MenuItem("back to previous menu :", Menus.IMPORT);
+		MenuItem[] menuItems = { menuItemImport, menuItemBack };
+		IAction importGuests = new ImportGuests(model);
+		IAction noAction = new NoAction();
+		menuItemBack.setAction(noAction);
+		menuItemImport.setAction(importGuests);
 		importmenu.setName(Menus.IMPORTGUESTS.toString());
 		importmenu.setMenuitems(menuItems);
 		menus.put(Menus.IMPORTGUESTS, importmenu);
@@ -199,35 +239,15 @@ public class Builder {
 		Menu importmenu = new Menu();
 
 		MenuItem menuItemImportRoom = new MenuItem("Import rooms:", Menus.FINISH);
-		MenuItem[] menuItems = { menuItemImportRoom };
+		MenuItem menuItemBack = new MenuItem("back to previous menu :", Menus.IMPORT);
+		MenuItem[] menuItems = { menuItemImportRoom, menuItemBack };
 		IAction importRooms = new ImportRooms(model);
-		menuItemImportRoom.setActiom(importRooms);
+		IAction noAction = new NoAction();
+		menuItemBack.setAction(noAction);
+		menuItemImportRoom.setAction(importRooms);
 		importmenu.setName(Menus.IMPORTROOMS.toString());
 		importmenu.setMenuitems(menuItems);
 		menus.put(Menus.IMPORTROOMS, importmenu);
-	}
-
-	private void createExportGuestMenu() {
-		Menu exportMenu = new Menu();
-
-		MenuItem menuItemCloneRoom = new MenuItem("Export guests:", Menus.FINISH);
-		MenuItem[] menuItems = { menuItemCloneRoom };
-		IAction exportGuest = new ExportGuest(model);
-		menuItemCloneRoom.setActiom(exportGuest);
-		exportMenu.setName(Menus.EXPORTGUEST.toString());
-		exportMenu.setMenuitems(menuItems);
-		menus.put(Menus.EXPORTGUEST, exportMenu);
-	}
-
-	private void createCloneRoomMenu() {
-		Menu cloneRoomMenu = new Menu();
-		MenuItem menuItemmodifyRoom = new MenuItem("modify room :", Menus.FINISH);
-		IAction cloneRoom = new CloneRoom(model);
-		menuItemmodifyRoom.setActiom(cloneRoom);
-		MenuItem[] menuItems = { menuItemmodifyRoom };
-		cloneRoomMenu.setName(Menus.CLONEROOM.toString());
-		cloneRoomMenu.setMenuitems(menuItems);
-		menus.put(Menus.CLONEROOM, cloneRoomMenu);
 	}
 
 	private void createViewMenu() {
@@ -236,7 +256,8 @@ public class Builder {
 		MenuItem menuItemGuest = new MenuItem("Guest menu:", Menus.VIEWGUEST);
 		MenuItem menuItemRoom = new MenuItem("Room menu:", Menus.VIEWROOM);
 		MenuItem menuItemService = new MenuItem("Service menu:", Menus.VIEWSERVICE);
-		MenuItem[] menuItems = { menuItemGuest, menuItemRoom, menuItemService };
+		MenuItem menuItemBack = new MenuItem("back to previous menu :", Menus.MAIN);
+		MenuItem[] menuItems = { menuItemGuest, menuItemRoom, menuItemService, menuItemBack };
 
 		viewMenu.initDefault(menuItems);
 		viewMenu.setName(Menus.VIEW.toString());
@@ -254,6 +275,7 @@ public class Builder {
 		MenuItem menuItemViewRoomsSotredByStars = new MenuItem("view rooms sorted by stars :", Menus.FINISH);
 		MenuItem menuItemViewRoomDetails = new MenuItem("view room details :", Menus.FINISH);
 		MenuItem menItemViewRoomHistory = new MenuItem("view roomhistory :", Menus.FINISH);
+		MenuItem menuItemBack = new MenuItem("back to previous menu :", Menus.VIEW);
 
 		IAction viewAllRooms = new ViewAllRooms(model);
 		IAction viewAllEmptyRooms = new ViewAllEmptyRooms(model);
@@ -262,16 +284,18 @@ public class Builder {
 		IAction viewRoomsSotredByPrice = new ViewRoomsSortedByPrice(model);
 		IAction viewRoomDetails = new ViewRoomDetails(model);
 		IAction viewRoomHistory = new ViewRoomHistory(model);
-		menuItemViewAllRooms.setActiom(viewAllRooms);
-		menuItemViewAllEmptyRooms.setActiom(viewAllEmptyRooms);
-		menuItemViewRoomsSotredByCapacity.setActiom(viewRoomsSotredByCapacity);
-		menuItemViewRoomsSotredByStars.setActiom(viewRoomsSotredByStars);
-		menuItemViewRoomsSotredByPrice.setActiom(viewRoomsSotredByPrice);
-		menuItemViewRoomDetails.setActiom(viewRoomDetails);
-		menItemViewRoomHistory.setActiom(viewRoomHistory);
+		IAction noAction = new NoAction();
+		menuItemBack.setAction(noAction);
+		menuItemViewAllRooms.setAction(viewAllRooms);
+		menuItemViewAllEmptyRooms.setAction(viewAllEmptyRooms);
+		menuItemViewRoomsSotredByCapacity.setAction(viewRoomsSotredByCapacity);
+		menuItemViewRoomsSotredByStars.setAction(viewRoomsSotredByStars);
+		menuItemViewRoomsSotredByPrice.setAction(viewRoomsSotredByPrice);
+		menuItemViewRoomDetails.setAction(viewRoomDetails);
+		menItemViewRoomHistory.setAction(viewRoomHistory);
 		MenuItem[] menuItems = { menuItemViewAllRooms, menuItemViewAllEmptyRooms, menuItemViewRoomsSotredByCapacity,
 				menuItemViewRoomsSotredByPrice, menuItemViewRoomsSotredByStars, menuItemViewRoomDetails,
-				menItemViewRoomHistory };
+				menItemViewRoomHistory, menuItemBack };
 		viewRoomMenu.setName(Menus.VIEWROOM.toString());
 		viewRoomMenu.setMenuitems(menuItems);
 		menus.put(Menus.VIEWROOM, viewRoomMenu);
@@ -285,18 +309,21 @@ public class Builder {
 		MenuItem menuItemViewGuestPrice = new MenuItem("view guest price :", Menus.FINISH);
 		MenuItem menuItemViewGuestsSortedbyDate = new MenuItem("view guests sorted by date :", Menus.FINISH);
 		MenuItem menuItemViewGuestsSortedbyName = new MenuItem("view guests sorted by name :", Menus.FINISH);
+		MenuItem menuItemBack = new MenuItem("back to previous menu :", Menus.VIEW);
 		IAction viewAllGuest = new ViewAllGuests(model);
 		IAction viewGuestServices = new ViewGuestServices(model);
 		IAction viewGuestPrice = new ViewGuestPrice(model);
 		IAction viewGuestsSortedbyDate = new ViewGuestsSortedbyDate(model);
 		IAction viewGuestsSortedbyName = new ViewGuestsSortedbyName(model);
-		menuItemViewAllGuest.setActiom(viewAllGuest);
-		menuItemViewGuestServices.setActiom(viewGuestServices);
-		menuItemViewGuestPrice.setActiom(viewGuestPrice);
-		menuItemViewGuestsSortedbyDate.setActiom(viewGuestsSortedbyDate);
-		menuItemViewGuestsSortedbyName.setActiom(viewGuestsSortedbyName);
+		IAction noAction = new NoAction();
+		menuItemBack.setAction(noAction);
+		menuItemViewAllGuest.setAction(viewAllGuest);
+		menuItemViewGuestServices.setAction(viewGuestServices);
+		menuItemViewGuestPrice.setAction(viewGuestPrice);
+		menuItemViewGuestsSortedbyDate.setAction(viewGuestsSortedbyDate);
+		menuItemViewGuestsSortedbyName.setAction(viewGuestsSortedbyName);
 		MenuItem[] menuItems = { menuItemViewAllGuest, menuItemViewGuestServices, menuItemViewGuestPrice,
-				menuItemViewGuestsSortedbyDate, menuItemViewGuestsSortedbyName };
+				menuItemViewGuestsSortedbyDate, menuItemViewGuestsSortedbyName, menuItemBack };
 		viewGuestMenu.setName(Menus.VIEWGUEST.toString());
 		viewGuestMenu.setMenuitems(menuItems);
 		menus.put(Menus.VIEWGUEST, viewGuestMenu);
@@ -307,11 +334,14 @@ public class Builder {
 		Menu viewServiceMenu = new Menu();
 		MenuItem menuItemViewAllServices = new MenuItem("view services :", Menus.FINISH);
 		MenuItem menuItemViewServiceSortedByPrice = new MenuItem("view services sorted by price :", Menus.FINISH);
+		MenuItem menuItemBack = new MenuItem("back to previous menu :", Menus.VIEW);
 		IAction viewAllServices = new ViewAllServices(model);
 		IAction viewServiceSortedByPrice = new ViewServiceSortedByPrice(model);
-		menuItemViewAllServices.setActiom(viewAllServices);
-		menuItemViewServiceSortedByPrice.setActiom(viewServiceSortedByPrice);
-		MenuItem[] menuItems = { menuItemViewAllServices, menuItemViewServiceSortedByPrice };
+		IAction noAction = new NoAction();
+		menuItemBack.setAction(noAction);
+		menuItemViewAllServices.setAction(viewAllServices);
+		menuItemViewServiceSortedByPrice.setAction(viewServiceSortedByPrice);
+		MenuItem[] menuItems = { menuItemViewAllServices, menuItemViewServiceSortedByPrice, menuItemBack };
 		viewServiceMenu.setName(Menus.VIEWSERVICE.toString());
 		viewServiceMenu.setMenuitems(menuItems);
 		menus.put(Menus.VIEWSERVICE, viewServiceMenu);
@@ -323,7 +353,9 @@ public class Builder {
 		MenuItem menuItemAdd = new MenuItem("add menu :", Menus.ACTIONADD);
 		MenuItem menuItemRemove = new MenuItem("remove menu :", Menus.ACTIONREMOVE);
 		MenuItem menuItemChange = new MenuItem("change menu :", Menus.ACTIONCHANGE);
-		MenuItem[] menuItems = { menuItemAdd, menuItemRemove, menuItemChange };
+		MenuItem menuItemBack = new MenuItem("back to previous menu :", Menus.MAIN);
+
+		MenuItem[] menuItems = { menuItemAdd, menuItemRemove, menuItemChange, menuItemBack };
 		viewActionMenu.initDefault(menuItems);
 		viewActionMenu.setName(Menus.ACTION.toString());
 		viewActionMenu.setMenuitems(menuItems);
@@ -337,18 +369,21 @@ public class Builder {
 		MenuItem menuItemAddGuest = new MenuItem("add guest :", Menus.FINISH);
 		MenuItem menuItemOccupyGuest = new MenuItem("occupy guest :", Menus.FINISH);
 		MenuItem menuItemAddServiceToGuest = new MenuItem("add service to guest :", Menus.FINISH);
+		MenuItem menuItemBack = new MenuItem("back to previous menu :", Menus.ACTION);
+		IAction noAction = new NoAction();
+		menuItemBack.setAction(noAction);
 		IAction addRoom = new AddRoom(model);
 		IAction addService = new AddService(model);
 		IAction addGuest = new AddGuest(model);
 		IAction occupyGuest = new OccupyGuest(model);
 		IAction addServiceToGuest = new AddServiceToGuest(model);
-		menuItemAddRoom.setActiom(addRoom);
-		menuItemAddService.setActiom(addService);
-		menuItemAddGuest.setActiom(addGuest);
-		menuItemOccupyGuest.setActiom(occupyGuest);
-		menuItemAddServiceToGuest.setActiom(addServiceToGuest);
+		menuItemAddRoom.setAction(addRoom);
+		menuItemAddService.setAction(addService);
+		menuItemAddGuest.setAction(addGuest);
+		menuItemOccupyGuest.setAction(occupyGuest);
+		menuItemAddServiceToGuest.setAction(addServiceToGuest);
 		MenuItem[] menuItems = { menuItemAddRoom, menuItemAddService, menuItemAddGuest, menuItemOccupyGuest,
-				menuItemAddServiceToGuest };
+				menuItemAddServiceToGuest, menuItemBack };
 		viewActionAddMenu.setName(Menus.ACTIONADD.toString());
 		viewActionAddMenu.setMenuitems(menuItems);
 		menus.put(Menus.ACTIONADD, viewActionAddMenu);
@@ -361,19 +396,22 @@ public class Builder {
 		MenuItem menuItemEvictGuest = new MenuItem("evict guest :", Menus.FINISH);
 		MenuItem menuItemRemoveServiceToGuest = new MenuItem("remove service from guest :", Menus.FINISH);
 		MenuItem menuItemRemoveGuest = new MenuItem("remove guest :", Menus.FINISH);
+		MenuItem menuItemBack = new MenuItem("back to previous menu :", Menus.ACTION);
 		IAction removeRoom = new RemoveRoom(model);
 		IAction removeService = new RemoveService(model);
 		IAction evictGuest = new EvictGuest(model);
 		IAction removeServiceToGues = new RemoveServiceToGues(model);
 		IAction removeGuest = new RemoveGuest(model);
+		IAction noAction = new NoAction();
+		menuItemBack.setAction(noAction);
 
-		menuItemRemoveRoom.setActiom(removeRoom);
-		menuItemRemoveService.setActiom(removeService);
-		menuItemEvictGuest.setActiom(evictGuest);
-		menuItemEvictGuest.setActiom(removeGuest);
-		menuItemRemoveServiceToGuest.setActiom(removeServiceToGues);
+		menuItemRemoveRoom.setAction(removeRoom);
+		menuItemRemoveService.setAction(removeService);
+		menuItemEvictGuest.setAction(evictGuest);
+		menuItemEvictGuest.setAction(removeGuest);
+		menuItemRemoveServiceToGuest.setAction(removeServiceToGues);
 		MenuItem[] menuItems = { menuItemRemoveRoom, menuItemRemoveService, menuItemEvictGuest,
-				menuItemRemoveServiceToGuest, menuItemRemoveGuest };
+				menuItemRemoveServiceToGuest, menuItemRemoveGuest, menuItemBack };
 		viewActionRemoveMenu.setName(Menus.ACTIONREMOVE.toString());
 		viewActionRemoveMenu.setMenuitems(menuItems);
 		menus.put(Menus.ACTIONREMOVE, viewActionRemoveMenu);
@@ -384,13 +422,18 @@ public class Builder {
 		MenuItem menuItemChangeRoomPrice = new MenuItem("change room price :", Menus.FINISH);
 		MenuItem menuItemChangeServicePrice = new MenuItem("change serivce price :", Menus.FINISH);
 		MenuItem menuItemChangeRoomStatus = new MenuItem("change room status :", Menus.FINISH);
+		MenuItem menuItemBack = new MenuItem("back to previous menu :", Menus.ACTION);
 		IAction changeRoomPrice = new ChangeRoomPrice(model);
 		IAction changeServicePrice = new ChangeServicePrice(model);
 		IAction changeRoomStatus = new ChangeRoomStatus(model);
-		menuItemChangeRoomPrice.setActiom(changeRoomPrice);
-		menuItemChangeServicePrice.setActiom(changeServicePrice);
-		menuItemChangeRoomStatus.setActiom(changeRoomStatus);
-		MenuItem[] menuItems = { menuItemChangeRoomPrice, menuItemChangeServicePrice, menuItemChangeRoomStatus };
+		IAction noAction = new NoAction();
+
+		menuItemBack.setAction(noAction);
+		menuItemChangeRoomPrice.setAction(changeRoomPrice);
+		menuItemChangeServicePrice.setAction(changeServicePrice);
+		menuItemChangeRoomStatus.setAction(changeRoomStatus);
+		MenuItem[] menuItems = { menuItemChangeRoomPrice, menuItemChangeServicePrice, menuItemChangeRoomStatus,
+				menuItemBack };
 		viewActionChangeMenu.setName(Menus.ACTIONCHANGE.toString());
 		viewActionChangeMenu.setMenuitems(menuItems);
 		menus.put(Menus.ACTIONCHANGE, viewActionChangeMenu);

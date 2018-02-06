@@ -96,8 +96,9 @@ public class Guest implements IEntity, Serializable {
 				.append(dateFormat.format(getLeavingDate()));
 
 		str.append(separator);
-		// str.append(this.getRoom().getName());
-
+		if (this.getRoom() != null) {
+			str.append(this.getRoom().getID());
+		}
 		services = this.getGuestServices();
 		for (int i = 0; i < services.size(); i++) {
 			str.append(separator);

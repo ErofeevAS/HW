@@ -14,10 +14,10 @@ import com.erofeev.hotel.entity.Service;
 
 public class ParserGuestsCSV {
 	private final String separator = ";";
+	private final String nestedSeparator = " ";
 
 	public String[] listToCSV(ArrayList<Guest> guests) {
 
-		String separator = ";";
 		int cnt = 1;
 		String[] serialStr = new String[guests.size() + 1];
 		StringBuilder str = new StringBuilder();
@@ -51,12 +51,12 @@ public class ParserGuestsCSV {
 			if (guest.getGuestServices().size() == 0) {
 				str2.append("null").append(separator);
 			} else {
-				str2.append("\"");
+				// str2.append("\"");
 				for (Service service : services) {
 					str2.append(service.getID());
-					str2.append(" ");
+					str2.append(nestedSeparator);
 				}
-				str2.append("\"");
+				// str2.append("\"");
 			}
 
 			serialStr[cnt] = "" + str2;
@@ -68,7 +68,7 @@ public class ParserGuestsCSV {
 
 	}
 
-	public ArrayList<Guest> parseCSV(ArrayList<String> fileString, IReception reception) {
+	public ArrayList<Guest> parseCSV(ArrayList<String> fileString, IReception reception) throws NumberFormatException {
 
 		ArrayList<Guest> guests = new ArrayList<Guest>();
 		ArrayList<Service> services = new ArrayList<Service>();
@@ -106,7 +106,7 @@ public class ParserGuestsCSV {
 			if (parts[6].equals("null")) {
 
 			} else {
-				String[] servicesID = parts[6].split(" ");
+				String[] servicesID = parts[6].split(nestedSeparator);
 				for (int j = 0; j < servicesID.length; j++) {
 					Service service = reception.findServicebyID(Integer.parseInt(servicesID[j]));
 					services.add(service);

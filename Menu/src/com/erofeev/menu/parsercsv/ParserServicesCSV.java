@@ -29,7 +29,7 @@ public class ParserServicesCSV {
 
 	}
 
-	public ArrayList<Service> parseCSV(ArrayList<String> fileString) {
+	public ArrayList<Service> parseCSV(ArrayList<String> fileString) throws NumberFormatException {
 		ArrayList<Service> services = new ArrayList<Service>();
 		for (int i = 1; i < fileString.size(); i++) {
 			String[] parts = null;
