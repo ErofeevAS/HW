@@ -26,5 +26,5 @@
 
 *
 !.gitignore
-!script.pl
-!template.latex
+!java
+!properties
