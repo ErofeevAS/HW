@@ -1,5 +1,5 @@
 # Compiled class file
-*.class
+#*.class
 
 # Log file
 #*.log
@@ -20,13 +20,11 @@
 #*.rar
 
 # setting eclipse
-*.prefs
+#*.prefs
 #\Hotel\src\
 #\Menu\srs\
 
-*/
-*.*
-!*.java
-!Menu/
-!Hotel/
-!Propherty
+*
+!.gitignore
+!script.pl
+!template.latex
