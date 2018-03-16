@@ -1,4 +1,4 @@
-package com.erofeev.hotel.api;
+package com.erofeev.hotel.api.observer;
 
 public interface Observable {
 	void removeGuestObserver(Observer o);

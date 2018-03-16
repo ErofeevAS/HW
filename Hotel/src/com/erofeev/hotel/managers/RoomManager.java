@@ -2,22 +2,25 @@ package com.erofeev.hotel.managers;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
+import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.erofeev.hotel.api.IEntity;
+import com.erofeev.hotel.api.entity.IEntity;
 import com.erofeev.hotel.entity.Guest;
 import com.erofeev.hotel.entity.Room;
 
 public class RoomManager extends AbstractManager<Room> {
-	private ArrayList<Room> rooms = new ArrayList<Room>();
 	private static final Logger loggerRoomManager = LogManager.getLogger(RoomManager.class);
+
+	private List<Room> rooms = new ArrayList<Room>();
 	private int currentId = 0;
 
 	public void add(Room room) {
-		room.setID(currentId);
 		currentId++;
+		room.setId(currentId);		
 		if (rooms.add(room)) {
 			loggerRoomManager.info(room.toString() + " was added.");
 		} else {
@@ -26,7 +29,7 @@ public class RoomManager extends AbstractManager<Room> {
 		}
 	}
 
-	public void add(ArrayList<Room> newRooms) {
+	public void add(List<Room> newRooms) {
 		if (rooms.addAll(newRooms)) {
 			loggerRoomManager.info(newRooms.toString() + " was added.");
 		} else {
@@ -54,10 +57,10 @@ public class RoomManager extends AbstractManager<Room> {
 		return foundEntity;
 	}
 
-	public Room findbyID(int id) {
+	public Room findbyId(int id) {
 		Room foundEntity = null;
 		for (int i = 0; i < rooms.size(); i++) {
-			if ((((IEntity) rooms.get(i)).getID()) == (id)) {
+			if ((((IEntity) rooms.get(i)).getId()) == (id)) {
 				foundEntity = rooms.get(i);
 				break;
 			}
@@ -78,8 +81,8 @@ public class RoomManager extends AbstractManager<Room> {
 		loggerRoomManager.info(room.toString() + " status was changed.");
 	}
 
-	public ArrayList<Room> getEmptyRooms() {
-		ArrayList<Room> emptyRooms = new ArrayList<Room>();
+	public List<Room> getEmptyRooms() {
+		List<Room> emptyRooms = new ArrayList<Room>();
 		for (int i = 0; i < getAll().size(); i++) {
 			Room room = getAll().get(i);
 			if (room.isEmpty()) {
@@ -89,11 +92,11 @@ public class RoomManager extends AbstractManager<Room> {
 		return emptyRooms;
 	}
 
-	public ArrayDeque<Guest> getRoomHistory(Room room) {
+	public List<Guest> getRoomHistory(Room room) {
 		return room.getRoomHistory();
 	}
 
-	public ArrayList<Room> getAll() {
+	public List<Room> getAll() {
 		return rooms;
 	}
 

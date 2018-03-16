@@ -4,7 +4,7 @@ package com.erofeev.menu.actions.service;
 
 import java.io.IOException;
 
-import com.erofeev.hotel.api.IReception;
+import com.erofeev.hotel.api.reception.IReception;
 import com.erofeev.hotel.entity.Service;
 import com.erofeev.menu.api.IAction;
 import com.erofeev.menu.controller.Viewer;
@@ -22,8 +22,6 @@ public class ChangeServicePrice implements IAction {
 		String name = Viewer.findEntity("Service");
 		Service service = model.findServicebyName(name);
 		float price = Float.parseFloat(Viewer.changePrice());		
-		model.changeServicePrice(service, price);
-		
+		model.changeServicePrice(service, price);		
 	}
-
 }

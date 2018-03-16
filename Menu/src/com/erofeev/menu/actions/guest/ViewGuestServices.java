@@ -1,9 +1,9 @@
 package com.erofeev.menu.actions.guest;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 
-import com.erofeev.hotel.api.IReception;
+import com.erofeev.hotel.api.reception.IReception;
 import com.erofeev.hotel.entity.Service;
 import com.erofeev.hotel.print.Printer;
 import com.erofeev.menu.api.IAction;
@@ -19,12 +19,10 @@ public class ViewGuestServices implements IAction {
 	@Override
 	public void execute() throws IOException {
 		String name = Viewer.findEntity("Guest");
-		ArrayList<Service> services = model.findGuestbyName(name).getGuestServices();
+		List<Service> services = model.findGuestbyName(name).getGuestServices();
 		Printer.print("Guest services:");
 		for (Service service : services) {
 			Printer.print(service);
 		}
-
 	}
-
 }

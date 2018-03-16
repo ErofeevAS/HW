@@ -2,12 +2,12 @@ package com.erofeev.hotel.entity;
 
 import java.io.Serializable;
 
-import com.erofeev.hotel.api.IEntity;
+import com.erofeev.hotel.api.entity.IEntity;
 
-public class Service implements IEntity, Serializable {
+public class Service implements IEntity, Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;
-	private int ID;
+	private int Id;
 	private String name;
 	private float price;
 
@@ -23,18 +23,18 @@ public class Service implements IEntity, Serializable {
 
 	public Service(int id, String name, float price) {
 		super();
-		this.ID = id;
+		this.Id = id;
 		this.name = name;
 		this.price = price;
 	}
 
 	@Override
-	public int getID() {
-		return ID;
+	public int getId() {
+		return Id;
 	}
 
-	public void setID(int serviceId) {
-		this.ID = serviceId;
+	public void setId(int serviceId) {
+		this.Id = serviceId;
 	}
 
 	public String getName() {
@@ -57,12 +57,9 @@ public class Service implements IEntity, Serializable {
 	public String toString() {
 		StringBuilder str = new StringBuilder();
 		String separator = " ";
-		str.append("serviceId").append(separator).append(this.getID()).append(separator);
-		// str.append(System.getProperty("line.separator"));
+		str.append("serviceId").append(separator).append(this.getId()).append(separator);
 		str.append("name").append(separator).append(this.getName()).append(separator);
-		// str.append(System.getProperty("line.separator"));
 		str.append("price").append(separator).append(this.getPrice()).append(separator);
-		// str.append(System.getProperty("line.separator"));
 		return str.toString();
 	}
 
@@ -84,5 +81,11 @@ public class Service implements IEntity, Serializable {
 			return false;
 		return true;
 	}
+
+	@Override
+	public Service clone() throws CloneNotSupportedException {		
+		return (Service) super.clone();
+	}
+	
 
 }

@@ -1,10 +1,11 @@
 
 package com.erofeev.menu.actions.guest;
 
-import java.io.IOException;
-import java.util.ArrayList;
 
-import com.erofeev.hotel.api.IReception;
+import java.io.IOException;
+import java.util.List;
+
+import com.erofeev.hotel.api.reception.IReception;
 import com.erofeev.hotel.entity.Guest;
 import com.erofeev.menu.api.IAction;
 import com.erofeev.menu.controller.Viewer;
@@ -20,14 +21,12 @@ public class ExportGuest implements IAction {
 
 	@Override
 	public void execute() throws IOException {
-		ArrayList<Guest> guests = model.getAllGuests();
+		List<Guest> guests = model.getAllGuests();
 
 		ParserGuestsCSV serialCSV = new ParserGuestsCSV();
 		TextFileManager fileManager = new TextFileManager();
 
 		String[] serialGuests = serialCSV.listToCSV(guests);
 		fileManager.writeToFile(Viewer.getFileName(), serialGuests);
-
 	}
-
 }

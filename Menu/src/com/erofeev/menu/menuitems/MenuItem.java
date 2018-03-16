@@ -28,7 +28,7 @@ public class MenuItem {
 		return action;
 	}
 
-	public void setActiom(IAction actiom) {
+	public void setAction(IAction actiom) {
 		this.action = actiom;
 	}
 

@@ -1,4 +1,4 @@
-package com.erofeev.hotel.api;
+package com.erofeev.hotel.api.observer;
 
 import com.erofeev.hotel.managers.AbstractManager;
 

@@ -5,9 +5,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
-import com.erofeev.hotel.api.IReception;
+import com.erofeev.hotel.api.reception.IReception;
 import com.erofeev.hotel.entity.Guest;
 import com.erofeev.hotel.entity.Room;
 import com.erofeev.hotel.entity.Service;
@@ -16,7 +17,7 @@ public class ParserGuestsCSV {
 	private final String separator = ";";
 	private final String nestedSeparator = " ";
 
-	public String[] listToCSV(ArrayList<Guest> guests) {
+	public String[] listToCSV(List<Guest> guests) {
 
 		int cnt = 1;
 		String[] serialStr = new String[guests.size() + 1];
@@ -35,9 +36,9 @@ public class ParserGuestsCSV {
 			StringBuilder str2 = new StringBuilder();
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
 
-			ArrayList<Service> services = guest.getGuestServices();
+			List<Service> services = guest.getGuestServices();
 
-			str2.append(guest.getID()).append(separator);
+			str2.append(guest.getId()).append(separator);
 			str2.append(guest.getFirstName()).append(separator);
 			str2.append(guest.getSurName()).append(separator);
 			str2.append(dateFormat.format(guest.getArrivalDate())).append(separator);
@@ -45,33 +46,28 @@ public class ParserGuestsCSV {
 			if (guest.getRoom() == null) {
 				str2.append("null").append(separator);
 			} else {
-				str2.append(guest.getRoom().getID()).append(separator);
+				str2.append(guest.getRoom().getId()).append(separator);
 			}
 
 			if (guest.getGuestServices().size() == 0) {
 				str2.append("null").append(separator);
-			} else {
-				// str2.append("\"");
+			} else {				
 				for (Service service : services) {
-					str2.append(service.getID());
+					str2.append(service.getId());
 					str2.append(nestedSeparator);
-				}
-				// str2.append("\"");
+				}			
 			}
-
 			serialStr[cnt] = "" + str2;
 			cnt++;
-
 		}
-
 		return serialStr;
 
 	}
 
-	public ArrayList<Guest> parseCSV(ArrayList<String> fileString, IReception reception) throws NumberFormatException {
+	public List<Guest> parseCSV(List<String> fileString, IReception reception) throws NumberFormatException {
 
-		ArrayList<Guest> guests = new ArrayList<Guest>();
-		ArrayList<Service> services = new ArrayList<Service>();
+		List<Guest> guests = new ArrayList<Guest>();
+		List<Service> services = new ArrayList<Service>();
 		Room room;
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
 
@@ -88,7 +84,7 @@ public class ParserGuestsCSV {
 				Date arrivalDate = dateFormat.parse(parts[3]);
 				Date leavingDate = dateFormat.parse(parts[4]);
 				guest = new Guest(firstName, surName, arrivalDate, leavingDate);
-				guest.setID(ID);
+				guest.setId(ID);
 			} catch (ParseException e) {
 				// loggerViewer.error("Wrong Date format " + e);
 				throw new IllegalArgumentException();

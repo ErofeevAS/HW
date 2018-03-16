@@ -2,8 +2,9 @@ package com.erofeev.menu.actions.guest;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
-import com.erofeev.hotel.api.IReception;
+import com.erofeev.hotel.api.reception.IReception;
 import com.erofeev.hotel.entity.Guest;
 import com.erofeev.hotel.print.Printer;
 import com.erofeev.menu.api.IAction;
@@ -24,9 +25,8 @@ public class ImportGuests implements IAction {
 		TextFileManager fileManager = new TextFileManager();
 		Printer.print("Enter file name:");
 		String fileName = Viewer.readLine();
-		ArrayList<String> lines = (ArrayList<String>) fileManager.readFromFile(fileName);
-		ArrayList<Guest> guests = serialCSV.parseCSV(lines, model);
-
+		List<String> lines = (ArrayList<String>) fileManager.readFromFile(fileName);
+		List<Guest> guests = serialCSV.parseCSV(lines, model);
 		model.importGuests(guests);
 
 	}

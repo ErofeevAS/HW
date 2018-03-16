@@ -1,8 +1,9 @@
 package com.erofeev.menu.actions.guest;
 
 import java.util.ArrayList;
+import java.util.List;
 
-import com.erofeev.hotel.api.IReception;
+import com.erofeev.hotel.api.reception.IReception;
 import com.erofeev.hotel.entity.Guest;
 import com.erofeev.hotel.print.Printer;
 import com.erofeev.menu.api.IAction;
@@ -15,7 +16,7 @@ public class ViewGuestsSortedbyName implements IAction {
 		this.model = model;
 	}
 
-	public void viewGuestSortedByName(ArrayList<Guest> guests) {
+	public void viewGuestSortedByName(List<Guest> guests) {
 		Printer.print("Guests sorted by name: ");
 		Viewer.viewCmd(guests);
 
@@ -24,9 +25,7 @@ public class ViewGuestsSortedbyName implements IAction {
 	@Override
 	public void execute() {
 		
-		ArrayList<Guest> guests = model.getGuestSortedByName();
+		List<Guest> guests = model.getGuestSortedByName();
 		this.viewGuestSortedByName(guests);
-
 	}
-
 }

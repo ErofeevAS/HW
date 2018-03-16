@@ -1,6 +1,7 @@
 package com.erofeev.menu.parsercsv;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.erofeev.hotel.entity.Service;
 
@@ -8,7 +9,7 @@ public class ParserServicesCSV {
 
 	private final String separator = ";";
 
-	public String[] listToCSV(ArrayList<Service> services) {
+	public String[] listToCSV(List<Service> services) {
 
 		String separator = ";";
 		int cnt = 1;
@@ -18,7 +19,7 @@ public class ParserServicesCSV {
 		serialStr[0] = str.toString();
 		for (Service service : services) {
 			StringBuilder str2 = new StringBuilder();
-			str2.append(service.getID()).append(separator).append(service.getName()).append(separator)
+			str2.append(service.getId()).append(separator).append(service.getName()).append(separator)
 					.append(service.getPrice());
 			serialStr[cnt] = "" + str2;
 			cnt++;
@@ -29,8 +30,8 @@ public class ParserServicesCSV {
 
 	}
 
-	public ArrayList<Service> parseCSV(ArrayList<String> fileString) throws NumberFormatException {
-		ArrayList<Service> services = new ArrayList<Service>();
+	public List<Service> parseCSV(List<String> fileString) throws NumberFormatException {
+		List<Service> services = new ArrayList<Service>();
 		for (int i = 1; i < fileString.size(); i++) {
 			String[] parts = null;
 			parts = fileString.get(i).split(separator);

@@ -1,13 +1,9 @@
 package com.erofeev.menu.actions.room;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.ArrayList;
+import java.util.List;
 
-import com.erofeev.hotel.api.IReception;
+import com.erofeev.hotel.api.reception.IReception;
 import com.erofeev.hotel.entity.Room;
 import com.erofeev.hotel.print.Printer;
 import com.erofeev.menu.api.IAction;
@@ -21,29 +17,27 @@ public class CloneRoom implements IAction {
 	}
 
 	private Room cloningRoom(Room room) throws IOException {
-		Room newRoom = null;
 
 		try {
-			ByteArrayOutputStream bout = new ByteArrayOutputStream();
-			ObjectOutputStream out = new ObjectOutputStream(bout);
-			out.writeObject(room);
-			out.close();
-
-			ByteArrayInputStream bin = new ByteArrayInputStream(bout.toByteArray());
-			ObjectInputStream in = new ObjectInputStream(bin);
-			newRoom = (Room) in.readObject();
-			in.close();
-		} catch (Exception e) {
+			Room newRoom = room.clone();
+			return newRoom;
+		} catch (CloneNotSupportedException e) {
 			Printer.print("can't clone object " + e);
 		}
-		return newRoom;
+		return null;
 
+	}
+	
+	private Room getRoomByName() throws IOException {
+		String name = Viewer.findEntity("Room");
+		Room room = model.findRoombyName(name);
+		return room;
 	}
 
 	private Room modifyRoom() throws IOException {
 		Room room = this.getRoomByName();
 		Room newRoom = this.cloningRoom(room);
-		ArrayList<String> newParameters = Viewer.modifyRoom();
+		List<String> newParameters = Viewer.modifyRoom();
 		String number = newParameters.get(0);
 		String stars = newParameters.get(1);
 		String price = newParameters.get(2);
@@ -62,18 +56,13 @@ public class CloneRoom implements IAction {
 		if (!capacity.equals("null")) {
 			newRoom.setCapacity((Integer.parseInt(capacity)));
 		}
+		//newRoom.setRoomHistory(null);
 		return newRoom;
 	}
-
-	private Room getRoomByName() throws IOException {
-		String name = Viewer.findEntity("Room");
-		Room room = model.findRoombyName(name);
-		return room;
-	}
+	
 
 	@Override
 	public void execute() throws IOException, IllegalArgumentException {
-
 		model.addRoom(this.modifyRoom());
 
 	}

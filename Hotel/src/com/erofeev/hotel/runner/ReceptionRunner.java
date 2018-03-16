@@ -7,6 +7,7 @@ import java.util.Locale;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.erofeev.hotel.api.reception.IReception;
 import com.erofeev.hotel.entity.Guest;
 import com.erofeev.hotel.entity.Room;
 import com.erofeev.hotel.entity.Service;
@@ -37,7 +38,7 @@ public class ReceptionRunner {
 
 		}
 
-		Reception reception = new Reception();
+		IReception reception = new Reception();
 		// reception.initFileManager(ROOMS_FILE, GUESTS_FILE, SERVICES_FILE);
 
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);

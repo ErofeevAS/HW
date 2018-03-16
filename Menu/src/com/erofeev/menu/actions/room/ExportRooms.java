@@ -1,9 +1,9 @@
 package com.erofeev.menu.actions.room;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 
-import com.erofeev.hotel.api.IReception;
+import com.erofeev.hotel.api.reception.IReception;
 import com.erofeev.hotel.entity.Room;
 import com.erofeev.menu.api.IAction;
 import com.erofeev.menu.controller.Viewer;
@@ -19,7 +19,7 @@ public class ExportRooms implements IAction {
 
 	@Override
 	public void execute() throws IOException {
-		ArrayList<Room> rooms = model.getAllRooms();
+		List<Room> rooms = model.getAllRooms();
 
 		ParserRoomsCSV serialCSV = new ParserRoomsCSV();
 		TextFileManager fileManager = new TextFileManager();

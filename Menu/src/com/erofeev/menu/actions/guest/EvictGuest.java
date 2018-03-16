@@ -2,7 +2,7 @@ package com.erofeev.menu.actions.guest;
 
 import java.io.IOException;
 
-import com.erofeev.hotel.api.IReception;
+import com.erofeev.hotel.api.reception.IReception;
 import com.erofeev.hotel.entity.Guest;
 import com.erofeev.menu.api.IAction;
 import com.erofeev.menu.controller.Viewer;

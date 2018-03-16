@@ -7,6 +7,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import org.apache.logging.log4j.LogManager;
@@ -48,7 +49,7 @@ public class Viewer {
 
 	}
 
-	public static void viewCmd(ArrayList list) {
+	public static void viewCmd(List list) {
 		for (int i = 0; i < list.size(); i++) {
 			Printer.print(list.get(i));
 		}
@@ -126,8 +127,8 @@ public class Viewer {
 
 	}
 
-	public static ArrayList<String> modifyRoom() throws IOException {
-		ArrayList<String> newParameters = new ArrayList<String>();
+	public static List<String> modifyRoom() throws IOException {
+		List<String> newParameters = new ArrayList<String>();
 		Printer.print("If you dont need change current parameter just enter: null");
 		Printer.print("Enter new Room Number:");
 		newParameters.add(Viewer.readLine());

@@ -4,18 +4,19 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 public class Config {
 
-	public static ArrayList<String> getConfig() {
+	public static List<String> getConfig() {
 		String GUESTS_FILE;
 		String ROOMS_FILE;
 		String SERVICES_FILE;
 		String changeStatusFlag;
 		String roomHistorySize;
 		Properties properties = new Properties();
-		ArrayList<String> parameters = new ArrayList<String>();
+		List<String> parameters = new ArrayList<String>();
 
 		try (FileInputStream in = new FileInputStream("ui.properties")) {
 
@@ -26,22 +27,22 @@ public class Config {
 			GUESTS_FILE = properties.getProperty("guests");
 			SERVICES_FILE = properties.getProperty("services");
 
-			if (changeStatusFlag.equals(null)) {
+			if (changeStatusFlag == null) {
 				changeStatusFlag = "false";
 			}
 
-			if (roomHistorySize.equals(null)) {
+			if (roomHistorySize == null) {
 				roomHistorySize = "10";
 			}
 
-			if (GUESTS_FILE.equals(null)) {
+			if (GUESTS_FILE == null) {
 				GUESTS_FILE = "guests.txt";
 			}
-			if (ROOMS_FILE.equals(null)) {
+			if (ROOMS_FILE == null) {
 				ROOMS_FILE = "rooms.txt";
 			}
 
-			if (SERVICES_FILE.equals(null)) {
+			if (SERVICES_FILE == null) {
 				SERVICES_FILE = "services.txt";
 			}
 
@@ -50,6 +51,7 @@ public class Config {
 			parameters.add(ROOMS_FILE);
 			parameters.add(GUESTS_FILE);
 			parameters.add(SERVICES_FILE);
+			
 
 		} catch (FileNotFoundException e) {
 			System.out.println(e.getStackTrace());

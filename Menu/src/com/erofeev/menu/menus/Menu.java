@@ -9,14 +9,9 @@ import com.erofeev.menu.menuitems.MenuItem;
 public class Menu {
 	private String name;
 	private MenuItem menuitems[];
-
-	public String getName() {
-		return name;
-	}
-
+	
 	public Menu() {
 		super();
-
 	}
 
 	public Menu(String name, MenuItem[] menuitems) {
@@ -24,6 +19,10 @@ public class Menu {
 		this.name = name;
 		this.menuitems = menuitems;
 	}
+
+	public String getName() {
+		return name;
+	}	
 
 	public MenuItem[] getMenuitems() {
 		return menuitems;
@@ -40,10 +39,9 @@ public class Menu {
 	public MenuItem[] initDefault(MenuItem[] menuItem) {
 		IAction noAction = new NoAction();
 		for (int i = 0; i < menuItem.length; i++) {
-			menuItem[i].setActiom(noAction);
+			menuItem[i].setAction(noAction);
 		}
 		return menuItem;
-
 	}
 
 	public void build() {

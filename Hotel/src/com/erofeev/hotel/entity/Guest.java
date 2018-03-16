@@ -4,20 +4,26 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 
-import com.erofeev.hotel.api.IEntity;
+import com.erofeev.hotel.api.entity.IEntity;
 
-public class Guest implements IEntity, Serializable {
+public class Guest implements IEntity, Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;
-	private int ID;
+	private int id;
 	private String firstName;
 	private String surName;
 	private Date arrivalDate;
 	private Date leavingDate;
 	private Room room;
-	private ArrayList<Service> services;
+	private List<Service> services = new ArrayList<Service>();;
+
+	public Guest() {
+
+	}
 
 	public Guest(String firstName, String secondName, Date arrivalDate, Date leavingDate) {
 		super();
@@ -25,11 +31,15 @@ public class Guest implements IEntity, Serializable {
 		this.surName = secondName;
 		this.arrivalDate = arrivalDate;
 		this.leavingDate = leavingDate;
-		this.services = new ArrayList<Service>();
+		
 	}
 
-	public Guest() {
+	public int getId() {
+		return this.id;
+	}
 
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getName() {
@@ -44,11 +54,11 @@ public class Guest implements IEntity, Serializable {
 		this.room = room;
 	}
 
-	public ArrayList<Service> getGuestServices() {
+	public List<Service> getGuestServices() {
 		return services;
 	}
 
-	public void setGuestServices(ArrayList<Service> guestServices) {
+	public void setGuestServices(List<Service> guestServices) {
 		this.services = guestServices;
 	}
 
@@ -87,7 +97,7 @@ public class Guest implements IEntity, Serializable {
 	@Override
 	public String toString() {
 		StringBuilder str = new StringBuilder();
-		ArrayList<Service> services;
+		List<Service> services;
 		String separator = " ";
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
 
@@ -97,7 +107,7 @@ public class Guest implements IEntity, Serializable {
 
 		str.append(separator);
 		if (this.getRoom() != null) {
-			str.append(this.getRoom().getID());
+			str.append(this.getRoom().getId());
 		}
 		services = this.getGuestServices();
 		for (int i = 0; i < services.size(); i++) {
@@ -143,13 +153,19 @@ public class Guest implements IEntity, Serializable {
 		return true;
 	}
 
-	public int getID() {
-
-		return this.ID;
+	@Override
+	public Guest clone() throws CloneNotSupportedException {
+		Guest copy =  (Guest) super.clone();
+		List<Service> copyServices = new ArrayList<Service>(services.size());
+		Iterator<Service> iterator = services.iterator();
+		while(iterator.hasNext()){
+			copyServices.add((Service) iterator.next().clone());
+		}
+		copy.setGuestServices(copyServices);	
+		return copy;
 	}
-
-	public void setID(int id) {
-		ID = id;
-	}
+	
+	
+	
 
 }

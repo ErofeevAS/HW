@@ -6,7 +6,6 @@ import com.erofeev.hotel.entity.Guest;
 
 public class GuestSortedByDate implements Comparator<Guest> {
 	public int compare(Guest guest1, Guest guest2) {
-
 		return (guest1.getLeavingDate()).compareTo(guest2.getLeavingDate());
 	}
 }

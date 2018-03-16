@@ -3,7 +3,7 @@ package com.erofeev.menu.actions.guest;
 
 import java.io.IOException;
 
-import com.erofeev.hotel.api.IReception;
+import com.erofeev.hotel.api.reception.IReception;
 import com.erofeev.hotel.entity.Guest;
 import com.erofeev.hotel.print.Printer;
 import com.erofeev.menu.api.IAction;
@@ -23,8 +23,7 @@ public class ViewGuestPrice implements IAction {
 	}
 
 	@Override
-	public void execute() throws IOException {
-		
+	public void execute() throws IOException {		
 		String name = Viewer.findEntity("Guest");
 		Guest guest = model.findGuestbyName(name);
 		this.viewGuestPrice(model.getGuestPrice(guest));

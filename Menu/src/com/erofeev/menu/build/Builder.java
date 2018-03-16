@@ -3,7 +3,7 @@ package com.erofeev.menu.build;
 import java.util.EnumMap;
 import java.util.Map;
 
-import com.erofeev.hotel.api.IReception;
+import com.erofeev.hotel.api.reception.IReception;
 import com.erofeev.menu.actions.NoAction;
 import com.erofeev.menu.actions.guest.AddGuest;
 import com.erofeev.menu.actions.guest.AddServiceToGuest;
@@ -50,45 +50,6 @@ public class Builder {
 
 	public Builder(IReception model) {
 		this.model = model;
-	}
-
-	public IReception getModel() {
-		return model;
-	}
-
-	public void setModel(IReception model) {
-		this.model = model;
-	}
-
-	public void createMenus() {
-
-		this.createMainMenu();
-
-		this.createViewMenu();
-		this.createActionMenu();
-
-		this.createViewGuestMenu();
-		this.createViewRoomMenu();
-		this.createViewServiceMenu();
-
-		this.createActionAddMenu();
-		this.createActionChangeMenu();
-		this.createActionRemoveMenu();
-
-		this.createFinishMenu();
-		this.createCloneMenu();
-		this.createCloneRoomMenu();
-
-		this.createExportMenu();
-		this.createExportServiceMenu();
-		this.createExportRoomMenu();
-		this.createExportGuestMenu();
-
-		this.createImportMenu();
-		this.createImportGuestsMenu();
-		this.createImportRoomsMenu();
-		this.createImportServicesMenu();
-
 	}
 
 	private void createMainMenu() {
@@ -451,13 +412,50 @@ public class Builder {
 		menus.put(Menus.FINISH, viewFinishMenu);
 	}
 
+	public IReception getModel() {
+		return model;
+	}
+
+	public void setModel(IReception model) {
+		this.model = model;
+	}
+
 	public Menu getRootMenu() {
 		return menus.get(Menus.MAIN);
-
 	}
 
 	public Menu getMenu(Menus menu) {
 		return menus.get(menu);
+	}
+
+	public void createMenus() {
+
+		this.createMainMenu();
+
+		this.createViewMenu();
+		this.createActionMenu();
+
+		this.createViewGuestMenu();
+		this.createViewRoomMenu();
+		this.createViewServiceMenu();
+
+		this.createActionAddMenu();
+		this.createActionChangeMenu();
+		this.createActionRemoveMenu();
+
+		this.createFinishMenu();
+		this.createCloneMenu();
+		this.createCloneRoomMenu();
+
+		this.createExportMenu();
+		this.createExportServiceMenu();
+		this.createExportRoomMenu();
+		this.createExportGuestMenu();
+
+		this.createImportMenu();
+		this.createImportGuestsMenu();
+		this.createImportRoomsMenu();
+		this.createImportServicesMenu();
 
 	}
 

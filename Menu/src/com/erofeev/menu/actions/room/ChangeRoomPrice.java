@@ -1,9 +1,8 @@
 package com.erofeev.menu.actions.room;
 
-
 import java.io.IOException;
 
-import com.erofeev.hotel.api.IReception;
+import com.erofeev.hotel.api.reception.IReception;
 import com.erofeev.hotel.entity.Room;
 import com.erofeev.menu.api.IAction;
 import com.erofeev.menu.controller.Viewer;
@@ -21,8 +20,6 @@ public class ChangeRoomPrice implements IAction {
 		String name = Viewer.findEntity("Room");
 		Room room = model.findRoombyName(name);
 		float price = Float.parseFloat(Viewer.changePrice());		
-		model.changeRoomPrice(room, price);
-		
+		model.changeRoomPrice(room, price);		
 	}
-
 }

@@ -10,6 +10,7 @@ import java.io.ObjectOutputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,13 +22,12 @@ import com.erofeev.hotel.entity.Service;
 public class Serializator {
 	private static final Logger loggerSerializator = LogManager.getLogger(Serializator.class);
 
-	public boolean serialize(ArrayList list, String fileName) {
+	public boolean serialize(List list, String fileName) {
 		boolean flag = false;
-		Path path = Paths.get(fileName);
+		// Path path = Paths.get(fileName);
 		ObjectOutputStream objectStream = null;
 		FileOutputStream fileStream = null;
 		try {
-
 			fileStream = new FileOutputStream((fileName));
 			objectStream = new ObjectOutputStream(fileStream);
 			objectStream.writeObject(list);
@@ -54,12 +54,12 @@ public class Serializator {
 		return flag;
 	}
 
-	public ArrayList<Service> deserialize(String fileName, Service entity) {
-		ArrayList<Service> recordList = new ArrayList<>();
+	public List<Service> deserialize(String fileName, Service entity) {
+		List<Service> recordList = new ArrayList<>();
 		try (FileInputStream fileStream = new FileInputStream(new File(fileName));
 				ObjectInputStream objectStream = new ObjectInputStream(fileStream)) {
 
-			recordList = (ArrayList<Service>) objectStream.readObject();
+			recordList = (List<Service>) objectStream.readObject();
 		} catch (FileNotFoundException e) {
 			loggerSerializator.warn("cant close FileInputStream" + e.getStackTrace());
 		} catch (IOException e) {
@@ -71,12 +71,12 @@ public class Serializator {
 		return recordList;
 	}
 
-	public ArrayList<Room> deserialize(String fileName, Room entity) {
-		ArrayList<Room> recordList = new ArrayList<>();
+	public List<Room> deserialize(String fileName, Room entity) {
+		List<Room> recordList = new ArrayList<>();
 		try (FileInputStream fileStream = new FileInputStream(new File(fileName));
 				ObjectInputStream objectStream = new ObjectInputStream(fileStream)) {
 
-			recordList = (ArrayList<Room>) objectStream.readObject();
+			recordList = (List<Room>) objectStream.readObject();
 
 		} catch (FileNotFoundException e) {
 			loggerSerializator.warn("cant close FileInputStream" + e.getStackTrace());
@@ -89,8 +89,8 @@ public class Serializator {
 		return recordList;
 	}
 
-	public ArrayList<Guest> deserialize(String fileName, Guest entity) {
-		ArrayList<Guest> recordList = new ArrayList<>();
+	public List<Guest> deserialize(String fileName, Guest entity) {
+		List<Guest> recordList = new ArrayList<>();
 		try (FileInputStream fileStream = new FileInputStream(new File(fileName));
 				ObjectInputStream objectStream = new ObjectInputStream(fileStream)) {
 

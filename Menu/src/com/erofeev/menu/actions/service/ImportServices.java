@@ -2,8 +2,9 @@ package com.erofeev.menu.actions.service;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
-import com.erofeev.hotel.api.IReception;
+import com.erofeev.hotel.api.reception.IReception;
 import com.erofeev.hotel.entity.Service;
 import com.erofeev.hotel.print.Printer;
 import com.erofeev.menu.api.IAction;
@@ -26,13 +27,8 @@ public class ImportServices implements IAction {
 		Printer.print("Enter file name:");
 
 		String fileName = Viewer.readLine();
-		ArrayList<String> lines = (ArrayList<String>) fileManager.readFromFile(fileName);
-		ArrayList<Service> services = serialCSV.parseCSV(lines);
-
+		List<String> lines = (ArrayList<String>) fileManager.readFromFile(fileName);
+		List<Service> services = serialCSV.parseCSV(lines);
 		model.importServices(services);
-		// String[] serialServices = serialCSV.serialize(services);
-		// fileManager.writeToFile(Viewer.getFileName(), serialServices);
-
 	}
-
 }

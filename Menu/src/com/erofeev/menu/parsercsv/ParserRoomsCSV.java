@@ -2,8 +2,10 @@ package com.erofeev.menu.parsercsv;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
+import java.util.List;
 
-import com.erofeev.hotel.api.IReception;
+import com.erofeev.hotel.api.reception.IReception;
 import com.erofeev.hotel.entity.Guest;
 import com.erofeev.hotel.entity.Room;
 import com.erofeev.hotel.entity.RoomStatus;
@@ -13,7 +15,7 @@ public class ParserRoomsCSV {
 	private final String separator = ";";
 	private final String nestedSeparator = " ";
 
-	public String[] listToCSV(ArrayList<Room> rooms) {
+	public String[] listToCSV(List<Room> rooms) {
 
 		int cnt = 1;
 		String[] serialStr = new String[rooms.size() + 1];
@@ -32,9 +34,9 @@ public class ParserRoomsCSV {
 
 		for (Room room : rooms) {
 			StringBuilder str2 = new StringBuilder();
-			ArrayDeque<Guest> roomHistory = room.getRoomHistory();
+			List<Guest> roomHistory = room.getRoomHistory();
 
-			str2.append(room.getID()).append(separator);
+			str2.append(room.getId()).append(separator);
 			str2.append(room.getName()).append(separator);
 			str2.append(room.getStars()).append(separator);
 			str2.append(room.getCapacity()).append(separator);
@@ -44,7 +46,7 @@ public class ParserRoomsCSV {
 
 			if (!roomHistory.isEmpty()) {
 				for (Guest guest : roomHistory) {
-					str2.append(guest.getID());
+					str2.append(guest.getId());
 					str2.append(nestedSeparator);
 				}
 			} else {
@@ -60,10 +62,10 @@ public class ParserRoomsCSV {
 
 	}
 
-	public ArrayList<Room> parseCSV(ArrayList<String> fileString, IReception reception) throws NumberFormatException {
+	public List<Room> parseCSV(List<String> fileString, IReception reception) throws NumberFormatException {
 
-		ArrayList<Room> rooms = new ArrayList<Room>();
-		ArrayDeque<Guest> roomHistory = new ArrayDeque<Guest>();
+		List<Room> rooms = new ArrayList<Room>();
+		List<Guest> roomHistory = new ArrayList<Guest>();
 		for (int i = 1; i < fileString.size(); i++) {
 			roomHistory.clear();
 			String[] parts = null;
@@ -98,7 +100,7 @@ public class ParserRoomsCSV {
 					roomHistory.add(guest);
 				}
 				room.setRoomHistory(roomHistory);
-				Guest guestLast = roomHistory.getFirst();
+				Guest guestLast = roomHistory.get(i-1);
 				if (!room.isEmpty()) {
 					guestLast.setRoom(room);
 				}

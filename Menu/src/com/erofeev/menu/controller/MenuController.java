@@ -7,18 +7,17 @@ import java.io.InputStreamReader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.erofeev.hotel.api.IReception;
+import com.erofeev.hotel.api.reception.IReception;
 import com.erofeev.hotel.print.Printer;
 import com.erofeev.menu.build.Builder;
 import com.erofeev.menu.menuitems.MenuItem;
 import com.erofeev.menu.menus.Menus;
 
 public class MenuController {
+	private static final Logger loggerMenuControllerManager = LogManager.getLogger(MenuController.class);
 
 	private Builder builder;
-	private Navigator navigator;
-
-	private static final Logger loggerMenuControllerManager = LogManager.getLogger(MenuController.class);
+	private Navigator navigator;	
 
 	public MenuController(IReception model) {
 		this.navigator = new Navigator();

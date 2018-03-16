@@ -2,20 +2,24 @@ package com.erofeev.hotel.entity;
 
 import java.io.Serializable;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.Iterator;
+import java.util.List;
 
-import com.erofeev.hotel.api.IEntity;
+import com.erofeev.hotel.api.entity.IEntity;
 
-public class Room implements IEntity, Serializable {
+public class Room implements IEntity, Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;
-	private int ID;
+	private int Id;
 	private int stars;
 	private float price;
 	private int capacity;
 	private boolean empty;
 	private String name;
 	private RoomStatus roomStatus = RoomStatus.SERVICED;
-	private ArrayDeque<Guest> roomHistory = new ArrayDeque<Guest>();
+	private List<Guest> roomHistory = new ArrayList<Guest>();
 
 	public Room() {
 
@@ -33,7 +37,7 @@ public class Room implements IEntity, Serializable {
 
 	public Room(int id, String name, int stars, float price, int capacity, boolean empty) {
 		super();
-		this.ID = id;
+		this.Id = id;
 		this.name = name;
 		this.stars = stars;
 		this.price = price;
@@ -42,19 +46,19 @@ public class Room implements IEntity, Serializable {
 
 	}
 
-	public int getID() {
-		return ID;
+	public int getId() {
+		return Id;
 	}
 
-	public void setID(int id) {
-		ID = id;
+	public void setId(int id) {
+		Id = id;
 	}
 
-	public ArrayDeque<Guest> getRoomHistory() {
+	public List<Guest> getRoomHistory() {
 		return roomHistory;
 	}
 
-	public void setRoomHistory(ArrayDeque<Guest> roomHistory) {
+	public void setRoomHistory(List<Guest> roomHistory) {
 		this.roomHistory = roomHistory;
 	}
 
@@ -116,7 +120,7 @@ public class Room implements IEntity, Serializable {
 
 		StringBuilder str = new StringBuilder();
 		String separator = " ";
-		str.append("RoomId: ").append(this.getID()).append(separator);
+		str.append("RoomId: ").append(this.getId()).append(separator);
 		str.append(this.getName()).append(separator).append(this.getStars()).append(separator).append(this.getPrice())
 				.append(separator).append(this.getCapacity());
 		str.append(separator);
@@ -124,7 +128,15 @@ public class Room implements IEntity, Serializable {
 		str.append(separator);
 		str.append(this.getRoomStatus());
 		str.append(separator);
-		return str.toString();
+		str.append("[");
+		List<Guest> history = this.getRoomHistory();
+		for (Guest guest : history) {
+			str.append(guest);
+			str.append(";");
+		}
+		str.append("]");
+		return str.toString();	
+		
 	}
 
 	@Override
@@ -151,6 +163,20 @@ public class Room implements IEntity, Serializable {
 		if (stars != other.stars)
 			return false;
 		return true;
+	}
+
+	@Override
+	public Room clone() throws CloneNotSupportedException {
+		Room copy =  (Room) super.clone();			
+		List<Guest> copyRoomHistory = new ArrayList<Guest>(roomHistory.size());	       
+		Iterator<Guest> iterator = roomHistory.iterator();
+		while(iterator.hasNext()){
+			Guest copyGuest = (Guest) iterator.next().clone();
+			copyRoomHistory.add(copyGuest);
+		}
+		copy.setRoomHistory(copyRoomHistory);
+		return copy;
+
 	}
 
 }

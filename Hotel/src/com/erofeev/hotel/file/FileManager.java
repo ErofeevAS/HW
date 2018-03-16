@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -26,13 +26,6 @@ public class FileManager {
 	private String guestsPath;
 	private String servicesPath;
 
-	public void initFileManager(String ROOMS_FILE, String GUESTS_FILE, String SERVICES_FILE) {
-		this.setRoomsPath(ROOMS_FILE);
-		this.setGuestsPath(GUESTS_FILE);
-		this.setServicesPath(SERVICES_FILE);
-
-	}
-
 	public static FileManager getInstance() {
 		FileManager localInstance = instance;
 		if (localInstance == null) {
@@ -47,35 +40,43 @@ public class FileManager {
 		return localInstance;
 	}
 
-	public ArrayList<Room> readRoomsFromFile() {
+	private Path getPath(AbstractManager manager) {
+		String FILE_PATH = "";
+		if (manager instanceof GuestManager) {
+			FILE_PATH = this.getGuestsPath();
+		}
+		if (manager instanceof RoomManager) {
+			FILE_PATH = this.getRoomsPath();
+		}
+		if (manager instanceof ServicesManager) {
+			FILE_PATH = this.getServicesPath();
+		}
+		Path filePath = Paths.get(FILE_PATH);
+		return filePath;
+	}
+
+	public void initFileManager(String ROOMS_FILE, String GUESTS_FILE, String SERVICES_FILE) {
+		this.setRoomsPath(ROOMS_FILE);
+		this.setGuestsPath(GUESTS_FILE);
+		this.setServicesPath(SERVICES_FILE);
+
+	}
+
+	public List<Room> readRoomsFromFile() {
 		return serial.deserialize(this.getRoomsPath(), new Room());
 	}
 
-	public ArrayList<Guest> readGuestsFromFile() {
+	public List<Guest> readGuestsFromFile() {
 		return serial.deserialize(this.getGuestsPath(), new Guest());
 	}
 
-	public ArrayList<Service> readServicesFromFile() {
+	public List<Service> readServicesFromFile() {
 		return serial.deserialize(this.getServicesPath(), new Service());
 	}
 
 	public void saveToFile(AbstractManager manager) {
+		Path filePath = this.getPath(manager);
 
-		String FILE_PATH = "";
-
-		if (manager instanceof GuestManager) {
-			FILE_PATH = this.getGuestsPath();
-		}
-
-		if (manager instanceof RoomManager) {
-			FILE_PATH = this.getRoomsPath();
-		}
-
-		if (manager instanceof ServicesManager) {
-			FILE_PATH = this.getServicesPath();
-		}
-
-		Path filePath = Paths.get(FILE_PATH);
 		try {
 			if (!Files.exists(filePath)) {
 				Files.createFile(filePath);
@@ -87,7 +88,7 @@ public class FileManager {
 
 		try {
 
-			serial.serialize(manager.getAll(), FILE_PATH);
+			serial.serialize(manager.getAll(), filePath.toString());
 
 			loggerFileManager.debug(manager.getClass().getSimpleName() + "File was saved");
 		} catch (RuntimeException e) {

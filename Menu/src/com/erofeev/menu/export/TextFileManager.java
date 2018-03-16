@@ -17,7 +17,6 @@ import org.apache.logging.log4j.Logger;
 public class TextFileManager {
 
 	private static final Logger loggerTextFileManager = LogManager.getLogger(TextFileManager.class);
-
 	private final static Charset FILE_ENCODING = StandardCharsets.UTF_8;
 
 	public void writeToFile(String fileName, String[] values) {

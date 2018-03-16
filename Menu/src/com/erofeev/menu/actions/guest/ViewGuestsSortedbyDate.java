@@ -1,8 +1,9 @@
 package com.erofeev.menu.actions.guest;
 
 import java.util.ArrayList;
+import java.util.List;
 
-import com.erofeev.hotel.api.IReception;
+import com.erofeev.hotel.api.reception.IReception;
 import com.erofeev.hotel.entity.Guest;
 import com.erofeev.hotel.print.Printer;
 import com.erofeev.menu.api.IAction;
@@ -15,7 +16,7 @@ public class ViewGuestsSortedbyDate implements IAction {
 		this.model = model;
 	}
 
-	public void viewGuestSortedByDate(ArrayList<Guest> guests) {
+	public void viewGuestSortedByDate(List<Guest> guests) {
 		Printer.print("Guests sorted by date: ");
 		Viewer.viewCmd(guests);
 
@@ -23,9 +24,7 @@ public class ViewGuestsSortedbyDate implements IAction {
 
 	@Override
 	public void execute() {		
-		ArrayList<Guest> guests = model.getGuestSortedByData();
+		List<Guest> guests = model.getGuestSortedByData();
 		this.viewGuestSortedByDate(guests);
-
 	}
-
 }
