@@ -2,6 +2,7 @@ package com.erofeev.menu.actions.service;
 
 import java.io.IOException;
 
+import com.erofeev.annotation.handler.AnnotationsHandler;
 import com.erofeev.hotel.api.reception.IReception;
 import com.erofeev.hotel.entity.Service;
 import com.erofeev.menu.api.IAction;
@@ -18,6 +19,6 @@ public class AddService implements IAction {
 	public void execute() throws IllegalArgumentException, IOException {
 		Service service;
 		service = Viewer.createService();
-		model.addService(service);
+		model.addService(service);		
 	}
 }

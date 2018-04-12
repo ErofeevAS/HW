@@ -11,6 +11,7 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.erofeev.annotation.csvwriter.FileManager;
 import com.erofeev.hotel.api.observer.Observable;
 import com.erofeev.hotel.api.observer.Observer;
 import com.erofeev.hotel.api.reception.IReception;
@@ -18,7 +19,6 @@ import com.erofeev.hotel.entity.Guest;
 import com.erofeev.hotel.entity.Room;
 import com.erofeev.hotel.entity.RoomStatus;
 import com.erofeev.hotel.entity.Service;
-import com.erofeev.hotel.file.FileManager;
 import com.erofeev.hotel.managers.GuestManager;
 import com.erofeev.hotel.managers.RoomManager;
 import com.erofeev.hotel.managers.ServicesManager;
@@ -235,12 +235,14 @@ public class Reception implements IReception, Observable {
 	@Override
 	public void changeRoomPrice(Room room, float price) {
 		room.setPrice(price);
+		this.notifyRoomsObservers();
 		loggerReception.info(room.toString() + " price was changed");
 	}
 
 	@Override
 	public void changeServicePrice(Service service, float price) {
 		service.setPrice(price);
+		this.notifyServicesObservers();
 		loggerReception.info(service.toString() + " price was changed");
 	}
 

@@ -2,13 +2,21 @@ package com.erofeev.hotel.entity;
 
 import java.io.Serializable;
 
+import com.erofeev.annotation.CsvEntity;
+import com.erofeev.annotation.CsvProperty;
+import com.erofeev.annotation.PropertyType;
 import com.erofeev.hotel.api.entity.IEntity;
 
+@CsvEntity(entityId = 2, filename = "services.csv", valuesSeparator = ";")
 public class Service implements IEntity, Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;
-	private int Id;
+
+	@CsvProperty(columnNumber = 0, escape = false, propertyType = PropertyType.SimpleProperty)
+	private int id;
+	@CsvProperty(columnNumber = 1, escape = false, propertyType = PropertyType.SimpleProperty)
 	private String name;
+	@CsvProperty(columnNumber = 2, escape = false, propertyType = PropertyType.SimpleProperty)
 	private float price;
 
 	public Service() {
@@ -23,18 +31,18 @@ public class Service implements IEntity, Serializable, Cloneable {
 
 	public Service(int id, String name, float price) {
 		super();
-		this.Id = id;
+		this.id = id;
 		this.name = name;
 		this.price = price;
 	}
 
 	@Override
 	public int getId() {
-		return Id;
+		return id;
 	}
 
 	public void setId(int serviceId) {
-		this.Id = serviceId;
+		this.id = serviceId;
 	}
 
 	public String getName() {
@@ -83,9 +91,8 @@ public class Service implements IEntity, Serializable, Cloneable {
 	}
 
 	@Override
-	public Service clone() throws CloneNotSupportedException {		
+	public Service clone() throws CloneNotSupportedException {
 		return (Service) super.clone();
 	}
-	
 
 }

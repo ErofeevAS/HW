@@ -2,6 +2,7 @@ package com.erofeev.menu.actions.room;
 
 import java.io.IOException;
 
+import com.erofeev.annotation.handler.AnnotationsHandler;
 import com.erofeev.hotel.api.reception.IReception;
 import com.erofeev.hotel.entity.Room;
 
@@ -20,5 +21,6 @@ public class AddRoom implements IAction {
 		Room newRoom;
 		newRoom = Viewer.createRoom();
 		model.addRoom(newRoom);
+		//AnnotationsHandler.getEntityData(newRoom);
 	}
 }

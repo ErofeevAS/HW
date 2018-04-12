@@ -85,13 +85,14 @@ public class Viewer {
 
 	public static Service createService() throws IOException, IllegalArgumentException {
 		String[] service = new String[2];
-		Service newService = null;
+		Service newService = null;		
 		Printer.print("Enter Service name:");
 		service[0] = Viewer.readLine();
 		Printer.print("Enter Service price:");
 		service[1] = Viewer.readLine();
 		try {
 			newService = new Service(service[0], Float.parseFloat(service[1]));
+			
 		} catch (NumberFormatException e) {
 			loggerViewer.error("Wrong input data " + e);
 			throw new IllegalArgumentException();

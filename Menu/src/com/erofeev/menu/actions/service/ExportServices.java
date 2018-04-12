@@ -4,11 +4,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.erofeev.annotation.csvwriter.TextFileManager;
 import com.erofeev.hotel.api.reception.IReception;
 import com.erofeev.hotel.entity.Service;
 import com.erofeev.menu.api.IAction;
 import com.erofeev.menu.controller.Viewer;
-import com.erofeev.menu.export.TextFileManager;
 import com.erofeev.menu.parsercsv.ParserServicesCSV;
 
 public class ExportServices implements IAction {

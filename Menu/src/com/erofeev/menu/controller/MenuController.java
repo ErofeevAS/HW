@@ -9,37 +9,55 @@ import org.apache.logging.log4j.Logger;
 
 import com.erofeev.hotel.api.reception.IReception;
 import com.erofeev.hotel.print.Printer;
-import com.erofeev.menu.build.Builder;
+import com.erofeev.menu.api.builder.IBuilder;
+import com.erofeev.menu.api.menucontroller.IMenuController;
+import com.erofeev.menu.api.navigator.INavigator;
+import com.erofeev.menu.builder.Builder;
 import com.erofeev.menu.menuitems.MenuItem;
 import com.erofeev.menu.menus.Menus;
+import com.erofeev.menu.navigator.Navigator;
 
-public class MenuController {
+public class MenuController implements IMenuController {
 	private static final Logger loggerMenuControllerManager = LogManager.getLogger(MenuController.class);
 
-	private Builder builder;
-	private Navigator navigator;	
+	private IBuilder builder;
+	private INavigator navigator;	
+	
+	
 
-	public MenuController(IReception model) {
-		this.navigator = new Navigator();
-		this.builder = new Builder(model);
+	public MenuController() {
+		super();
 	}
 
-	public Builder getBuilder() {
+
+	public MenuController(IReception model,IBuilder builder,INavigator navigator) {
+		this.navigator = navigator;
+		builder.setModel(model);
+		this.builder = builder;
+	}
+	
+
+	@Override
+	public IBuilder getBuilder() {
 		return builder;
 	}
 
-	public void setBuilder(Builder builder) {
+	@Override
+	public void setBuilder(IBuilder builder) {
 		this.builder = builder;
 	}
 
-	public Navigator getNavigator() {
+	@Override
+	public INavigator getNavigator() {
 		return navigator;
 	}
 
-	public void setNavigator(Navigator navigator) {
+	@Override
+	public void setNavigator(INavigator navigator) {
 		this.navigator = navigator;
 	}
 
+	@Override
 	public void run() {
 		builder.createMenus();
 		navigator.setCurrentMenu(builder.getRootMenu());

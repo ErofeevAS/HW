@@ -1,24 +1,34 @@
 package com.erofeev.hotel.entity;
 
 import java.io.Serializable;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Deque;
 import java.util.Iterator;
 import java.util.List;
 
+import com.erofeev.annotation.CsvEntity;
+import com.erofeev.annotation.CsvProperty;
+import com.erofeev.annotation.PropertyType;
 import com.erofeev.hotel.api.entity.IEntity;
 
-public class Room implements IEntity, Serializable, Cloneable {
-
+@CsvEntity(entityId = 1, filename = "rooms.csv", valuesSeparator = ";")
+public class Room implements IEntity, Serializable, Cloneable {	
+	
 	private static final long serialVersionUID = 1L;
-	private int Id;
+	@CsvProperty(columnNumber = 0, escape = false, propertyType = PropertyType.SimpleProperty)
+	private int id;
+	@CsvProperty(columnNumber = 1, escape = false, propertyType = PropertyType.SimpleProperty)
 	private int stars;
+	@CsvProperty(columnNumber = 2, escape = false, propertyType = PropertyType.SimpleProperty)
 	private float price;
+	@CsvProperty(columnNumber = 3, escape = false, propertyType = PropertyType.SimpleProperty)
 	private int capacity;
+	@CsvProperty(columnNumber = 4, escape = false, propertyType = PropertyType.SimpleProperty)
 	private boolean empty;
+	@CsvProperty(columnNumber = 5, escape = false, propertyType = PropertyType.SimpleProperty)
 	private String name;
+	@CsvProperty(columnNumber = 6, escape = false, propertyType = PropertyType.SimpleProperty)
 	private RoomStatus roomStatus = RoomStatus.SERVICED;
+	@CsvProperty(columnNumber = 7, escape = true, propertyType = PropertyType.CompositeProperty,keyField = 1)
 	private List<Guest> roomHistory = new ArrayList<Guest>();
 
 	public Room() {
@@ -37,7 +47,7 @@ public class Room implements IEntity, Serializable, Cloneable {
 
 	public Room(int id, String name, int stars, float price, int capacity, boolean empty) {
 		super();
-		this.Id = id;
+		this.id = id;
 		this.name = name;
 		this.stars = stars;
 		this.price = price;
@@ -47,11 +57,11 @@ public class Room implements IEntity, Serializable, Cloneable {
 	}
 
 	public int getId() {
-		return Id;
+		return id;
 	}
 
 	public void setId(int id) {
-		Id = id;
+		this.id = id;
 	}
 
 	public List<Guest> getRoomHistory() {

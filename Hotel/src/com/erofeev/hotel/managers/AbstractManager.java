@@ -17,9 +17,7 @@ public abstract class AbstractManager<E> {
 
 	public abstract E findbyName(String name);
 
-	public List<E> getEntities() {
-		return entities;
-	}
+
 
 	public void setEntities(List<E> entities) {
 		this.entities = entities;

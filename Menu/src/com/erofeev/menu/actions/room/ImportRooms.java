@@ -4,12 +4,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.erofeev.annotation.csvwriter.TextFileManager;
 import com.erofeev.hotel.api.reception.IReception;
 import com.erofeev.hotel.entity.Room;
 import com.erofeev.hotel.print.Printer;
 import com.erofeev.menu.api.IAction;
 import com.erofeev.menu.controller.Viewer;
-import com.erofeev.menu.export.TextFileManager;
 import com.erofeev.menu.parsercsv.ParserRoomsCSV;
 
 public class ImportRooms implements IAction {

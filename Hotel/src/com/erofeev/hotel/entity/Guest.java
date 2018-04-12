@@ -8,17 +8,29 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
+import com.erofeev.annotation.CsvEntity;
+import com.erofeev.annotation.CsvProperty;
+import com.erofeev.annotation.PropertyType;
 import com.erofeev.hotel.api.entity.IEntity;
+
+@CsvEntity(entityId = 0, filename = "guests.csv", valuesSeparator = ";")
 
 public class Guest implements IEntity, Serializable, Cloneable {
 
 	private static final long serialVersionUID = 1L;
+	@CsvProperty(columnNumber = 0, escape = false, propertyType = PropertyType.SimpleProperty)
 	private int id;
+	@CsvProperty(columnNumber = 1, escape = false, propertyType = PropertyType.SimpleProperty)
 	private String firstName;
+	@CsvProperty(columnNumber = 2, escape = false, propertyType = PropertyType.SimpleProperty)
 	private String surName;
+	@CsvProperty(columnNumber = 3, escape = false, propertyType = PropertyType.SimpleProperty)
 	private Date arrivalDate;
+	@CsvProperty(columnNumber = 4, escape = false, propertyType = PropertyType.SimpleProperty)
 	private Date leavingDate;
+	@CsvProperty(columnNumber = 5, escape = false, propertyType = PropertyType.CompositeProperty)
 	private Room room;
+	@CsvProperty(columnNumber = 6, escape = false, propertyType = PropertyType.CompositeProperty)
 	private List<Service> services = new ArrayList<Service>();;
 
 	public Guest() {

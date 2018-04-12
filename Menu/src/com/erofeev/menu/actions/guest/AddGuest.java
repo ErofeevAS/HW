@@ -3,6 +3,7 @@ package com.erofeev.menu.actions.guest;
 
 import java.io.IOException;
 
+import com.erofeev.annotation.handler.AnnotationsHandler;
 import com.erofeev.hotel.api.reception.IReception;
 import com.erofeev.hotel.entity.Guest;
 import com.erofeev.menu.api.IAction;
@@ -20,6 +21,7 @@ public class AddGuest implements IAction {
 	public void execute() throws IllegalArgumentException, IOException {
 		Guest guest = Viewer.createGuest();
 		model.addGuest(guest);
+		//AnnotationsHandler.getEntityData(guest);
 	}
 
 }
